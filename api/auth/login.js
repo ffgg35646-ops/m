@@ -33,7 +33,7 @@ module.exports = async function handler(req, res) {
     if (!safeEqual(derived.toString("hex"),user.passwordHash)) {
       return json(res,401,{ok:false,message:"بيانات الدخول غير صحيحة."});
     }
-    if (user.isActive === false || user.active === false || ["blocked","deleted","محظور","محذوف"].includes(String(user.status || "").toLowerCase())) {
+    if (user.isActive === false || user.active === false || ["blocked","disabled","inactive","deleted","محظور","محذوف","غير نشط","غير فعال"].includes(String(user.status || "").trim().toLowerCase())) {
       return json(res,403,{ok:false,message:"هذا الحساب غير نشط. تواصل مع إدارة المنصة."});
     }
 
