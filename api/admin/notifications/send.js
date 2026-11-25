@@ -47,7 +47,10 @@ module.exports = async function handler(req, res) {
       if (includeParents) {
         for (const id of relationIds(student)) {
           const parentId = /^[a-fA-F0-9]{24}$/.test(id) ? new ObjectId(id) : id;
-          const parent = await db.collection(usersName).findOne({ _id:parentId }, { projection:{_id:1,role:1,accountType:1} });
+          const parent = await db.collection(usersName).findOne(
+            { $or:[{_id:parentId},{_id:id}] },
+            { projection:{_id:1,role:1,accountType:1} }
+          );
           if (parent) recipients.set(String(parent._id), { userId:parent._id, studentId:student._id, role:"parent" });
         }
       }
