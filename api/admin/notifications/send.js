@@ -22,7 +22,7 @@ module.exports = async function handler(req, res) {
   try {
     const auth = await requireAdmin(req);
     if (!auth.ok) return json(res, auth.status, { ok:false, message:auth.message });
-    const message = String(req.body?.message || "").trim().slice(0, 500);
+    const message = String(req.body?.message || "").trim().slice(0, 2000);
     const studentIds = Array.isArray(req.body?.studentIds)
       ? [...new Set(req.body.studentIds.map(id => String(id).trim()).filter(Boolean))].slice(0, 500)
       : [];
@@ -44,14 +44,20 @@ module.exports = async function handler(req, res) {
     const recipients = new Map();
     for (const student of students) {
       recipients.set(String(student._id), { userId:student._id, studentId:student._id, role:"student" });
-      if (includeParents) {
+    }
+    if (includeParents) {
+      const parentIds = [...new Set(students.flatMap(relationIds))];
+      const parentObjectIds = parentIds.filter(id => /^[a-fA-F0-9]{24}$/.test(id)).map(id => new ObjectId(id));
+      const parentDocs = parentIds.length ? await db.collection(usersName).find({
+        $or:[{_id:{$in:parentObjectIds}},{_id:{$in:parentIds}}]
+      }, {projection:{_id:1,role:1,accountType:1}}).toArray() : [];
+      const parentById = new Map(parentDocs.map(parent => [String(parent._id), parent]));
+      for (const student of students) {
         for (const id of relationIds(student)) {
-          const parentId = /^[a-fA-F0-9]{24}$/.test(id) ? new ObjectId(id) : id;
-          const parent = await db.collection(usersName).findOne(
-            { $or:[{_id:parentId},{_id:id}] },
-            { projection:{_id:1,role:1,accountType:1} }
-          );
-          if (parent) recipients.set(String(parent._id), { userId:parent._id, studentId:student._id, role:"parent" });
+          const parent = parentById.get(id);
+          if (parent && !recipients.has(String(parent._id))) {
+            recipients.set(String(parent._id), {userId:parent._id,studentId:student._id,role:"parent"});
+          }
         }
       }
     }
