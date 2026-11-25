@@ -262,7 +262,7 @@
         ["النوع", item.type === "password_reset" ? "إعادة تعيين كلمة مرور الطالب" : "رسالة تواصل"],
         ["الاسم", item.name], ["البريد الإلكتروني", item.email], ["رقم الهاتف", item.phone],
         ["الكود التعريفي", item.code], ["فئة السنة الدراسية", item.category],
-        ["السنة الدراسية", item.grade], ["الحالة", item.status],
+        ["السنة الدراسية", item.grade], ["حالة الحساب", item.status], ["حالة الطلب", item.requestStatus],
         ["الرسالة", item.message], ["تاريخ الإرسال", formatDate(item.createdAt)]
       ];
       const container = $("detailsContent"); container.replaceChildren();
