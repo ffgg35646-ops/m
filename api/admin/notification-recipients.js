@@ -65,6 +65,82 @@ module.exports = async function handler(req, res) {
       return true;
     });
 
+
+    const studentIds = students.map(user => user._id);
+    const studentIdStrings = studentIds.map(id => String(id));
+    const { ObjectId } = require("mongodb");
+    const studentObjectIds = studentIdStrings.filter(id => /^[a-fA-F0-9]{24}$/.test(id)).map(id => new ObjectId(id));
+    const relatedFilter = {
+      $or: [
+        { userId: { $in: studentIds } }, { userId: { $in: studentIdStrings } },
+        { studentId: { $in: studentIds } }, { studentId: { $in: studentIdStrings } },
+        { studentIds: { $in: studentObjectIds } }, { studentIds: { $in: studentIdStrings } },
+        { students: { $in: studentObjectIds } }, { students: { $in: studentIdStrings } },
+        { memberIds: { $in: studentObjectIds } }, { memberIds: { $in: studentIdStrings } },
+        { members: { $in: studentObjectIds } }, { members: { $in: studentIdStrings } }
+      ]
+    };
+    const hasCollection = async name => (await db.listCollections({ name }, { nameOnly:true }).toArray()).length > 0;
+    const enrollmentName = process.env.STUDENT_ENROLLMENTS_COLLECTION || process.env.ENROLLMENTS_COLLECTION || "enrollments";
+    const groupCollectionName = process.env.STUDENT_GROUPS_COLLECTION || "groups";
+    const courseCollectionName = process.env.COURSES_COLLECTION || "courses";
+    const [hasEnrollments, hasGroups, hasCourses] = await Promise.all([
+      hasCollection(enrollmentName), hasCollection(groupCollectionName), hasCollection(courseCollectionName)
+    ]);
+    const [enrollmentRows, groupRows] = await Promise.all([
+      hasEnrollments ? db.collection(enrollmentName).find(relatedFilter, {
+        projection:{userId:1,studentId:1,course:1,courseName:1,courseTitle:1,courseId:1,group:1,groupName:1,status:1}
+      }).limit(10000).toArray() : [],
+      hasGroups ? db.collection(groupCollectionName).find(relatedFilter, {
+        projection:{name:1,title:1,groupName:1,userId:1,studentId:1,studentIds:1,students:1,memberIds:1,members:1}
+      }).limit(5000).toArray() : []
+    ]);
+
+    const courseIds = new Set();
+    for (const user of students) {
+      values(user.courseIds).forEach(id => courseIds.add(id));
+      values(user.courses).forEach(item => {
+        if (/^[a-fA-F0-9]{24}$/.test(item)) courseIds.add(item);
+      });
+    }
+    for (const row of enrollmentRows) {
+      const id = scalar(row.courseId);
+      if (/^[a-fA-F0-9]{24}$/.test(id)) courseIds.add(id);
+    }
+    const courseIdValues = [...courseIds];
+    const courseObjectIds = courseIdValues.map(id => new ObjectId(id));
+    const courseRows = hasCourses && courseObjectIds.length
+      ? await db.collection(courseCollectionName).find({_id:{$in:courseObjectIds}}, {projection:{name:1,title:1,courseName:1}}).toArray()
+      : [];
+    const courseNameById = new Map(courseRows.map(row => [String(row._id), row.title || row.name || row.courseName || ""]));
+
+    const relatedByStudent = new Map(studentIdStrings.map(id => [id,{courses:[],groups:[]}]));
+    const addRelated = (recordId, key, value) => {
+      const id = String(recordId || "");
+      if (!relatedByStudent.has(id) || !value) return;
+      relatedByStudent.get(id)[key].push(value);
+    };
+    for (const row of enrollmentRows) {
+      const studentId = row.studentId || row.userId;
+      const name = scalar(row.courseName) || scalar(row.courseTitle) || scalar(row.course);
+      const courseId = scalar(row.courseId);
+      addRelated(studentId,"courses",name || courseNameById.get(courseId));
+      addRelated(studentId,"groups",scalar(row.groupName) || scalar(row.group));
+    }
+    for (const group of groupRows) {
+      const name = scalar(group.name) || scalar(group.title) || scalar(group.groupName);
+      if (!name) continue;
+      const members = [];
+      for (const key of ["userId","studentId","studentIds","students","memberIds","members"]) {
+        const val = group[key];
+        for (const item of (Array.isArray(val) ? val : val ? [val] : [])) {
+          const id = item && typeof item === "object" ? (item.userId || item._id || item.id) : item;
+          if (id) members.push(String(id));
+        }
+      }
+      for (const id of members) addRelated(id,"groups",name);
+    }
+
     const allSubscriptionIds = new Set();
     for (const student of students) {
       allSubscriptionIds.add(String(student._id));
@@ -87,8 +163,12 @@ module.exports = async function handler(req, res) {
     }
 
     const records = students.map(user => {
-      const courseNames = values(user.course, user.courseName, user.courses, user.enrollments);
-      const groupNames = values(user.group, user.groupName, user.groups);
+      const linked = relatedByStudent.get(String(user._id)) || {courses:[],groups:[]};
+      const courseNames = values(user.course, user.courseName, user.courses, user.enrollments, linked.courses);
+      const groupNames = values(user.group, user.groupName, user.groups, linked.groups);
+      for (const id of values(user.courseIds)) {
+        if (courseNameById.has(id)) courseNames.push(courseNameById.get(id));
+      }
       const category = text(user, ["category","gradeCategory","schoolCategory"]);
       const grade = text(user, ["grade","schoolYear","year"]);
       const name = text(user, ["fullName","name"]) || [user.firstName,user.lastName].filter(Boolean).join(" ") || user.email || "طالب";
