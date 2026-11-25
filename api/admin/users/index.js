@@ -237,13 +237,25 @@ async function ensureDefaultRoles(database) {
 }
 
 async function roleCapabilities(database, roleName, builtInAdmin) {
-  if (builtInAdmin) return { admins: true, students: true, roles: true };
+  if (builtInAdmin) return {
+    admins: true, students: true, roles: true,
+    adminCreate: true, adminEdit: true,
+    studentCreate: true, studentEdit: true, studentDelete: true
+  };
   const roles = await ensureDefaultRoles(database);
   const role = roles.find(item => normalizeRole(item.roleName) === normalizeRole(roleName));
+  const allowed = (module, action) => roleAllows(role, {
+    section: "صلاحيات المستخدمين", module, action
+  });
   return {
-    admins: roleAllows(role, { section: "صلاحيات المستخدمين", module: "المشرفون", action: "عرض" }),
-    students: roleAllows(role, { section: "صلاحيات المستخدمين", module: "الطلاب", action: "عرض" }),
-    roles: roleAllows(role, { section: "صلاحيات المستخدمين", module: "الأدوار والصلاحيات", action: "عرض" })
+    admins: allowed("المشرفون", "عرض"),
+    students: allowed("الطلاب", "عرض"),
+    roles: allowed("الأدوار والصلاحيات", "عرض"),
+    adminCreate: allowed("المشرفون", "إنشاء"),
+    adminEdit: allowed("المشرفون", "تعديل"),
+    studentCreate: allowed("الطلاب", "إنشاء"),
+    studentEdit: allowed("الطلاب", "تعديل"),
+    studentDelete: allowed("الطلاب", "حذف")
   };
 }
 
