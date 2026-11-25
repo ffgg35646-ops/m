@@ -6,9 +6,6 @@ const numberEnv = (name) => {
   return Number.isFinite(value) && value >= 0 ? value : null;
 };
 
-const count = (database, name, query = {}) =>
-  database.collection(name).countDocuments(query);
-
 module.exports = async function handler(req, res) {
   if (!method(req, res, "GET")) return;
 
@@ -27,8 +24,8 @@ module.exports = async function handler(req, res) {
       tokenHash,
       expiresAt: { $gt: new Date() }
     });
-
-    if (!session || !["admin", "super_admin", "owner"].includes(session.role)) {
+    const allowedRoles = ["admin", "super_admin", "owner", "administrator", "مدير النظام", "مدير", "مسؤول"];
+    if (!session || !allowedRoles.includes(session.role)) {
       return json(res, 403, { ok: false, message: "ليس لديك صلاحية دخول لوحة الإدارة." });
     }
 
@@ -39,6 +36,8 @@ module.exports = async function handler(req, res) {
     if (!admin) return json(res, 401, { ok: false, message: "الحساب غير موجود." });
 
     const collections = {
+      admins: collectionName(),
+      sessions: "auth_sessions",
       users: process.env.USERS_COLLECTION || "users",
       courses: process.env.COURSES_COLLECTION || "courses",
       enrollments: process.env.ENROLLMENTS_COLLECTION || "enrollments",
@@ -46,6 +45,15 @@ module.exports = async function handler(req, res) {
       coupons: process.env.COUPONS_COLLECTION || "coupons",
       codes: process.env.ACCESS_CODES_COLLECTION || "access_codes"
     };
+
+    const existingRows = await database.listCollections(
+      { name: { $in: [...new Set(Object.values(collections))] } },
+      { nameOnly: true }
+    ).toArray();
+    const existing = new Set(existingRows.map((row) => row.name));
+    const count = (name, query = {}) => existing.has(name)
+      ? database.collection(name).countDocuments(query)
+      : Promise.resolve(null);
 
     const activeUserFilter = {
       $or: [
@@ -67,12 +75,7 @@ module.exports = async function handler(req, res) {
       ]
     };
     const freeCourseFilter = { $or: [{ isFree: true }, { price: 0 }] };
-    const paidCourseFilter = {
-      $or: [
-        { isFree: false, price: { $gt: 0 } },
-        { price: { $gt: 0 } }
-      ]
-    };
+    const paidCourseFilter = { price: { $gt: 0 } };
     const activeCouponFilter = {
       $or: [
         { isActive: true },
@@ -95,28 +98,35 @@ module.exports = async function handler(req, res) {
       totalOrders, orderStatusRows,
       totalCoupons, activeCoupons, totalCodes, usedCodes
     ] = await Promise.all([
-      count(database, collections.users),
-      count(database, collections.users, activeUserFilter),
-      count(database, "auth_sessions", { expiresAt: { $gt: new Date() } }),
-      count(database, collectionName()),
-      count(database, collections.courses),
-      count(database, collections.courses, freeCourseFilter),
-      count(database, collections.courses, paidCourseFilter),
-      count(database, collections.enrollments),
-      count(database, collections.enrollments, activeEnrollmentFilter),
-      count(database, collections.enrollments, endedEnrollmentFilter),
-      count(database, collections.orders),
-      database.collection(collections.orders).aggregate([
-        { $group: { _id: "$status", total: { $sum: 1 } } }
-      ]).toArray(),
-      count(database, collections.coupons),
-      count(database, collections.coupons, activeCouponFilter),
-      count(database, collections.codes),
-      count(database, collections.codes, usedCodeFilter)
+      count(collections.users),
+      count(collections.users, activeUserFilter),
+      count(collections.sessions, { expiresAt: { $gt: new Date() } }),
+      count(collections.admins),
+      count(collections.courses),
+      count(collections.courses, freeCourseFilter),
+      count(collections.courses, paidCourseFilter),
+      count(collections.enrollments),
+      count(collections.enrollments, activeEnrollmentFilter),
+      count(collections.enrollments, endedEnrollmentFilter),
+      count(collections.orders),
+      existing.has(collections.orders)
+        ? database.collection(collections.orders).aggregate([
+            { $group: { _id: "$status", total: { $sum: 1 } } }
+          ]).toArray()
+        : Promise.resolve([]),
+      count(collections.coupons),
+      count(collections.coupons, activeCouponFilter),
+      count(collections.codes),
+      count(collections.codes, usedCodeFilter)
     ]);
 
     const orderStatuses = {
-      free: 0, paid: 0, pending: 0, failed: 0, cancelled: 0, other: 0
+      free: existing.has(collections.orders) ? 0 : null,
+      paid: existing.has(collections.orders) ? 0 : null,
+      pending: existing.has(collections.orders) ? 0 : null,
+      failed: existing.has(collections.orders) ? 0 : null,
+      cancelled: existing.has(collections.orders) ? 0 : null,
+      other: existing.has(collections.orders) ? 0 : null
     };
     for (const row of orderStatusRows) {
       const value = String(row._id || "").trim().toLowerCase();
@@ -129,15 +139,21 @@ module.exports = async function handler(req, res) {
       orderStatuses[key] += row.total;
     }
 
-    const userLimit = numberEnv("PLATFORM_MAX_USERS");
-    const storageUsed = numberEnv("PLATFORM_STORAGE_USED_GB");
-    const storageLimit = numberEnv("PLATFORM_STORAGE_LIMIT_GB");
+    const missingCollections = Object.entries(collections)
+      .filter(([, name]) => !existing.has(name))
+      .map(([key, name]) => ({ key, name }));
+
     const appUrl = process.env.APP_URL || "";
-    const siteName = appUrl ? new URL(appUrl).host : "";
+    let siteName = "";
+    if (appUrl) {
+      try { siteName = new URL(appUrl).host; }
+      catch { throw new Error("APP_URL must be a full URL including https://"); }
+    }
 
     return json(res, 200, {
       ok: true,
       generatedAt: new Date().toISOString(),
+      missingCollections,
       admin: {
         name: admin.fullName || admin.name || admin.email || "مدير النظام",
         email: admin.email || "",
@@ -147,8 +163,11 @@ module.exports = async function handler(req, res) {
       plan: {
         name: process.env.PLATFORM_PLAN_NAME || null,
         renewDate: process.env.PLATFORM_PLAN_RENEW_DATE || null,
-        users: { used: totalUsers, limit: userLimit },
-        storage: { used: storageUsed, limit: storageLimit }
+        users: { used: totalUsers, limit: numberEnv("PLATFORM_MAX_USERS") },
+        storage: {
+          used: numberEnv("PLATFORM_STORAGE_USED_GB"),
+          limit: numberEnv("PLATFORM_STORAGE_LIMIT_GB")
+        }
       },
       people: {
         users: { total: totalUsers, active: activeUsers, sessions: activeSessions },
