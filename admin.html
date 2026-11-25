@@ -372,7 +372,7 @@ for (const item of organizationSettingsMenu) {
   const label = document.createElement("span");
   label.textContent = item.title;
   link.append(icon, label);
-  if (location.pathname.replace(/\\/+$/, "") === item.path) {
+  if (location.pathname.replace(/\/+$/, "") === item.path) {
     link.classList.add("active");
     orgSettingsSubmenu.hidden = false;
     orgSettingsToggle.setAttribute("aria-expanded", "true");
