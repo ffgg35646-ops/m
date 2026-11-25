@@ -258,8 +258,8 @@
         $("notificationText").value="";updateCharCount();selectedStudentIds.clear();renderStudents();
         const info=result.result||{};
         showToast(result.message);
-        if(info.pushStatus==="not_configured") {
-          $("pageNotice").textContent="تم الحفظ داخل جرس حسابات المستلمين. إرسال الهاتف غير مكتمل حتى الآن: يلزم ضبط VAPID وتسجيل اشتراكات الأجهزة.";
+        if(info.pushStatus==="not_configured" || info.pushStatus==="no_devices") {
+          $("pageNotice").textContent=info.message || "تم حفظ الإشعار داخل جرس حسابات المستلمين، لكن إرسال الهاتف يحتاج إلى إعدادات وتسجيل أجهزة.";
           $("pageNotice").className="rounded-xl border border-amber-200 bg-amber-50 text-amber-800 px-4 py-3 text-sm";
           $("pageNotice").classList.remove("hidden");
         } else {
