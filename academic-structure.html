@@ -468,8 +468,9 @@ function openAdd() {
     const preferred = $("categoryFilter").value;
     if (preferred !== "الكل") $("itemCategory").value = preferred;
     else if (state.structure.categories.length) $("itemCategory").value = state.structure.categories[0].name;
-    $("itemName").addEventListener("input", updateImageText, { once:false });
   }
+  $("itemCategory").disabled = state.activeTab !== "years";
+  $("itemCategory").required = state.activeTab === "years";
   renderImagePreview();
   $("editorBackdrop").classList.add("open");
   $("itemName").focus();
@@ -494,8 +495,9 @@ function openEdit(type, item) {
     $("itemColor").value = item.color || "#3b82f6";
     $("colorSample").textContent = item.color || "#3b82f6";
     $("colorSample").style.backgroundColor = item.color || "#3b82f6";
-    $("itemName").addEventListener("input", updateImageText);
   }
+  $("itemCategory").disabled = type !== "years";
+  $("itemCategory").required = type === "years";
   renderImagePreview();
   $("editorBackdrop").classList.add("open");
   $("itemName").focus();
