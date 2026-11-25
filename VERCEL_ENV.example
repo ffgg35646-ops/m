@@ -36,13 +36,16 @@ NOTIFICATIONS_COLLECTION=notifications
 # Admin password resets write passwordHash/passwordSalt using Node.js scrypt.
 
 # Student notification recipients / browser push subscriptions
-STUDENT_ROLE_VALUE=student
+# STUDENT_ROLE_VALUE=student  # set only if student documents have this exact role value
 PUSH_SUBSCRIPTIONS_COLLECTION=push_subscriptions
 NOTIFICATION_BATCHES_COLLECTION=notification_batches
 VAPID_PUBLIC_KEY=...
 VAPID_PRIVATE_KEY=...
 VAPID_SUBJECT=mailto:notifications@your-verified-domain.com
 
+# Optional collection names used to derive enrollment filters if these collections are separate
+# STUDENT_ENROLLMENTS_COLLECTION=enrollments
+# STUDENT_GROUPS_COLLECTION=groups
 # Optional: link student records to guardian/parent account IDs using one of
 # parentUserId, guardianUserId, parentId, guardianId, parentIds, guardianIds, or parents.
 # The recipients API recognizes these field names automatically.
