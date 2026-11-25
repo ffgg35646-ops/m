@@ -148,7 +148,7 @@
       setTimeout(() => {
         submitLoginBtn.disabled = false;
         submitLoginBtn.textContent = 'تسجيل الدخول';
-        showMessage(`تم التحقق من بيانات الحساب (${identity}) بنجاح.`,'success');
+        showMessage(`تم التحقق من بيانات الحساب (${identity}) بنجاح. جاري فتح لوحة الطالب...`,'success');\n        setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
       }, 650);
     });
     forgotPasswordBtn.addEventListener('click', () => {
