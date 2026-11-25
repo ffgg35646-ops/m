@@ -26,3 +26,11 @@ PLATFORM_PLAN_RENEW_DATE=
 PLATFORM_MAX_USERS=
 PLATFORM_STORAGE_USED_GB=
 PLATFORM_STORAGE_LIMIT_GB=
+
+# Admin messages and notifications collections (MongoDB creates them on first write)
+CONTACT_MESSAGES_COLLECTION=contact_messages
+PASSWORD_RESET_REQUESTS_COLLECTION=password_reset_requests
+NOTIFICATIONS_COLLECTION=notifications
+
+# Student user records must have a stable MongoDB _id and searchable email/phone fields.
+# Admin password resets write passwordHash/passwordSalt using Node.js scrypt.
