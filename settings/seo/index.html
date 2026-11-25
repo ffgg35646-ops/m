@@ -53,16 +53,17 @@
         <a href="/settings/info"><i class="fa-solid fa-building w-4"></i>معلومات المؤسسة</a>
         <a href="/settings/branding" data-page="branding"><i class="fa-solid fa-palette w-4"></i>الهوية البصرية</a>
         <a href="/settings/contact" data-page="contact"><i class="fa-solid fa-phone w-4"></i>معلومات التواصل</a>
-        <a href="/settings/sections"><i class="fa-solid fa-grip w-4"></i>أقسام المنصة</a>
-        <a href="/settings/homepage"><i class="fa-solid fa-house w-4"></i>الصفحة الرئيسية</a>
-        <a href="/settings/language"><i class="fa-solid fa-globe w-4"></i>إعدادات اللغة</a>
+        <a href="/settings/sections" data-page="sections"><i class="fa-solid fa-grip w-4"></i>أقسام المنصة</a>
+        <a href="/settings/homepage" data-page="homepage"><i class="fa-solid fa-house w-4"></i>الصفحة الرئيسية</a>
+        <a href="/settings/language" data-page="language"><i class="fa-solid fa-globe w-4"></i>إعدادات اللغة</a>
         <a href="/settings/apps"><i class="fa-solid fa-mobile-screen w-4"></i>تطبيقات Teaching Portals</a>
         <a href="/settings/currency" data-page="currency"><i class="fa-solid fa-dollar-sign w-4"></i>إعدادات العملة</a>
         <a href="/settings/registration" data-page="registration"><i class="fa-solid fa-user-plus w-4"></i>إعدادات التسجيل</a>
         <a href="/settings/seo" data-page="seo"><i class="fa-solid fa-magnifying-glass w-4"></i>إعدادات محركات البحث</a>
-        <a href="/settings/welcome"><i class="fa-solid fa-envelope w-4"></i>رسائل الترحيب</a>
+        <a href="/settings/welcome" data-page="welcome"><i class="fa-solid fa-envelope w-4"></i>رسائل الترحيب</a>
+        <a href="/settings/payment" data-page="payment"><i class="fa-solid fa-credit-card w-4"></i>إعدادات الدفع</a>
         <a href="/settings/integrations"><i class="fa-solid fa-link w-4"></i>إعدادات الدمج</a>
-        <a href="/settings/privacy"><i class="fa-solid fa-shield-halved w-4"></i>سياسة الخصوصية</a>
+        <a href="/settings/privacy" data-page="privacy"><i class="fa-solid fa-shield-halved w-4"></i>سياسة الخصوصية</a>
       </div>
       <div class="border-t border-slate-100 mt-3 pt-3 space-y-1">
         <a href="/admin-messages.html" class="main-side-link"><i class="fa-solid fa-envelope-open-text w-5 text-center"></i>الرسائل</a>
@@ -87,12 +88,20 @@
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        <nav class="lg:col-span-3 bg-white rounded-xl shadow-sm border border-slate-200 p-3 space-y-1">
+        <nav class="lg:col-span-3 bg-white rounded-xl shadow-sm border border-slate-200 p-3 space-y-1 max-h-[78vh] overflow-y-auto">
+          <div class="px-3 pt-2 pb-1 text-[11px] font-bold text-slate-400">الهوية والمعلومات</div>
           <a href="/settings/branding" data-tab="branding" class="tab-link"><i class="fa-solid fa-palette w-4"></i><span>الهوية البصرية</span></a>
           <a href="/settings/contact" data-tab="contact" class="tab-link"><i class="fa-solid fa-address-book w-4"></i><span>معلومات التواصل</span></a>
           <a href="/settings/currency" data-tab="currency" class="tab-link"><i class="fa-solid fa-coins w-4"></i><span>إعدادات العملة</span></a>
           <a href="/settings/registration" data-tab="registration" class="tab-link"><i class="fa-solid fa-user-plus w-4"></i><span>إعدادات التسجيل</span></a>
           <a href="/settings/seo" data-tab="seo" class="tab-link"><i class="fa-solid fa-magnifying-glass-chart w-4"></i><span>إعدادات محركات البحث</span></a>
+          <div class="px-3 pt-4 pb-1 text-[11px] font-bold text-slate-400">إدارة محتوى المنصة</div>
+          <a href="/settings/sections" data-tab="sections" class="tab-link"><i class="fa-solid fa-eye w-4"></i><span>أقسام المنصة</span></a>
+          <a href="/settings/homepage" data-tab="homepage" class="tab-link"><i class="fa-solid fa-house-laptop w-4"></i><span>الصفحة الرئيسية</span></a>
+          <a href="/settings/language" data-tab="language" class="tab-link"><i class="fa-solid fa-language w-4"></i><span>إعدادات اللغة</span></a>
+          <a href="/settings/welcome" data-tab="welcome" class="tab-link"><i class="fa-solid fa-comment-dots w-4"></i><span>رسائل الترحيب</span></a>
+          <a href="/settings/payment" data-tab="payment" class="tab-link"><i class="fa-solid fa-credit-card w-4"></i><span>إعدادات الدفع</span></a>
+          <a href="/settings/privacy" data-tab="privacy" class="tab-link"><i class="fa-solid fa-shield-halved w-4"></i><span>سياسة الخصوصية</span></a>
         </nav>
 
         <div class="lg:col-span-9 space-y-6">
@@ -177,6 +186,65 @@
             </div>
           </section>
 
+
+          <section id="tab-sections" class="setting-panel bg-white rounded-xl shadow-sm border border-slate-200 p-5 sm:p-6 space-y-5">
+            <div class="border-b border-slate-100 pb-4"><h2 class="text-lg font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-eye text-blue-600"></i><span>أقسام المنصة</span></h2><p class="text-xs text-slate-400 mt-1">تحكم في الأقسام التي تظهر في المنصة مثل الدورات والبث المباشر والمتجر.</p></div>
+            <div class="space-y-3">
+              <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 cursor-pointer"><input id="sectionCourses" type="checkbox" class="mt-1 rounded border-slate-300 text-blue-600"><span><b class="block text-sm">إظهار قسم الدورات</b><small class="block text-xs text-slate-400 mt-1">إظهار الدورات في التنقل وصفحات المستخدمين والصفحة الرئيسية.</small></span></label>
+              <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 cursor-pointer"><input id="sectionLiveSessions" type="checkbox" class="mt-1 rounded border-slate-300 text-blue-600"><span><b class="block text-sm">إظهار قسم الجلسات المباشرة</b><small class="block text-xs text-slate-400 mt-1">إظهار الجلسات المباشرة في أقسام المنصة.</small></span></label>
+              <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 cursor-pointer"><input id="sectionLibrary" type="checkbox" class="mt-1 rounded border-slate-300 text-blue-600"><span><b class="block text-sm">إظهار قسم المكتبة / المتجر</b><small class="block text-xs text-slate-400 mt-1">إظهار المكتبة والمتجر في واجهات المنصة.</small></span></label>
+              <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 cursor-pointer"><input id="sectionBlog" type="checkbox" class="mt-1 rounded border-slate-300 text-blue-600"><span><b class="block text-sm">إظهار قسم المدونة</b><small class="block text-xs text-slate-400 mt-1">إظهار المدونة وروابطها في المنصة.</small></span></label>
+              <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 cursor-pointer"><input id="sectionAuthButtons" type="checkbox" class="mt-1 rounded border-slate-300 text-blue-600"><span><b class="block text-sm">إظهار أزرار تسجيل الدخول والتسجيل</b><small class="block text-xs text-slate-400 mt-1">إظهار الأزرار للزوار في شريط التنقل.</small></span></label>
+            </div>
+            <p class="text-xs text-amber-700 bg-amber-50 border border-amber-100 rounded-lg p-3">يتم حفظ اختيارات الأقسام في قاعدة البيانات. ربط إظهار وإخفاء العناصر فعلياً في واجهات الموقع سيتم في خطوة ربط الواجهات.</p>
+          </section>
+
+          <section id="tab-homepage" class="setting-panel bg-white rounded-xl shadow-sm border border-slate-200 p-5 sm:p-6 space-y-5">
+            <div class="border-b border-slate-100 pb-4"><h2 class="text-lg font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-house-laptop text-blue-600"></i><span>الصفحة الرئيسية</span></h2><p class="text-xs text-slate-400 mt-1">ترتيب أقسام الصفحة الرئيسية والتحكم في ظهورها ونصوص الأزرار.</p></div>
+            <div id="homeSectionsList" class="divide-y divide-slate-100"></div>
+            <div class="border-t border-slate-100 pt-5 space-y-4">
+              <h3 class="text-base font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-arrow-pointer text-blue-600"></i>أزرار الصفحة الرئيسية</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div><label class="setting-label">نص الزر الرئيسي</label><input id="homePrimaryText" class="field" placeholder="مثال: ابدأ التعلم الآن"></div>
+                <div><label class="setting-label">رابط الزر الرئيسي</label><input id="homePrimaryUrl" class="field" dir="ltr" placeholder="/courses.html أو رابط خارجي"></div>
+                <div><label class="setting-label">نص الزر الثانوي</label><input id="homeSecondaryText" class="field" placeholder="مثال: تواصل معنا"></div>
+                <div><label class="setting-label">رابط الزر الثانوي</label><input id="homeSecondaryUrl" class="field" dir="ltr" placeholder="/support.html أو رابط خارجي"></div>
+              </div>
+            </div>
+            <p class="text-xs text-amber-700 bg-amber-50 border border-amber-100 rounded-lg p-3">يتم حفظ الترتيب والظهور ونصوص الأزرار. تطبيقها على الصفحة الرئيسية نفسها يحتاج ربط بيانات الموقع بهذه الإعدادات.</p>
+          </section>
+
+          <section id="tab-language" class="setting-panel bg-white rounded-xl shadow-sm border border-slate-200 p-5 sm:p-6 space-y-6">
+            <div class="border-b border-slate-100 pb-4"><h2 class="text-lg font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-language text-blue-600"></i><span>إعدادات اللغة</span></h2><p class="text-xs text-slate-400 mt-1">اللغة الافتراضية واللغات المدعومة ومحول اللغات.</p></div>
+            <div><label class="setting-label">اللغة الافتراضية</label><select id="defaultLanguage" class="field"><option value="ar">العربية</option><option value="en">الإنجليزية (English)</option></select><p class="text-xs text-slate-400 mt-2">اللغة التي تظهر بها المنصة افتراضياً.</p></div>
+            <label class="flex items-start gap-3 cursor-pointer"><input id="allowLanguageSwitch" type="checkbox" class="mt-1 rounded border-slate-300 text-blue-600"><span><b class="block text-sm">السماح بتبديل اللغة</b><small class="text-xs text-slate-400">إظهار خيار تبديل اللغة للمستخدمين بعد ربط الواجهات.</small></span></label>
+            <div class="space-y-3"><label class="block text-sm font-bold">اللغات المتاحة</label><div class="flex flex-wrap gap-6">
+              <label class="flex items-center gap-2 text-sm"><input type="checkbox" name="enabledLanguages" value="ar" class="rounded border-slate-300 text-blue-600">العربية</label>
+              <label class="flex items-center gap-2 text-sm"><input type="checkbox" name="enabledLanguages" value="en" class="rounded border-slate-300 text-blue-600">الإنجليزية</label>
+            </div><p class="text-xs text-slate-400">اختر لغة واحدة على الأقل. اللغة الافتراضية ستظل متاحة دائماً.</p></div>
+          </section>
+
+          <section id="tab-welcome" class="setting-panel bg-white rounded-xl shadow-sm border border-slate-200 p-5 sm:p-6 space-y-5">
+            <div class="border-b border-slate-100 pb-4 flex flex-wrap items-center justify-between gap-3"><div><h2 class="text-lg font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-comment-dots text-blue-600"></i><span>رسائل الترحيب</span></h2><p class="text-xs text-slate-400 mt-1">إدارة رسائل الترحيب التي يمكن عرضها للطلاب.</p></div>
+              <button id="openWelcomeModalBtn" type="button" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg shadow-sm"><i class="fa-solid fa-plus ml-1"></i>إضافة رسالة جديدة</button>
+            </div>
+            <div id="welcomeListContainer"><div id="emptyWelcomeState" class="py-10 text-center space-y-3"><div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto text-lg"><i class="fa-solid fa-comment-slash"></i></div><p class="text-sm font-bold text-slate-600">لا توجد رسائل ترحيب</p></div><div id="welcomeItems" class="hidden space-y-3"></div></div>
+            <p class="text-xs text-slate-400">أضف الرسائل أو احذفها، ثم اضغط «حفظ جميع التغييرات» لتثبيتها في قاعدة البيانات.</p>
+          </section>
+
+          <section id="tab-payment" class="setting-panel bg-white rounded-xl shadow-sm border border-slate-200 p-5 sm:p-6 space-y-5">
+            <div class="border-b border-slate-100 pb-4"><h2 class="text-lg font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-credit-card text-blue-600"></i><span>إعدادات الدفع</span></h2><p class="text-xs text-slate-400 mt-1">التحكم في إظهار طرق الدفع الإلكتروني ضمن مسار الدفع.</p></div>
+            <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex items-start gap-3"><div class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0"><i class="fa-brands fa-whatsapp text-lg"></i></div><div><h4 class="text-sm font-bold text-emerald-800">الدفع اليدوي عبر واتساب</h4><p class="text-xs text-emerald-700 mt-1">يظل خيار التواصل والدفع اليدوي عبر واتساب متاحاً. الخيار أدناه خاص بإظهار طرق الدفع الإلكتروني فقط.</p></div></div>
+            <label class="flex items-start gap-3 border border-slate-200 rounded-xl p-4 hover:bg-slate-50 cursor-pointer"><input id="showOnlineMethods" type="checkbox" class="mt-1 rounded border-slate-300 text-blue-600"><span><b class="block text-sm text-slate-800">إظهار طرق الدفع الإلكتروني في مسار الدفع</b><small class="block text-xs text-slate-500 mt-1">عند الإيقاف، يتم حفظ تفضيل إخفاء طرق الدفع الإلكتروني. يلزم ربط هذا الخيار بواجهة الدفع قبل أن يغير ما يراه الطالب.</small></span></label>
+          </section>
+
+          <section id="tab-privacy" class="setting-panel bg-white rounded-xl shadow-sm border border-slate-200 p-5 sm:p-6 space-y-6">
+            <div class="border-b border-slate-100 pb-4"><h2 class="text-lg font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-shield-halved text-blue-600"></i><span>سياسة الخصوصية والشروط والأحكام</span></h2><p class="text-xs text-slate-400 mt-1">اكتب سياسة الخصوصية والشروط التي ستظهر لمستخدمي المنصة بعد ربط صفحات الموقع بها.</p></div>
+            <div class="border border-slate-200 rounded-xl p-4 sm:p-5 space-y-3"><div class="flex items-center justify-between gap-3"><h3 class="text-sm font-bold text-slate-700"><i class="fa-solid fa-shield text-blue-600 ml-2"></i>سياسة الخصوصية</h3><span id="privacyStatus" class="text-xs text-slate-400">غير منشورة</span></div><textarea id="privacyText" rows="7" class="field resize-y" placeholder="اكتب نص سياسة الخصوصية هنا..."></textarea></div>
+            <div class="border border-slate-200 rounded-xl p-4 sm:p-5 space-y-3"><div class="flex items-center justify-between gap-3"><h3 class="text-sm font-bold text-slate-700"><i class="fa-solid fa-file-contract text-blue-600 ml-2"></i>الشروط والأحكام</h3><span id="termsStatus" class="text-xs text-slate-400">غير منشورة</span></div><textarea id="termsText" rows="7" class="field resize-y" placeholder="اكتب نص الشروط والأحكام هنا..."></textarea></div>
+            <p class="text-xs text-amber-700 bg-amber-50 border border-amber-100 rounded-lg p-3">النصوص تُحفظ في قاعدة البيانات، لكنها لا تُعرض للزوار حتى يتم ربط صفحات الشروط والخصوصية العامة بها.</p>
+          </section>
+
           <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
             <p id="saveState" class="text-xs text-slate-400" role="status">يتم تحميل الإعدادات...</p>
             <button id="saveSettingsBtn" type="button" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:opacity-60 text-white font-bold text-sm rounded-lg shadow-md transition flex items-center gap-2">
@@ -186,6 +254,17 @@
         </div>
       </div>
     </main>
+  </div>
+
+  <div id="welcomeModal" class="fixed inset-0 z-40 hidden items-center justify-center bg-slate-900/55 backdrop-blur-sm p-4" role="dialog" aria-modal="true" aria-labelledby="welcomeModalTitle">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden">
+      <div class="bg-blue-600 text-white px-5 py-3.5 flex items-center justify-between"><h3 id="welcomeModalTitle" class="font-bold text-base">إضافة رسالة ترحيب جديدة</h3><button id="closeWelcomeModalBtn" type="button" class="text-white/80 hover:text-white text-xl" aria-label="إغلاق">×</button></div>
+      <form id="welcomeForm" class="p-5 space-y-4">
+        <div><label for="welcomeTitleInput" class="block text-xs font-bold text-slate-600 mb-1">عنوان الرسالة</label><input type="text" id="welcomeTitleInput" required maxlength="120" class="field" placeholder="مثال: أهلاً بك في منصتنا التعليمية"></div>
+        <div><label for="welcomeBodyInput" class="block text-xs font-bold text-slate-600 mb-1">محتوى رسالة الترحيب</label><textarea id="welcomeBodyInput" rows="4" required maxlength="3000" class="field resize-y" placeholder="اكتب نص رسالة الترحيب..."></textarea></div>
+        <div class="flex justify-end gap-2 pt-2 border-t border-slate-100"><button id="cancelWelcomeBtn" type="button" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-xs font-bold">إلغاء</button><button type="submit" class="px-5 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold">إضافة</button></div>
+      </form>
+    </div>
   </div>
 
   <div id="toast" class="fixed bottom-5 left-5 z-50 hidden max-w-[calc(100%-2.5rem)] bg-slate-800 text-white px-5 py-3 rounded-lg shadow-lg text-sm items-center gap-2" role="status" aria-live="polite">
@@ -200,8 +279,134 @@
       { key: "faviconData", input: "faviconFile", preview: "faviconPreview" },
       { key: "bannerData", input: "bannerFile", preview: "bannerPreview" }
     ];
+    const homeSectionDefaults = [
+      { id: "stages", name: "المراحل الدراسية / المسارات", visible: true },
+      { id: "featuredCourses", name: "الكورسات المميزة", visible: true },
+      { id: "articles", name: "المقالات", visible: false },
+      { id: "storeProducts", name: "منتجات المتجر", visible: false },
+      { id: "custom", name: "القسم المخصص", visible: true },
+      { id: "features", name: "مميزاتنا", visible: true },
+      { id: "testimonials", name: "آراء العملاء", visible: false },
+      { id: "training", name: "الدورات التدريبية", visible: false }
+    ];
+    let homeSections = homeSectionDefaults.map(section => ({ ...section }));
+    let welcomeMessages = [];
+
+    function renderHomeSections() {
+      const container = $("homeSectionsList");
+      container.replaceChildren();
+      homeSections.forEach((section, index) => {
+        const row = document.createElement("div");
+        row.className = "py-3.5 px-2 flex items-center justify-between gap-3 hover:bg-slate-50/70";
+        const name = document.createElement("span");
+        name.className = "font-bold text-sm text-slate-700";
+        name.textContent = section.name;
+        const actions = document.createElement("div");
+        actions.className = "flex items-center gap-3 sm:gap-4";
+        const label = document.createElement("label");
+        label.className = "flex items-center gap-2 text-xs text-slate-600 cursor-pointer whitespace-nowrap";
+        const visible = document.createElement("input");
+        visible.type = "checkbox";
+        visible.checked = section.visible;
+        visible.className = "rounded border-slate-300 text-blue-600";
+        visible.addEventListener("change", () => { homeSections[index].visible = visible.checked; });
+        label.append(visible, document.createTextNode("إظهار"));
+        const buttons = document.createElement("div");
+        buttons.className = "flex items-center gap-1";
+        for (const [delta, icon, title] of [[-1,"arrow-up","تحريك لأعلى"],[1,"arrow-down","تحريك لأسفل"]]) {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.title = title;
+          button.disabled = index + delta < 0 || index + delta >= homeSections.length;
+          button.className = "w-8 h-8 rounded border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-100 disabled:opacity-30";
+          const i = document.createElement("i");
+          i.className = "fa-solid fa-" + icon + " text-xs";
+          button.appendChild(i);
+          button.addEventListener("click", () => moveSection(index, delta));
+          buttons.appendChild(button);
+        }
+        actions.append(label, buttons);
+        row.append(name, actions);
+        container.appendChild(row);
+      });
+    }
+
+    function moveSection(index, delta) {
+      const next = index + delta;
+      if (next < 0 || next >= homeSections.length) return;
+      [homeSections[index], homeSections[next]] = [homeSections[next], homeSections[index]];
+      renderHomeSections();
+    }
+
+    function renderWelcomeMessages() {
+      const empty = $("emptyWelcomeState");
+      const list = $("welcomeItems");
+      list.replaceChildren();
+      if (!welcomeMessages.length) {
+        empty.classList.remove("hidden");
+        list.classList.add("hidden");
+        return;
+      }
+      empty.classList.add("hidden");
+      list.classList.remove("hidden");
+      welcomeMessages.forEach(message => {
+        const card = document.createElement("article");
+        card.className = "border border-slate-200 rounded-xl p-4 flex items-start justify-between gap-4 bg-slate-50/50";
+        const content = document.createElement("div");
+        const title = document.createElement("h4");
+        title.className = "font-bold text-sm text-slate-800";
+        title.textContent = message.title;
+        const body = document.createElement("p");
+        body.className = "text-xs text-slate-500 mt-2 whitespace-pre-wrap";
+        body.textContent = message.body;
+        content.append(title, body);
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "shrink-0 w-9 h-9 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100";
+        remove.title = "حذف الرسالة";
+        remove.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+        remove.addEventListener("click", () => {
+          welcomeMessages = welcomeMessages.filter(item => item.id !== message.id);
+          renderWelcomeMessages();
+        });
+        card.append(content, remove);
+        list.appendChild(card);
+      });
+    }
+
+    function updateLegalStatuses() {
+      $("privacyStatus").textContent = $("privacyText").value.trim() ? "تم إدخال نص" : "غير منشورة";
+      $("termsStatus").textContent = $("termsText").value.trim() ? "تم إدخال نص" : "غير منشورة";
+    }
+
+    function openWelcomeModal() {
+      $("welcomeModal").classList.remove("hidden");
+      $("welcomeModal").classList.add("flex");
+      $("welcomeTitleInput").focus();
+    }
+    function closeWelcomeModal() {
+      $("welcomeModal").classList.add("hidden");
+      $("welcomeModal").classList.remove("flex");
+    }
+    function addWelcomeMessage(event) {
+      event.preventDefault();
+      const title = $("welcomeTitleInput").value.trim();
+      const body = $("welcomeBodyInput").value.trim();
+      if (!title || !body) return;
+      if (welcomeMessages.length >= 50) {
+        showToast("لا يمكن إضافة أكثر من 50 رسالة ترحيب.", true);
+        return;
+      }
+      welcomeMessages.push({ id: Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8), title, body });
+      $("welcomeTitleInput").value = "";
+      $("welcomeBodyInput").value = "";
+      closeWelcomeModal();
+      renderWelcomeMessages();
+      showToast("أُضيفت الرسالة مؤقتاً. اضغط حفظ جميع التغييرات لتثبيتها.");
+    }
+
     const pageTab = location.pathname.replace(/\/+$/, "").split("/").pop() || "branding";
-    const validTabs = ["branding", "contact", "currency", "registration", "seo"];
+    const validTabs = ["branding", "contact", "currency", "registration", "seo", "sections", "homepage", "language", "welcome", "payment", "privacy"];
     let settingsLoaded = false;
 
     function setText(id, value) { $(id).value = value ?? ""; }
@@ -325,6 +530,27 @@
         if (imageState[item.key]) $(item.preview).src = imageState[item.key];
         else $(item.preview).removeAttribute("src");
       });
+      setCheck("sectionCourses", s.sections.courses);
+      setCheck("sectionLiveSessions", s.sections.liveSessions);
+      setCheck("sectionLibrary", s.sections.library);
+      setCheck("sectionBlog", s.sections.blog);
+      setCheck("sectionAuthButtons", s.sections.authButtons);
+      setText("homePrimaryText", s.homepage.primaryButtonText);
+      setText("homePrimaryUrl", s.homepage.primaryButtonUrl);
+      setText("homeSecondaryText", s.homepage.secondaryButtonText);
+      setText("homeSecondaryUrl", s.homepage.secondaryButtonUrl);
+      renderHomeSections(s.homepage.sections);
+      setText("defaultLanguage", s.language.defaultLanguage);
+      setCheck("allowLanguageSwitch", s.language.allowSwitch);
+      document.querySelectorAll('input[name="enabledLanguages"]').forEach(input => {
+        input.checked = s.language.enabledLanguages.includes(input.value);
+      });
+      welcomeMessages = s.welcomeMessages.map(message => ({ ...message }));
+      renderWelcomeMessages();
+      setCheck("showOnlineMethods", s.payment.showOnlineMethods);
+      setText("privacyText", s.legal.privacyText);
+      setText("termsText", s.legal.termsText);
+      updateLegalStatuses();
       settingsLoaded = true;
       $("saveState").textContent = data.updatedAt ? "آخر حفظ: " + new Date(data.updatedAt).toLocaleString("ar-EG") : "لم يتم حفظ إعدادات سابقة بعد.";
     }
@@ -374,6 +600,31 @@
           googleAnalyticsId: $("googleAnalyticsId").value.trim(),
           googleTagManagerId: $("googleTagManagerId").value.trim(),
           googleAdsId: $("googleAdsId").value.trim()
+        },
+        sections: {
+          courses: $("sectionCourses").checked,
+          liveSessions: $("sectionLiveSessions").checked,
+          library: $("sectionLibrary").checked,
+          blog: $("sectionBlog").checked,
+          authButtons: $("sectionAuthButtons").checked
+        },
+        homepage: {
+          sections: homeSections.map(section => ({ id: section.id, visible: section.visible })),
+          primaryButtonText: $("homePrimaryText").value.trim(),
+          primaryButtonUrl: $("homePrimaryUrl").value.trim(),
+          secondaryButtonText: $("homeSecondaryText").value.trim(),
+          secondaryButtonUrl: $("homeSecondaryUrl").value.trim()
+        },
+        language: {
+          defaultLanguage: $("defaultLanguage").value,
+          allowSwitch: $("allowLanguageSwitch").checked,
+          enabledLanguages: [...document.querySelectorAll('input[name="enabledLanguages"]:checked')].map(input => input.value)
+        },
+        welcomeMessages,
+        payment: { showOnlineMethods: $("showOnlineMethods").checked },
+        legal: {
+          privacyText: $("privacyText").value,
+          termsText: $("termsText").value
         }
       };
     }
@@ -442,6 +693,15 @@
       }
     });
 
+    $("openWelcomeModalBtn").addEventListener("click", openWelcomeModal);
+    $("closeWelcomeModalBtn").addEventListener("click", closeWelcomeModal);
+    $("cancelWelcomeBtn").addEventListener("click", closeWelcomeModal);
+    $("welcomeModal").addEventListener("click", event => {
+      if (event.target === $("welcomeModal")) closeWelcomeModal();
+    });
+    $("welcomeForm").addEventListener("submit", addWelcomeMessage);
+    $("privacyText").addEventListener("input", updateLegalStatuses);
+    $("termsText").addEventListener("input", updateLegalStatuses);
     switchSettingTab(validTabs.includes(pageTab) ? pageTab : "branding");
     loadSettings();
   </script>

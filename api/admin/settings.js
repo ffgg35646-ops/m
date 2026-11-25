@@ -44,7 +44,26 @@ const DEFAULT_SETTINGS = {
     googleAnalyticsId: "G-VHX3WHFXF7",
     googleTagManagerId: "GTM-KBMZCT2G",
     googleAdsId: ""
-  }
+  },
+  sections: { courses: true, liveSessions: true, library: true, blog: true, authButtons: true },
+  homepage: {
+    sections: [
+      { id: "stages", name: "المراحل الدراسية / المسارات", visible: true },
+      { id: "featuredCourses", name: "الكورسات المميزة", visible: true },
+      { id: "articles", name: "المقالات", visible: false },
+      { id: "storeProducts", name: "منتجات المتجر", visible: false },
+      { id: "custom", name: "القسم المخصص", visible: true },
+      { id: "features", name: "مميزاتنا", visible: true },
+      { id: "testimonials", name: "آراء العملاء", visible: false },
+      { id: "training", name: "الدورات التدريبية", visible: false }
+    ],
+    primaryButtonText: "", primaryButtonUrl: "",
+    secondaryButtonText: "", secondaryButtonUrl: ""
+  },
+  language: { defaultLanguage: "ar", allowSwitch: true, enabledLanguages: ["ar", "en"] },
+  welcomeMessages: [],
+  payment: { showOnlineMethods: true },
+  legal: { privacyText: "", termsText: "" }
 };
 
 function mergeDefaults(defaults, saved) {
@@ -91,6 +110,13 @@ function colorValue(value, fallback, label) {
   const color = textValue(value, 7);
   if (!/^#[0-9a-fA-F]{6}$/.test(color)) throw new Error("قيمة " + label + " غير صحيحة.");
   return color.toLowerCase();
+}
+
+function safeLinkValue(value, label) {
+  const link = textValue(value, 500);
+  if (!link) return "";
+  if (link.startsWith("/") && !link.startsWith("//")) return link;
+  return urlValue(link, label);
 }
 
 function rateValue(value, label) {
@@ -176,7 +202,72 @@ function cleanSettings(input, previous) {
     googleAdsId: textValue(input.seo?.googleAdsId, 80)
   };
 
-  return { organization, branding, contact, currency, registration, seo };
+  const sectionInput = input.sections || old.sections;
+  const sections = {
+    courses: sectionInput.courses === true,
+    liveSessions: sectionInput.liveSessions === true,
+    library: sectionInput.library === true,
+    blog: sectionInput.blog === true,
+    authButtons: sectionInput.authButtons === true
+  };
+
+  const homepageInput = input.homepage || old.homepage;
+  const baseHomeSections = old.homepage.sections;
+  const sourceHomeSections = Array.isArray(homepageInput.sections) ? homepageInput.sections : baseHomeSections;
+  const seenHomeSections = new Set();
+  const homepageSections = [];
+  for (const item of sourceHomeSections.slice(0, baseHomeSections.length)) {
+    const id = textValue(item?.id, 40);
+    const template = baseHomeSections.find(section => section.id === id);
+    if (!template || seenHomeSections.has(id)) continue;
+    seenHomeSections.add(id);
+    homepageSections.push({ id, name: template.name, visible: item.visible === true });
+  }
+  for (const template of baseHomeSections) {
+    if (!seenHomeSections.has(template.id)) homepageSections.push({ ...template });
+  }
+  const homepage = {
+    sections: homepageSections,
+    primaryButtonText: textValue(homepageInput.primaryButtonText, 80),
+    primaryButtonUrl: safeLinkValue(homepageInput.primaryButtonUrl, "رابط الزر الرئيسي"),
+    secondaryButtonText: textValue(homepageInput.secondaryButtonText, 80),
+    secondaryButtonUrl: safeLinkValue(homepageInput.secondaryButtonUrl, "رابط الزر الثانوي")
+  };
+
+  const languageInput = input.language || old.language;
+  const defaultLanguage = ["ar", "en"].includes(languageInput.defaultLanguage) ? languageInput.defaultLanguage : "ar";
+  const enabledLanguages = Array.isArray(languageInput.enabledLanguages)
+    ? [...new Set(languageInput.enabledLanguages.filter(value => ["ar", "en"].includes(value)))]
+    : [...old.language.enabledLanguages];
+  if (!enabledLanguages.length) throw new Error("اختر لغة واحدة على الأقل.");
+  if (!enabledLanguages.includes(defaultLanguage)) enabledLanguages.unshift(defaultLanguage);
+  const language = { defaultLanguage, allowSwitch: languageInput.allowSwitch === true, enabledLanguages };
+
+  const sourceMessages = Array.isArray(input.welcomeMessages) ? input.welcomeMessages : old.welcomeMessages;
+  if (sourceMessages.length > 50) throw new Error("يمكن حفظ 50 رسالة ترحيب كحد أقصى.");
+  const welcomeIds = new Set();
+  const welcomeMessages = sourceMessages.map((message, index) => {
+    const id = textValue(message?.id, 80) || String(index + 1);
+    if (welcomeIds.has(id)) throw new Error("يوجد تكرار في معرفات رسائل الترحيب.");
+    welcomeIds.add(id);
+    const title = textValue(message?.title, 120);
+    const body = textValue(message?.body, 3000);
+    if (!title || !body) throw new Error("كل رسالة ترحيب يجب أن تحتوي على عنوان ونص.");
+    return { id, title, body };
+  });
+
+  const paymentInput = input.payment || old.payment;
+  const payment = { showOnlineMethods: paymentInput.showOnlineMethods === true };
+  const legalInput = input.legal || old.legal;
+  const legal = {
+    privacyText: textValue(legalInput.privacyText, 50000),
+    termsText: textValue(legalInput.termsText, 50000)
+  };
+
+  return {
+    organization, branding, contact, currency, registration, seo,
+    sections, homepage, language, welcomeMessages, payment, legal
+  };
 }
 
 module.exports = async function handler(req, res) {
