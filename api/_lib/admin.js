@@ -22,7 +22,8 @@ async function requireAdmin(req) {
     return { ok: false, status: 403, message: "ليس لديك صلاحية تنفيذ هذا الإجراء." };
   }
 
-  const admin = await database.collection(collectionName()).findOne(
+  const adminCollection = session.authCollection || collectionName();
+  const admin = await database.collection(adminCollection).findOne(
     { _id: session.userId },
     { projection: { name: 1, fullName: 1, email: 1, role: 1 } }
   );
