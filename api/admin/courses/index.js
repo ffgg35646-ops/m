@@ -102,7 +102,7 @@ function enrollmentQuery(course) {
   return { $or: [{ courseId: { $in: values } }, { course_id: { $in: values } }, { "course.id": { $in: values } }, { course: { $in: values } }] };
 }
 async function capabilities(db, auth) {
-  if (auth.builtInAdmin) return { view: true, create: true, edit: true, delete: true, manageContent: true, academic: true, users: true };
+  if (auth.builtInAdmin) return { view: true, create: true, edit: true, delete: true, manageContent: true, academic: true, users: true, blogLibrary: true };
   const roles = await db.collection(ROLES).find({ isActive: { $ne: false } }).toArray();
   const role = roles.find(x => normalizeRole(x.roleName) === normalizeRole(auth.roleName));
   const allows = (section, module, action) => roleAllows(role, { section, module, action });
@@ -111,7 +111,11 @@ async function capabilities(db, auth) {
     view: allows(SECTION, MODULE, "عرض"), create, edit, delete: allows(SECTION, MODULE, "حذف"),
     manageContent: create || edit,
     academic: ["فئات السنوات الدراسية", "السنوات الدراسية", "المواد"].some(module => allows("الهيكل الأكاديمي", module, "عرض")),
-    users: ["المشرفون", "الطلاب", "الأدوار والصلاحيات"].some(module => allows("صلاحيات المستخدمين", module, "عرض"))
+    users: ["المشرفون", "الطلاب", "الأدوار والصلاحيات"].some(module => allows("صلاحيات المستخدمين", module, "عرض")),
+    blogLibrary: [
+      roleAllows(role, { section: "المدونة", modules: ["المدونات", "تصنيفات المدونات"], action: "عرض" }),
+      roleAllows(role, { section: "المكتبة", modules: ["منتجات المكتبة", "طلبات المكتبة"], action: "عرض" })
+    ].some(Boolean)
   };
 }
 async function audit(db, auth, action, courseId, details = {}) {
