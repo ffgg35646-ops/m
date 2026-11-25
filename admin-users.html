@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f5f6fa">
+<title>إدارة المستخدمين | منصة علي عليان الدولية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f6fa;--surface:#fff;--text:#1f2437;--muted:#7b8194;--line:#e8eaf2;--brand:#7c3aed;--brand2:#6366f1;--green:#10b981;--red:#ef4444;--blue:#3b82f6;--amber:#f59e0b;color-scheme:light}
+:root[data-theme="dark"]{--bg:#12141c;--surface:#1b1e2a;--text:#eceefa;--muted:#9aa1b8;--line:#2a2e3d;color-scheme:dark}
+:root[data-theme="light"]{color-scheme:light}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Tajawal",Tahoma,Arial,sans-serif;font-size:14px}
+a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}
+.topbar{background:var(--surface);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:20px;padding:12px 24px;position:sticky;top:0;z-index:5}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;line-height:1.1;color:var(--brand2)}.logo b{display:grid;place-items:center;width:34px;height:34px;border-radius:9px;background:var(--brand2);color:#fff;font-size:18px}.logo small{display:block;font-size:12px;letter-spacing:.5px}
+.nav{display:flex;gap:26px;margin-inline:auto}.nav a{color:var(--muted)}.nav a:hover{color:var(--brand)}
+.tools{display:flex;align-items:center;gap:10px}.sq{min-width:36px;height:36px;padding:0 9px;border:1px solid var(--line);color:var(--muted);background:transparent;border-radius:8px;display:grid;place-items:center}
+.user-menu{position:relative;display:flex;align-items:center}.user-trigger{display:flex;align-items:center;gap:9px;border:0;background:transparent;color:var(--text);font-weight:700;padding:4px 6px;border-radius:10px}.user-trigger:hover{background:var(--bg)}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--brand2);color:#fff;display:grid;place-items:center}.user-dropdown{position:absolute;top:calc(100% + 9px);inset-inline-end:0;width:205px;padding:7px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 14px 35px rgba(15,23,42,.16);z-index:30}.dropdown-item{width:100%;display:flex;align-items:center;gap:11px;padding:11px 10px;border:0;border-radius:8px;background:transparent;color:var(--text);font-size:13px;text-align:right}.dropdown-item:hover{background:var(--bg)}.dropdown-logout{color:var(--red)}
+.shell{display:flex;min-height:calc(100vh - 60px)}.side{width:220px;flex:none;background:var(--surface);border-inline-start:1px solid var(--line);padding:12px 10px}.side-title{color:var(--muted);font-size:11px;font-weight:800;padding:10px 12px 7px}
+.side a{width:100%;display:flex;align-items:center;gap:10px;padding:11px 10px;margin:2px 0;border:0;border-radius:8px;color:var(--muted);font-size:13px}.side a.active{background:var(--brand);color:#fff}.side a:hover:not(.active){background:var(--bg)}
+main{flex:1;min-width:0;padding:0 0 42px}
+.hero{background:linear-gradient(100deg,#7c5bd5,#6240b7);color:#fff;padding:23px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.hero-icon{width:54px;height:54px;border-radius:13px;background:rgba(255,255,255,.18);display:grid;place-items:center;font-size:25px;flex:none}
+.hero-copy{min-width:180px}.hero h1{margin:0 0 4px;font-size:22px}.hero p{margin:0;color:#eee9ff;font-size:13px}
+.hero-actions{margin-inline-start:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.site-pill,.tour,.add-main{background:#fff;color:#333;border:0;border-radius:9px;padding:9px 13px;display:inline-flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(0,0,0,.1);font-size:12px}
+.site-pill small{display:block;color:#9292a2;font-size:10px}.site-pill b{font-size:12px;color:#31215f}.tour,.add-main{font-size:13px;font-weight:800;padding:11px 15px}.add-main{color:#4d328e}
+.wrap{padding:0 26px;max-width:1600px;margin:0 auto}
+.tabs{display:flex;gap:7px;padding:6px;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin:22px 0 16px;width:max-content;max-width:100%;overflow:auto}
+.tab{border:0;background:transparent;color:var(--muted);padding:10px 19px;border-radius:8px;font-weight:800;white-space:nowrap}.tab.active{background:#6842c2;color:#fff;box-shadow:0 2px 5px rgba(104,66,194,.2)}
+.summary{display:flex;gap:9px;flex-wrap:wrap;margin:0 0 15px}.counter{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:8px 13px;color:var(--muted);font-size:12px}.counter b{color:var(--text);font-size:15px;margin-inline-start:5px}
+.filter-card{background:var(--surface);padding:15px 17px;border:1px solid var(--line);border-radius:11px;margin-bottom:15px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;align-items:end}
+.filter-group label{display:block;font-size:12px;font-weight:800;margin-bottom:7px}.field{border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);padding:10px 12px;outline:none;min-width:0;width:100%}.field:focus{border-color:#8b6add;box-shadow:0 0 0 3px rgba(124,58,237,.1)}
+.table-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 2px 7px rgba(22,25,42,.025);overflow:hidden}
+.table-scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;text-align:right;min-width:800px}
+thead{background:color-mix(in srgb,var(--bg) 78%,var(--surface))}th{font-size:11px;color:var(--muted);font-weight:800;padding:14px 12px;white-space:nowrap;border-bottom:1px solid var(--line)}
+td{padding:12px;border-bottom:1px solid var(--line);font-size:12px;vertical-align:middle}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:color-mix(in srgb,var(--bg) 55%,var(--surface))}
+.name-cell{font-weight:800;color:var(--text);min-width:145px}.subline{font-size:10px;color:var(--muted);font-weight:500;margin-top:3px;direction:ltr;text-align:right;overflow-wrap:anywhere}
+.code{font-family:monospace;font-weight:800;color:#b7791f;direction:ltr;text-align:center}.date-cell{text-align:center;color:var(--muted);font-size:11px;white-space:nowrap}.center{text-align:center}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:5px 9px;border-radius:6px;font-size:10px;font-weight:800;white-space:nowrap}.active-badge{background:#d1fae5;color:#047857}.inactive-badge{background:#fee2e2;color:#b91c1c}.owner-badge{background:#fef3c7;color:#92400e}.default-badge{background:#f1f5f9;color:#475569}.role-badge{background:#e0e7ff;color:#4338ca}.subscribed-badge{background:#dcfce7;color:#166534}.not-subscribed-badge{background:#f1f5f9;color:#475569}.unknown-badge{background:#fffbeb;color:#92400e}
+.actions{display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap}.action-btn{width:29px;height:29px;border-radius:7px;background:transparent;font-size:13px;display:grid;place-items:center}.action-edit{border:1px solid #bfdbfe;color:#2563eb}.action-delete{border:1px solid #fecaca;color:#dc2626}.action-reset{border:1px solid #fde68a;color:#b45309}.action-key{border:1px solid #ddd6fe;color:#6d28d9}.action-status{border:1px solid var(--line);color:var(--muted)}.action-btn:hover{filter:brightness(.96);background:var(--bg)}
+.checkbox{width:15px;height:15px;accent-color:#6842c2}
+.table-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 15px;border-bottom:1px solid var(--line);color:var(--muted);font-size:11px}.selected-label{font-weight:800;color:var(--brand)}
+.empty{padding:42px 18px;text-align:center;color:var(--muted)}.empty strong{display:block;color:var(--text);font-size:15px;margin-bottom:6px}
+.state{margin:16px 0;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:10px;color:var(--muted)}.state.error{color:var(--red);border-color:#fecaca}.retry{margin-inline-start:10px;padding:7px 12px;border:0;border-radius:7px;background:var(--brand2);color:#fff}
+.modal-backdrop{position:fixed;inset:0;background:rgba(10,12,25,.58);display:none;align-items:center;justify-content:center;padding:16px;z-index:20}.modal-backdrop.open{display:flex}
+.modal{background:var(--surface);color:var(--text);width:min(650px,100%);max-height:min(92vh,900px);overflow:auto;border-radius:15px;box-shadow:0 18px 60px rgba(0,0,0,.24)}
+.modal-head{background:#1d56b8;color:#fff;padding:15px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:1}.modal-head h2{font-size:16px;margin:0}.close-btn{border:0;background:transparent;color:#fff;font-size:22px;line-height:1}
+.modal-body{padding:20px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.form-group{margin-bottom:13px}.form-group label{display:block;font-size:12px;font-weight:800;margin-bottom:7px}.form-group small{display:block;color:var(--muted);font-size:10px;margin-top:5px;line-height:1.6}
+.form-group .field{width:100%}.form-actions{display:flex;justify-content:flex-start;gap:8px;border-top:1px solid var(--line);padding-top:15px;margin-top:15px}
+.primary-btn,.secondary-btn{border:0;border-radius:8px;padding:10px 17px;font-weight:800;font-size:12px}.primary-btn{background:#1d56b8;color:white}.secondary-btn{background:var(--bg);color:var(--text);border:1px solid var(--line)}.primary-btn:disabled{opacity:.55}
+.role-section{border:1px solid #ddd6fe;background:color-mix(in srgb,#f5f3ff 50%,var(--surface));border-radius:11px;padding:13px;margin:12px 0}.role-section h3{margin:0 0 10px;color:#5b21b6;font-size:12px}.role-permissions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.perm-item{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.perm-item b{font-size:11px}.perm-actions{display:flex;gap:4px;flex-wrap:wrap}.perm-actions span{background:#2563eb;color:white;padding:3px 6px;border-radius:4px;font-size:9px;font-weight:800}
+.toast{position:fixed;bottom:20px;left:20px;z-index:60;background:#1e293b;color:#fff;padding:12px 17px;border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.18);font-size:13px;max-width:min(440px,calc(100vw - 40px))}.toast.success{border-right:4px solid #10b981}.toast.error{border-right:4px solid #ef4444}
+@media(max-width:1050px){.nav{display:none}.filter-card{grid-template-columns:1fr 1fr}.filter-group:first-child{grid-column:1/-1}}
+@media(max-width:760px){.side{display:none}.hero{padding:18px 15px}.hero-actions{margin-inline-start:0;width:100%}.wrap{padding:0 13px}.topbar{padding:10px 13px}.tabs{width:100%}.tab{flex:1;padding-inline:11px}.site-pill{display:none}.filter-card{grid-template-columns:1fr}.filter-group:first-child{grid-column:auto}.form-grid,.role-permissions{grid-template-columns:1fr}.hero-icon{width:46px;height:46px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="logo" href="index.html" aria-label="منصة علي عليان الدولية"><b>T</b><span>TEACHING<small>PORTALS</small></span></a>
+  <nav class="nav" aria-label="روابط الموقع"><a href="index.html">الرئيسية</a><a href="courses.html">الكورسات</a><a href="support.html">تواصل معنا</a></nav>
+  <div class="tools">
+    <div class="user-menu">
+      <button class="user-trigger" id="adminMenuBtn" type="button" aria-haspopup="true" aria-expanded="false"><span class="avatar" id="adminAvatar">م</span><span id="greet">جاري التحقق...</span><span style="color:var(--muted)">⌄</span></button>
+      <nav class="user-dropdown" id="adminProfileMenu" hidden>
+        <a class="dropdown-item" id="menuDashboardLink" href="admin.html">🏠 لوحة التحكم</a>
+        <a class="dropdown-item" id="menuCoursesLink" href="admin-courses.html">📚 إدارة الدورات</a>
+        <a class="dropdown-item" id="menuBlogLibraryLink" href="admin-blog-library.html">📰 المدونة والمكتبة</a>
+        <a class="dropdown-item" id="menuProfileLink" href="admin-profile.html">👤 الملف الشخصي</a>
+        <button class="dropdown-item dropdown-logout" id="profileLogoutBtn" type="button">↪ تسجيل الخروج</button>
+      </nav>
+    </div>
+    <button class="sq" id="themeToggle" type="button" title="تغيير المظهر" aria-label="تغيير المظهر">◐</button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="side">
+    <div class="side-title">القائمة الرئيسية</div>
+    <a id="dashboardLink" href="admin.html">🏠 لوحة التحكم</a>
+    <div class="side-title">إدارة المنصة</div>
+    <a id="academicLink" href="academic-structure.html">🎓 الهيكل الأكاديمي</a>
+    <a href="admin-courses.html" id="coursesLink">📚 إدارة الدورات</a>
+    <a href="admin-blog-library.html" id="blogLibraryLink">📰 المدونة والمكتبة</a>
+    <a href="admin-users.html" class="active">👥 إدارة المستخدمين</a>
+    <a id="messagesLink" href="admin-messages.html">✉️ رسائل التواصل</a>
+    <a id="notificationsLink" href="admin-notifications.html">🔔 الإشعارات</a>
+    <a id="profileLink" href="admin-profile.html">👤 الملف الشخصي</a>
+  </aside>
+
+  <main>
+    <section class="hero">
+      <div class="hero-icon">👥</div>
+      <div class="hero-copy"><h1 id="pageTitle">إدارة المشرفين</h1><p id="pageSubtitle">إدارة المشرفين المسموح لهم بإدارة المنصة</p></div>
+      <div class="hero-actions">
+        <a class="site-pill" id="sitePill" href="#" target="_blank" rel="noopener" hidden>🌐 <span><small>موقعك</small><b id="siteName"></b></span></a>
+        <button class="tour" id="tourBtn" type="button">❔ جولة تعريفية</button>
+        <button class="add-main" id="addBtn" type="button">＋ إضافة مشرف جديد</button>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div id="loadState" class="state">جارٍ تحميل المستخدمين والتحقق من الصلاحيات...</div>
+      <div id="appContent" hidden>
+        <div class="tabs" role="tablist" aria-label="إدارة المستخدمين">
+          <button class="tab active" type="button" data-tab="admins" role="tab">👤 المشرفون</button>
+          <button class="tab" type="button" data-tab="roles" role="tab">🛡️ الأدوار والصلاحيات</button>
+          <button class="tab" type="button" data-tab="students" role="tab">🎓 الطلاب</button>
+        </div>
+        <div class="summary">
+          <div class="counter">المشرفون <b id="adminCount">0</b></div>
+          <div class="counter">الطلاب <b id="studentCount">0</b></div>
+          <div class="counter">الأدوار <b id="roleCount">0</b></div>
+        </div>
+
+        <div id="studentFilters" class="filter-card" hidden>
+          <div class="filter-group"><label for="searchInput">البحث بالاسم أو البريد أو الهاتف أو الكود</label><input class="field" id="searchInput" type="search" placeholder="اكتب كلمة البحث..."></div>
+          <div class="filter-group"><label for="statusFilter">الحالة</label><select class="field" id="statusFilter"><option value="الكل">كل الحالات</option><option value="نشط">نشط</option><option value="غير نشط">غير نشط</option></select></div>
+          <div class="filter-group"><label for="subscriptionFilter">الاشتراك أو النشاط</label><select class="field" id="subscriptionFilter"><option value="الكل">الكل</option><option value="مشترك">مشترك</option><option value="غير مشترك">غير مشترك</option></select></div>
+        </div>
+
+        <section class="table-card">
+          <div class="table-toolbar"><span id="tableDescription">قائمة المشرفين المسجلين في المنصة</span><span class="selected-label" id="selectedCount" hidden></span></div>
+          <div class="table-scroll"><table><thead id="tableHead"></thead><tbody id="tableBody"></tbody></table><div id="emptyState" class="empty" hidden><strong>لا توجد بيانات في هذا القسم</strong><span>ستظهر السجلات هنا بعد إضافتها إلى قاعدة البيانات.</span></div></div>
+        </section>
+        <p id="updatedAt" style="font-size:11px;color:var(--muted);margin:13px 2px 0"></p>
+        <p id="truncatedNote" style="font-size:11px;color:#b45309;margin:8px 2px 0" hidden>تم عرض أول 2000 سجل فقط. استخدم البحث لتضييق النتائج.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="modal-backdrop" id="editorBackdrop" role="dialog" aria-modal="true" aria-labelledby="editorTitle">
+  <div class="modal">
+    <div class="modal-head"><h2 id="editorTitle">إضافة مشرف</h2><button class="close-btn" id="closeEditor" type="button" aria-label="إغلاق">×</button></div>
+    <form class="modal-body" id="editorForm">
+      <div id="adminFields">
+        <div class="form-grid">
+          <div class="form-group"><label for="adminFirstName">الاسم الأول</label><input class="field" id="adminFirstName" type="text" maxlength="80" required></div>
+          <div class="form-group"><label for="adminLastName">الاسم الأخير</label><input class="field" id="adminLastName" type="text" maxlength="100" required></div>
+          <div class="form-group"><label for="adminPhone">رقم الهاتف</label><input class="field" id="adminPhone" type="tel" maxlength="40" dir="ltr"></div>
+          <div class="form-group"><label for="adminEmail">البريد الإلكتروني</label><input class="field" id="adminEmail" type="email" maxlength="254" required dir="ltr"></div>
+          <div class="form-group" id="adminPasswordGroup"><label for="adminPassword">كلمة المرور</label><input class="field" id="adminPassword" type="password" minlength="8" maxlength="200" autocomplete="new-password"><small>8 أحرف على الأقل. تُحفظ كلمة المرور مجزأة داخل قاعدة البيانات.</small></div>
+          <div class="form-group"><label for="adminRole">الدور</label><select class="field" id="adminRole"></select></div>
+          <div class="form-group" id="adminStatusGroup"><label for="adminStatus">الحالة</label><select class="field" id="adminStatus"><option value="نشط">نشط</option><option value="غير نشط">غير نشط</option></select></div>
+        </div>
+      </div>
+
+      <div id="studentFields" hidden>
+        <div class="form-grid">
+          <div class="form-group"><label for="studentFirstName">الاسم الأول</label><input class="field" id="studentFirstName" maxlength="80" required></div>
+          <div class="form-group"><label for="studentLastName">الاسم الأخير</label><input class="field" id="studentLastName" maxlength="100" required></div>
+          <div class="form-group"><label for="studentPhone">رقم الهاتف</label><input class="field" id="studentPhone" type="tel" maxlength="40" dir="ltr"></div>
+          <div class="form-group"><label for="studentParentPhone">رقم ولي الأمر</label><input class="field" id="studentParentPhone" type="tel" maxlength="40" dir="ltr"></div>
+          <div class="form-group"><label for="studentEmail">البريد الإلكتروني</label><input class="field" id="studentEmail" type="email" maxlength="254" dir="ltr"><small>أدخل البريد الإلكتروني أو رقم الهاتف على الأقل.</small></div>
+          <div class="form-group" id="studentPasswordGroup"><label for="studentPassword">كلمة المرور</label><input class="field" id="studentPassword" type="password" minlength="8" maxlength="200" autocomplete="new-password" required></div>
+          <div class="form-group"><label for="studentCode">الكود</label><input class="field" id="studentCode" maxlength="40" dir="ltr" placeholder="يتم توليده تلقائياً عند تركه فارغاً"></div>
+          <div class="form-group"><label for="studentCategory">فئة السنة الدراسية</label><select class="field" id="studentCategory"><option value="">اختر الفئة</option></select></div>
+          <div class="form-group"><label for="studentYear">السنة الدراسية</label><select class="field" id="studentYear" disabled><option value="">اختر الفئة أولاً</option></select></div>
+          <div class="form-group"><label for="studentGovernorate">المحافظة</label><select class="field" id="studentGovernorate"><option value="">اختر المحافظة (اختياري)</option><option>القاهرة</option><option>الجيزة</option><option>الغربية</option><option>الإسكندرية</option><option>المنوفية</option><option>الدقهلية</option><option>القليوبية</option><option>البحيرة</option><option>كفر الشيخ</option><option>الشرقية</option><option>دمياط</option><option>بورسعيد</option><option>الإسماعيلية</option><option>السويس</option><option>الفيوم</option><option>بني سويف</option><option>المنيا</option><option>أسيوط</option><option>سوهاج</option><option>قنا</option><option>الأقصر</option><option>أسوان</option><option>البحر الأحمر</option><option>مطروح</option><option>شمال سيناء</option><option>جنوب سيناء</option><option>الوادي الجديد</option></select></div>
+          <div class="form-group"><label for="studentCity">المدينة</label><input class="field" id="studentCity" maxlength="100" placeholder="المدينة أو المركز"></div>
+          <div class="form-group"><label for="studentTrack">الشعبة</label><select class="field" id="studentTrack"><option value="">اختر الشعبة (اختياري)</option><option>علمي علوم</option><option>علمي رياضة</option><option>أدبي</option></select></div>
+          <div class="form-group"><label for="studentStatus">الحالة</label><select class="field" id="studentStatus"><option value="نشط">نشط</option><option value="غير نشط">غير نشط</option></select></div>
+        </div>
+      </div>
+
+      <div class="form-actions"><button class="primary-btn" id="saveBtn" type="submit">💾 حفظ</button><button class="secondary-btn" id="cancelBtn" type="button">إلغاء</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="quickBackdrop" role="dialog" aria-modal="true" aria-labelledby="quickTitle">
+  <div class="modal" style="width:min(430px,100%)"><div class="modal-head"><h2 id="quickTitle">تغيير كلمة مرور الطالب</h2><button class="close-btn" id="closeQuick" type="button">×</button></div><form id="quickForm" class="modal-body"><div class="form-group"><label for="quickPassword">كلمة المرور الجديدة</label><input class="field" id="quickPassword" type="password" minlength="8" maxlength="200" required autocomplete="new-password"><small>8 أحرف على الأقل. سيتم إنهاء جلسات الطالب الحالية.</small></div><div class="form-actions"><button class="primary-btn" type="submit" id="quickSaveBtn">حفظ كلمة المرور</button><button class="secondary-btn" type="button" id="quickCancel">إلغاء</button></div></form></div>
+</div>
+
+<div class="modal-backdrop" id="roleBackdrop" role="dialog" aria-modal="true" aria-labelledby="roleTitle">
+  <div class="modal" style="width:min(850px,100%)"><div class="modal-head"><h2 id="roleTitle">تفاصيل الدور</h2><button class="close-btn" id="closeRole" type="button">×</button></div><div class="modal-body" id="roleDetails"></div></div>
+</div>
+
+<div class="modal-backdrop" id="tourBackdrop" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+  <div class="modal" style="width:min(470px,100%)"><div class="modal-body"><h2 id="tourTitle" style="margin:0 0 10px;font-size:18px">جولة إدارة المستخدمين</h2><p id="tourText" style="color:var(--muted);line-height:1.9;margin:0 0 18px">إدارة المشرفين وتوزيع الأدوار، ومتابعة الطلاب وحالات حساباتهم وبياناتهم الدراسية والأجهزة المسجلة، مع إجراءات آمنة لتغيير كلمات المرور وتعطيل الحسابات.</p><button class="primary-btn" id="closeTour" type="button">إغلاق</button></div></div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const state = {
+  activeTab:"admins", admins:[], students:[], roles:[], academic:{categories:[],years:[]},
+  capabilities:{}, actor:{name:"مدير النظام",role:""}, editingId:null, editorType:null,
+  selectedStudentIds:[], quickStudentId:null, saving:false, updatedAt:null
+};
+
+const tabMeta = {
+  admins:{title:"إدارة المشرفين",subtitle:"إدارة المشرفين المسموح لهم بإدارة المنصة",add:"إضافة مشرف جديد",description:"قائمة المشرفين المسجلين في المنصة"},
+  roles:{title:"الأدوار والصلاحيات",subtitle:"راجع صلاحيات كل دور داخل المؤسسة",add:"",description:"الأدوار والصلاحيات المعرّفة للمنصة"},
+  students:{title:"إدارة المستخدمين",subtitle:"إدارة مستخدمي المنصة التعليمية",add:"إضافة طالب",description:"بيانات الطلاب المسجلين وحالة حساباتهم"}
+};
+
+function el(tag, className="", value) {
+  const node=document.createElement(tag);
+  if(className) node.className=className;
+  if(value!==undefined && value!==null) node.textContent=String(value);
+  return node;
+}
+function dateText(value) {
+  if(!value) return "—";
+  const date=new Date(value);
+  return Number.isNaN(date.getTime())?"—":date.toLocaleDateString("ar-EG",{day:"numeric",month:"long",year:"numeric"});
+}
+function toast(message,error=false) {
+  $("toast").textContent=message;
+  $("toast").className="toast "+(error?"error":"success");
+  $("toast").hidden=false;
+  clearTimeout(toast.timer);
+  toast.timer=setTimeout(()=>$("toast").hidden=true,3600);
+}
+function statusBadge(status) {
+  return el("span","badge "+(status==="نشط"?"active-badge":"inactive-badge"),status);
+}
+function actionBtn(title,css,text,handler) {
+  const button=el("button","action-btn "+css,text);
+  button.type="button";button.title=title;button.setAttribute("aria-label",title);button.addEventListener("click",handler);
+  return button;
+}
+function appendCell(row,value,className="") {
+  row.appendChild(el("td",className,value));
+}
+function replaceOptions(select,items,placeholder,current) {
+  select.replaceChildren(new Option(placeholder,""));
+  items.forEach(item=>select.add(new Option(item.name,item.name)));
+  if(current && items.some(item=>item.name===current)) select.value=current;
+}
+function visibleStudentRows() {
+  const q=$("searchInput").value.trim().toLocaleLowerCase("ar");
+  const status=$("statusFilter").value;
+  const subscription=$("subscriptionFilter").value;
+  return state.students.filter(student=>{
+    const searchable=[student.name,student.contact,student.email,student.phone,student.parentPhone,student.code].join(" ").toLocaleLowerCase("ar");
+    return (!q||searchable.includes(q)) &&
+      (status==="الكل"||student.status===status) &&
+      (subscription==="الكل"||student.subscription===subscription);
+  });
+}
+function renderChrome() {
+  $("adminCount").textContent=state.admins.length.toLocaleString("en-US");
+  $("studentCount").textContent=state.students.length.toLocaleString("en-US");
+  $("roleCount").textContent=state.roles.length.toLocaleString("en-US");
+  document.querySelectorAll("[data-tab]").forEach(button=>{
+    const enabled=state.capabilities[button.dataset.tab]===true;
+    button.hidden=!enabled;
+    button.classList.toggle("active",button.dataset.tab===state.activeTab);
+  });
+  const meta=tabMeta[state.activeTab];
+  $("pageTitle").textContent=meta.title;
+  $("pageSubtitle").textContent=meta.subtitle;
+  $("addBtn").textContent="＋ "+meta.add;
+  $("addBtn").hidden=state.activeTab==="roles" ||
+    (state.activeTab==="admins"&&!state.capabilities.adminCreate) ||
+    (state.activeTab==="students"&&!state.capabilities.studentCreate);
+  $("studentFilters").hidden=state.activeTab!=="students";
+  $("tableDescription").textContent=meta.description;
+  $("truncatedNote").hidden=state.activeTab==="admins"?!state.truncatedAdmins:state.activeTab==="students"?!state.truncatedStudents:true;
+}
+function renderAdmins() {
+  const head=$("tableHead"),body=$("tableBody");
+  head.replaceChildren();body.replaceChildren();
+  const headers=["الاسم","البريد الإلكتروني","الهاتف","الدور","الحالة","تاريخ الإنشاء","الإجراءات"];
+  const tr=el("tr");
+  headers.forEach(item=>tr.appendChild(el("th","",item)));
+  head.appendChild(tr);
+  $("emptyState").hidden=state.admins.length>0;
+  state.admins.forEach(admin=>{
+    const row=el("tr");
+    const name=el("td","name-cell");
+    const title=el("div","",admin.fullName||"—");
+    name.appendChild(title);
+    if(admin.badge) name.appendChild(el("span","badge owner-badge",admin.badge));
+    row.appendChild(name);
+    appendCell(row,admin.email,"subline");
+    appendCell(row,admin.phone||"—");
+    const role=el("td","center");role.appendChild(el("span","badge role-badge",admin.role));row.appendChild(role);
+    const status=el("td","center");status.appendChild(statusBadge(admin.status));row.appendChild(status);
+    appendCell(row,dateText(admin.createdAt),"date-cell");
+    const actions=el("td","actions");
+    if(admin.isProtected) actions.appendChild(el("span","badge default-badge","🔒 محمي"));
+    else if(state.capabilities.adminEdit) actions.appendChild(actionBtn("تعديل المشرف","action-edit","✎",()=>openAdminEditor(admin)));
+    else actions.appendChild(el("span","badge default-badge","—"));
+    row.appendChild(actions);body.appendChild(row);
+  });
+  $("selectedCount").hidden=true;
+}
+function renderRoles() {
+  const head=$("tableHead"),body=$("tableBody");
+  head.replaceChildren();body.replaceChildren();
+  const tr=el("tr");
+  ["اسم الدور","عدد الصلاحيات","تاريخ الإنشاء","الإجراءات"].forEach(item=>tr.appendChild(el("th","",item)));
+  head.appendChild(tr);
+  $("emptyState").hidden=state.roles.length>0;
+  state.roles.forEach(role=>{
+    const row=el("tr");
+    const name=el("td","name-cell");
+    name.appendChild(el("span","",role.roleName));
+    if(role.badge) name.appendChild(el("span","badge default-badge",role.badge));
+    row.appendChild(name);
+    const count=el("td","center");count.appendChild(el("span","badge role-badge",role.permissionsCount+" صلاحية"));row.appendChild(count);
+    appendCell(row,dateText(role.createdAt),"date-cell");
+    const actions=el("td","actions");
+    if(role.allPermissions) actions.appendChild(el("span","badge default-badge","🔒 افتراضي"));
+    actions.appendChild(actionBtn("عرض تفاصيل الدور","action-key","◉",()=>openRoleDetails(role)));
+    row.appendChild(actions);body.appendChild(row);
+  });
+  $("selectedCount").hidden=true;
+}
+function renderStudents() {
+  const head=$("tableHead"),body=$("tableBody");
+  head.replaceChildren();body.replaceChildren();
+  const tr=el("tr");
+  const all=el("input","checkbox");all.type="checkbox";all.className="checkbox";
+  const visible=visibleStudentRows();
+  all.checked=visible.length>0&&visible.every(item=>state.selectedStudentIds.includes(item.id));
+  all.addEventListener("change",()=>{
+    const ids=new Set(state.selectedStudentIds);
+    if(all.checked) visible.forEach(item=>ids.add(item.id)); else visible.forEach(item=>ids.delete(item.id));
+    state.selectedStudentIds=[...ids];renderStudents();
+  });
+  const checkboxHead=el("th","center");checkboxHead.appendChild(all);tr.appendChild(checkboxHead);
+  ["الاسم","الكود","البريد الإلكتروني / الهاتف","رقم ولي الأمر","الاشتراك","الحالة","الجهاز المسجل","تاريخ التسجيل","الإجراءات"].forEach(item=>tr.appendChild(el("th","",item)));
+  head.appendChild(tr);
+  $("emptyState").hidden=visible.length>0;
+  visible.forEach(student=>{
+    const row=el("tr");
+    const checkCell=el("td","center");
+    const checkbox=el("input","checkbox");checkbox.type="checkbox";checkbox.checked=state.selectedStudentIds.includes(student.id);
+    checkbox.addEventListener("change",()=>{state.selectedStudentIds=checkbox.checked?[...state.selectedStudentIds,student.id]:state.selectedStudentIds.filter(id=>id!==student.id);renderStudents();});
+    checkCell.appendChild(checkbox);row.appendChild(checkCell);
+    const nameCell=el("td","name-cell",student.name||"—");row.appendChild(nameCell);
+    appendCell(row,student.code||"—","code");
+    appendCell(row,student.contact||"—");
+    appendCell(row,student.parentPhone||"—","center");
+    const subscription=el("td","center");
+    subscription.appendChild(el("span","badge "+(student.subscription==="مشترك"?"subscribed-badge":student.subscription==="غير مشترك"?"not-subscribed-badge":"unknown-badge"),student.subscription||"غير محدد"));
+    row.appendChild(subscription);
+    const statusCell=el("td","center");statusCell.appendChild(statusBadge(student.status));row.appendChild(statusCell);
+    appendCell(row,student.device||"غير مسجل","center");
+    appendCell(row,dateText(student.createdAt),"date-cell");
+    const actions=el("td","actions");
+    if(state.capabilities.studentEdit) {
+      actions.appendChild(actionBtn("تعديل بيانات الطالب","action-edit","✎",()=>openStudentEditor(student)));
+      actions.appendChild(actionBtn(student.status==="نشط"?"إيقاف الحساب":"تفعيل الحساب","action-status",student.status==="نشط"?"⏸":"▶",()=>toggleStudent(student)));
+      actions.appendChild(actionBtn("إعادة تعيين الجهاز","action-reset","↻",()=>resetDevice(student)));
+      actions.appendChild(actionBtn("تغيير كلمة المرور","action-key","🔑",()=>openQuickPassword(student)));
+    }
+    if(state.capabilities.studentDelete) actions.appendChild(actionBtn("حذف الطالب","action-delete","⌫",()=>deleteStudent(student)));
+    row.appendChild(actions);body.appendChild(row);
+  });
+  $("selectedCount").hidden=state.selectedStudentIds.length===0;
+  $("selectedCount").textContent=state.selectedStudentIds.length+" طالب محدد";
+}
+function render() {
+  renderChrome();
+  if(state.activeTab==="admins") renderAdmins();
+  else if(state.activeTab==="roles") renderRoles();
+  else renderStudents();
+}
+function switchTab(tab) {
+  if(!state.capabilities[tab]) return;
+  state.activeTab=tab;render();
+}
+function closeModal(id) { $(id).classList.remove("open"); }
+function openAdminEditor(admin=null) {
+  state.editorType="admins";state.editingId=admin?.id||null;
+  $("editorForm").reset();
+  $("editorTitle").textContent=admin?"تعديل بيانات المشرف":"إضافة مشرف جديد";
+  $("adminFields").hidden=false;$("studentFields").hidden=true;
+  $("adminPasswordGroup").hidden=Boolean(admin);$("adminPassword").required=!admin;
+  $("adminStatusGroup").hidden=!admin;
+  $("adminFirstName").value=admin?.firstName||"";
+  $("adminLastName").value=admin?.lastName||"";
+  $("adminPhone").value=admin?.phone||"";
+  $("adminEmail").value=admin?.email||"";
+  $("adminStatus").value=admin?.status||"نشط";
+  const roleSelect=$("adminRole");roleSelect.replaceChildren();
+  state.roles.forEach(role=>{
+    if(role.allPermissions && !["admin","administrator","owner","super_admin","مدير النظام","مدير","مسؤول"].includes(String(state.actor.role||"").trim().toLowerCase())) return;
+    roleSelect.add(new Option(role.roleName,role.roleName));
+  });
+  roleSelect.value=admin?.role||"مشرف";
+  $("editorBackdrop").classList.add("open");
+  $("adminFirstName").focus();
+}
+function renderAcademicOptions(category="",year="") {
+  const categories=state.academic.categories||[];
+  replaceOptions($("studentCategory"),categories,"اختر فئة السنة الدراسية",category);
+  updateYearOptions(year);
+}
+function updateYearOptions(selected="") {
+  const category=$("studentCategory").value;
+  const years=(state.academic.years||[]).filter(item=>item.category===category);
+  replaceOptions($("studentYear"),years,category?"اختر السنة الدراسية":"اختر الفئة أولاً",selected);
+  $("studentYear").disabled=!category||years.length===0;
+}
+function openStudentEditor(student=null) {
+  state.editorType="students";state.editingId=student?.id||null;
+  $("editorForm").reset();
+  $("editorTitle").textContent=student?"تعديل بيانات الطالب":"إضافة طالب جديد";
+  $("adminFields").hidden=true;$("studentFields").hidden=false;
+  $("studentPasswordGroup").hidden=Boolean(student);$("studentPassword").required=!student;
+  $("studentFirstName").value=student?.firstName||"";
+  $("studentLastName").value=student?.lastName||"";
+  $("studentPhone").value=student?.phone||"";
+  $("studentParentPhone").value=student?.parentPhone||"";
+  $("studentEmail").value=student?.email||"";
+  $("studentCode").value=student?.code||"";
+  $("studentGovernorate").value=student?.governorate||"";
+  $("studentCity").value=student?.city||"";
+  $("studentTrack").value=student?.track||"";
+  $("studentStatus").value=student?.status||"نشط";
+  renderAcademicOptions(student?.category||"",student?.year||"");
+  $("editorBackdrop").classList.add("open");
+  $("studentFirstName").focus();
+}
+function closeEditor() { closeModal("editorBackdrop");$("editorForm").reset(); }
+async function apiAction(payload) {
+  const response=await fetch("/api/admin/users",{method:"POST",credentials:"same-origin",cache:"no-store",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+  const data=await response.json();
+  if(response.status===401){location.replace("login.html");return null;}
+  if(!response.ok||!data.ok) throw new Error(data.message||"تعذر تنفيذ العملية.");
+  return data;
+}
+async function submitEditor(event) {
+  event.preventDefault();
+  if(state.saving) return;
+  state.saving=true;$("saveBtn").disabled=true;$("saveBtn").textContent="جارٍ الحفظ...";
+  try {
+    let payload;
+    if(state.editorType==="admins") {
+      payload={
+        type:"admins",action:state.editingId?"updateAdmin":"createAdmin",
+        adminId:state.editingId,
+        firstName:$("adminFirstName").value.trim(),
+        lastName:$("adminLastName").value.trim(),
+        phone:$("adminPhone").value.trim(),
+        email:$("adminEmail").value.trim(),
+        password:$("adminPassword").value,
+        role:$("adminRole").value,status:$("adminStatus").value
+      };
+    } else {
+      payload={
+        type:"students",action:state.editingId?"updateStudent":"createStudent",
+        studentId:state.editingId,
+        firstName:$("studentFirstName").value.trim(),
+        lastName:$("studentLastName").value.trim(),
+        phone:$("studentPhone").value.trim(),
+        parentPhone:$("studentParentPhone").value.trim(),
+        email:$("studentEmail").value.trim(),
+        password:$("studentPassword").value,
+        code:$("studentCode").value.trim(),
+        category:$("studentCategory").value,
+        year:$("studentYear").value,
+        governorate:$("studentGovernorate").value,
+        city:$("studentCity").value.trim(),
+        track:$("studentTrack").value,
+        isActive:$("studentStatus").value==="نشط"
+      };
+    }
+    const result=await apiAction(payload);
+    if(!result) return;
+    closeEditor();toast(result.message||"تم الحفظ بنجاح.");await loadUsers(false);
+  } catch(error) { toast(error.message||"تعذر حفظ البيانات.",true); }
+  finally {state.saving=false;$("saveBtn").disabled=false;$("saveBtn").textContent="💾 حفظ";}
+}
+async function deleteStudent(student) {
+  if(!window.confirm("هل تريد حذف حساب الطالب «"+student.name+"»؟ سيتم تعطيل الحساب وإخفاؤه من القائمة، مع الاحتفاظ بالسجلات المرتبطة به.")) return;
+  try {const result=await apiAction({type:"students",action:"deleteStudent",studentId:student.id});if(result){state.selectedStudentIds=state.selectedStudentIds.filter(id=>id!==student.id);toast(result.message);await loadUsers(false);}}
+  catch(error){toast(error.message,true);}
+}
+async function toggleStudent(student) {
+  const active=student.status!=="نشط";
+  const verb=active?"تفعيل":"إيقاف";
+  if(!window.confirm("هل تريد "+verb+" حساب الطالب «"+student.name+"»؟")) return;
+  try {const result=await apiAction({type:"students",action:"toggleStudent",studentId:student.id,isActive:active});if(result){toast(result.message);await loadUsers(false);}}
+  catch(error){toast(error.message,true);}
+}
+async function resetDevice(student) {
+  if(!window.confirm("سيتم مسح الجهاز المسجل وإنهاء جلسات الطالب «"+student.name+"». هل تريد المتابعة؟")) return;
+  try {const result=await apiAction({type:"students",action:"resetStudentDevice",studentId:student.id});if(result){toast(result.message);await loadUsers(false);}}
+  catch(error){toast(error.message,true);}
+}
+function openQuickPassword(student) {
+  state.quickStudentId=student.id;
+  $("quickForm").reset();$("quickTitle").textContent="تغيير كلمة مرور: "+student.name;
+  $("quickBackdrop").classList.add("open");$("quickPassword").focus();
+}
+async function submitQuickPassword(event) {
+  event.preventDefault();const button=$("quickSaveBtn");button.disabled=true;
+  try {const result=await apiAction({type:"students",action:"resetStudentPassword",studentId:state.quickStudentId,password:$("quickPassword").value});if(result){closeModal("quickBackdrop");toast(result.message);}}
+  catch(error){toast(error.message,true);}
+  finally{button.disabled=false;}
+}
+function openRoleDetails(role) {
+  $("roleTitle").textContent="صلاحيات دور: "+role.roleName;
+  const root=$("roleDetails");root.replaceChildren();
+  const summary=el("p","",role.allPermissions?"هذا الدور يملك جميع صلاحيات الإدارة المعرّفة في المنصة.":"عدد الصلاحيات المسجلة: "+role.permissionsCount);
+  summary.style.color="var(--muted)";root.appendChild(summary);
+  (role.sections||[]).forEach(section=>{
+    const block=el("section","role-section");block.appendChild(el("h3","",section.title));
+    const grid=el("div","role-permissions");
+    (section.items||[]).forEach(item=>{
+      const card=el("div","perm-item");card.appendChild(el("b","",item.module));
+      const actions=el("div","perm-actions");
+      (item.actions||[]).forEach(action=>actions.appendChild(el("span","",action)));
+      card.appendChild(actions);grid.appendChild(card);
+    });
+    block.appendChild(grid);root.appendChild(block);
+  });
+  if(role.allPermissions) root.appendChild(el("div","state","يشمل الدور جميع عمليات العرض والإنشاء والتعديل والحذف داخل الوحدات الإدارية."));
+  $("roleBackdrop").classList.add("open");
+}
+function bindHeader(data) {
+  const name=data.actor?.name||"مدير النظام";
+  state.actor=data.actor||state.actor;
+  $("greet").textContent="مرحباً "+name;
+  $("adminAvatar").textContent=name.trim().charAt(0)||"م";
+  const role=String(state.actor.role||"").trim().toLowerCase();
+  const isFullAdmin=["admin","administrator","owner","super_admin","مدير النظام","مدير","مسؤول"].includes(role);
+  ["dashboardLink","messagesLink","notificationsLink","profileLink","menuDashboardLink","menuProfileLink"].forEach(id=>$(id).hidden=!isFullAdmin);
+  $("academicLink").hidden=state.capabilities.academic!==true;
+  $("coursesLink").hidden=state.capabilities.courses!==true;
+  $("menuCoursesLink").hidden=state.capabilities.courses!==true;
+  $("blogLibraryLink").hidden=state.capabilities.blogLibrary!==true;
+  $("menuBlogLibraryLink").hidden=state.capabilities.blogLibrary!==true;
+  if(data.site?.url){
+    try{$("sitePill").href=data.site.url;$("siteName").textContent=new URL(data.site.url).host;$("sitePill").hidden=false;}catch(_){}
+  }
+}
+async function loadSiteInfo() {
+  try {
+    const response=await fetch("/api/admin/dashboard",{credentials:"same-origin",cache:"no-store"});
+    if(!response.ok) return;
+    const data=await response.json();
+    if(data.ok&&data.site?.url){$("sitePill").href=data.site.url;$("siteName").textContent=data.site.name||data.site.url;$("sitePill").hidden=false;}
+  } catch(_){}
+}
+async function loadUsers(showLoading=true) {
+  if(showLoading){$("loadState").hidden=false;$("loadState").className="state";$("loadState").textContent="جارٍ تحميل المستخدمين والتحقق من الصلاحيات...";$("appContent").hidden=true;}
+  try {
+    const response=await fetch("/api/admin/users",{credentials:"same-origin",cache:"no-store"});
+    if(response.status===401){location.replace("login.html");return;}
+    const data=await response.json();
+    if(!response.ok||!data.ok) throw new Error(data.message||"تعذر تحميل المستخدمين.");
+    if(data.capabilities?.students){
+      try{
+        const academicResponse=await fetch("/api/admin/academic-structure",{credentials:"same-origin",cache:"no-store"});
+        if(academicResponse.ok){
+          const academicData=await academicResponse.json();
+          if(academicData.ok&&academicData.structure)data.academic={categories:academicData.structure.categories||[],years:academicData.structure.years||[]};
+        }
+      }catch(_){}
+    }
+    state.admins=data.admins||[];state.students=data.students||[];state.roles=data.roles||[];
+    state.academic=data.academic||{categories:[],years:[]};state.capabilities=data.capabilities||{};
+    state.updatedAt=data.generatedAt;state.truncatedAdmins=Boolean(data.truncated?.admins);state.truncatedStudents=Boolean(data.truncated?.students);
+    if(!state.capabilities.admins&&!state.capabilities.students&&!state.capabilities.roles&&(state.capabilities.courses||state.capabilities.blogLibrary)){
+      location.replace(state.capabilities.courses?"admin-courses.html":"admin-blog-library.html");return;
+    }
+    bindHeader(data);
+    if(!state.capabilities[state.activeTab]) {
+      state.activeTab=state.capabilities.admins?"admins":state.capabilities.students?"students":state.capabilities.roles?"roles":"admins";
+    }
+    render();
+    $("updatedAt").textContent="آخر تحديث: "+new Date(state.updatedAt).toLocaleString("ar-EG");
+    $("loadState").hidden=true;$("appContent").hidden=false;
+    if(state.activeTab==="admins"&&!state.capabilities.admins&&state.capabilities.students) switchTab("students");
+  } catch(error) {
+    $("loadState").className="state error";
+    $("loadState").replaceChildren(document.createTextNode(error.message||"تعذر تحميل المستخدمين."));
+    const retry=el("button","retry","إعادة المحاولة");retry.type="button";retry.addEventListener("click",()=>loadUsers(true));$("loadState").appendChild(retry);
+    $("loadState").hidden=false;
+  }
+}
+
+$("addBtn").addEventListener("click",()=>state.activeTab==="admins"?openAdminEditor():openStudentEditor());
+$("editorForm").addEventListener("submit",submitEditor);
+$("closeEditor").addEventListener("click",closeEditor);$("cancelBtn").addEventListener("click",closeEditor);
+$("editorBackdrop").addEventListener("click",event=>{if(event.target===$("editorBackdrop"))closeEditor();});
+$("studentCategory").addEventListener("change",()=>updateYearOptions());
+$("searchInput").addEventListener("input",renderStudents);
+$("statusFilter").addEventListener("change",renderStudents);
+$("subscriptionFilter").addEventListener("change",renderStudents);
+document.querySelectorAll("[data-tab]").forEach(button=>button.addEventListener("click",()=>switchTab(button.dataset.tab)));
+$("quickForm").addEventListener("submit",submitQuickPassword);
+$("closeQuick").addEventListener("click",()=>closeModal("quickBackdrop"));
+$("quickCancel").addEventListener("click",()=>closeModal("quickBackdrop"));
+$("quickBackdrop").addEventListener("click",event=>{if(event.target===$("quickBackdrop"))closeModal("quickBackdrop");});
+$("closeRole").addEventListener("click",()=>closeModal("roleBackdrop"));
+$("roleBackdrop").addEventListener("click",event=>{if(event.target===$("roleBackdrop"))closeModal("roleBackdrop");});
+$("tourBtn").addEventListener("click",()=>$("tourBackdrop").classList.add("open"));
+$("closeTour").addEventListener("click",()=>closeModal("tourBackdrop"));
+$("tourBackdrop").addEventListener("click",event=>{if(event.target===$("tourBackdrop"))closeModal("tourBackdrop");});
+$("themeToggle").addEventListener("click",()=>{
+  const root=document.documentElement;const next=root.dataset.theme==="dark"?"light":"dark";root.dataset.theme=next;
+  try{localStorage.setItem("admin-theme",next);}catch(_){}
+});
+try{const saved=localStorage.getItem("admin-theme");if(saved)document.documentElement.dataset.theme=saved;}catch(_){}
+const menuButton=$("adminMenuBtn"),menu=$("adminProfileMenu");
+menuButton.addEventListener("click",event=>{event.stopPropagation();menu.hidden=!menu.hidden;menuButton.setAttribute("aria-expanded",String(!menu.hidden));});
+document.addEventListener("click",event=>{if(!event.target.closest(".user-menu")){menu.hidden=true;menuButton.setAttribute("aria-expanded","false");}});
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape"){
+    closeEditor();closeModal("quickBackdrop");closeModal("roleBackdrop");closeModal("tourBackdrop");
+    menu.hidden=true;menuButton.setAttribute("aria-expanded","false");
+  }
+});
+$("profileLogoutBtn").addEventListener("click",async()=>{
+  $("profileLogoutBtn").disabled=true;
+  try{await fetch("/api/auth/logout",{method:"POST",credentials:"same-origin"});}finally{location.replace("login.html");}
+});
+
+loadSiteInfo();
+loadUsers(true);
+</script>
+</body>
+</html>

@@ -33,7 +33,7 @@ module.exports = async function handler(req, res) {
     if (!safeEqual(derived.toString("hex"),user.passwordHash)) {
       return json(res,401,{ok:false,message:"بيانات الدخول غير صحيحة."});
     }
-    if (user.isActive === false || user.active === false || ["blocked","deleted","محظور","محذوف"].includes(String(user.status || "").toLowerCase())) {
+    if (user.isActive === false || user.active === false || ["blocked","disabled","inactive","deleted","محظور","محذوف","غير نشط","غير فعال"].includes(String(user.status || "").trim().toLowerCase())) {
       return json(res,403,{ok:false,message:"هذا الحساب غير نشط. تواصل مع إدارة المنصة."});
     }
 
@@ -45,7 +45,14 @@ module.exports = async function handler(req, res) {
     });
     res.setHeader("Set-Cookie",`ali_admin_session=${token}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=604800`);
     const adminRoles = new Set(["admin","super_admin","owner","administrator","مدير النظام","مدير","مسؤول"]);
-    return json(res,200,{ok:true,redirect:adminRoles.has(String(role).toLowerCase())?"admin.html":"dashboard.html"});
+    let redirect = adminRoles.has(String(role).trim().toLowerCase()) ? "admin.html" : "dashboard.html";
+    if (redirect === "dashboard.html" && matchedCollection === adminCollection) {
+      const rolesCollection = process.env.PLATFORM_ROLES_COLLECTION || "platform_roles";
+      const savedRoles = await database.collection(rolesCollection).find({ isActive: { $ne: false } }).toArray();
+      const hasAdminRole = savedRoles.some(item => String(item.roleName || "").trim().toLowerCase() === String(role).trim().toLowerCase());
+      if (hasAdminRole) redirect = "admin-users.html";
+    }
+    return json(res,200,{ok:true,redirect});
   } catch(error) {
     console.error("auth login failed:",error.message);
     return json(res,500,{ok:false,message:"تعذر تسجيل الدخول حالياً. راجع إعدادات الخادم."});
