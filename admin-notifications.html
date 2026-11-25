@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>إرسال الإشعارات - لوحة الإدارة</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:'Tajawal',sans-serif;background:#f4f6f9}
+    .side-link{display:flex;align-items:center;gap:12px;width:100%;padding:11px 13px;border-radius:9px;color:#475569;text-align:right}
+    .side-link:hover{background:#f8fafc}
+    .side-link.active{background:#eef2ff;color:#4338ca;font-weight:700}
+    .modal-backdrop{background:rgba(15,23,42,.55);backdrop-filter:blur(2px)}
+    .soft-scroll::-webkit-scrollbar{height:7px;width:7px}
+    .soft-scroll::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:20px}
+    @media(max-width:1023px){.sidebar{display:none}.main-content{padding:16px!important}}
+  </style>
+</head>
+<body class="text-slate-700 antialiased">
+  <div class="flex min-h-screen">
+    <aside class="sidebar w-64 bg-white border-l border-slate-200 shadow-sm flex-shrink-0">
+      <div class="p-5 border-b border-slate-100 flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-lg">TP</div>
+        <span class="font-bold text-slate-800 text-lg">لوحة الإدارة</span>
+      </div>
+      <nav class="p-3 space-y-1">
+        <a href="admin.html" class="side-link"><i class="fa-solid fa-house w-5 text-slate-400"></i><span>لوحة التحكم</span></a>
+        <div>
+          <button id="sidebarToggle" type="button" class="w-full flex items-center justify-between px-4 py-2.5 text-indigo-700 bg-indigo-50/70 font-medium rounded-lg">
+            <span class="flex items-center gap-3"><i class="fa-solid fa-envelope-open-text w-5 text-indigo-600"></i><span>الرسائل والإشعارات</span></span>
+            <i id="sidebarArrow" class="fa-solid fa-chevron-up text-xs"></i>
+          </button>
+          <div id="sidebarSubmenu" class="mt-1 mr-4 pr-3 border-r-2 border-indigo-200 space-y-1">
+            <a href="admin-messages.html" class="flex items-center gap-2.5 px-3 py-2 text-sm rounded-lg text-slate-600 hover:bg-slate-100"><i class="fa-solid fa-envelope text-xs"></i><span>رسائل التواصل</span></a>
+            <a href="admin-notifications.html" class="flex items-center gap-2.5 px-3 py-2 text-sm rounded-lg bg-indigo-600 text-white font-medium shadow-sm"><i class="fa-solid fa-bell text-xs"></i><span>الإشعارات</span></a>
+          </div>
+        </div>
+        <a href="dashboard.html" class="side-link"><i class="fa-solid fa-graduation-cap w-5 text-slate-400"></i><span>لوحة الطالب</span></a>
+        <button id="logoutBtn" type="button" class="side-link"><i class="fa-solid fa-arrow-right-from-bracket w-5 text-slate-400"></i><span>تسجيل الخروج</span></button>
+      </nav>
+    </aside>
+
+    <main class="main-content flex-1 p-5 lg:p-6 space-y-6 max-w-full overflow-x-hidden">
+      <div class="bg-gradient-to-l from-indigo-700 to-purple-700 rounded-xl p-6 text-white shadow-md flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 class="text-2xl font-bold flex items-center gap-2.5"><i class="fa-solid fa-bell"></i><span>إرسال الإشعارات</span></h1>
+          <p class="text-indigo-100 text-sm mt-1">إرسال إشعار لطلاب محددين وأولياء أمورهم المرتبطين بحساباتهم</p>
+        </div>
+        <div class="bg-white/15 px-4 py-2 rounded-lg text-sm backdrop-blur-sm border border-white/20">المؤسسة: <strong class="mr-1" id="siteName">منصة علي عليان الدولية</strong></div>
+      </div>
+
+      <div id="pageNotice" class="hidden rounded-xl border px-4 py-3 text-sm"></div>
+
+      <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div><label class="block text-xs font-bold text-slate-600 mb-1.5"><i class="fa-solid fa-book text-indigo-500 ml-1"></i>الكورس</label><select id="filterCourse" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm bg-slate-50 focus:bg-white focus:border-indigo-500 focus:outline-none"><option value="all">الكل</option></select></div>
+          <div><label class="block text-xs font-bold text-slate-600 mb-1.5"><i class="fa-solid fa-layer-group text-indigo-500 ml-1"></i>فئة السنة الدراسية</label><select id="filterCategory" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm bg-slate-50 focus:bg-white focus:border-indigo-500 focus:outline-none"><option value="all">الكل</option></select></div>
+          <div><label class="block text-xs font-bold text-slate-600 mb-1.5"><i class="fa-solid fa-graduation-cap text-indigo-500 ml-1"></i>السنة الدراسية</label><select id="filterGrade" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm bg-slate-50 focus:bg-white focus:border-indigo-500 focus:outline-none"><option value="all">الكل</option></select></div>
+          <div><label class="block text-xs font-bold text-slate-600 mb-1.5"><i class="fa-solid fa-users-rectangle text-indigo-500 ml-1"></i>المجموعات</label><select id="filterGroup" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm bg-slate-50 focus:bg-white focus:border-indigo-500 focus:outline-none"><option value="all">الكل</option></select></div>
+          <div><label class="block text-xs font-bold text-slate-600 mb-1.5"><i class="fa-solid fa-magnifying-glass text-indigo-500 ml-1"></i>البحث عن الطالب</label><input type="search" id="searchInput" placeholder="الاسم أو رقم الهاتف" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm bg-slate-50 focus:bg-white focus:border-indigo-500 focus:outline-none"></div>
+        </div>
+      </section>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <section class="lg:col-span-4 bg-white rounded-xl shadow-sm border border-slate-200 p-5 space-y-4">
+          <h2 class="text-lg font-bold text-slate-800 border-b border-slate-100 pb-3">رسالة الإشعار</h2>
+          <div>
+            <label for="notificationText" class="block text-sm font-medium text-slate-600 mb-1.5">الرسالة</label>
+            <textarea id="notificationText" rows="5" maxlength="500" placeholder="اكتب الرسالة التي سيستلمها الطلاب وأولياء أمورهم..." class="w-full border border-slate-200 rounded-lg p-3 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-100 focus:outline-none resize-none"></textarea>
+            <div class="flex justify-end mt-1"><span id="charCount" class="text-xs text-slate-400">0/500</span></div>
+          </div>
+          <label class="flex items-start gap-2.5 bg-slate-50 border border-slate-200 rounded-lg px-3 py-3 text-sm cursor-pointer">
+            <input type="checkbox" id="includeParents" checked class="mt-1 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+            <span><strong class="block text-slate-700">إرسال لولي الأمر المرتبط</strong><small class="text-slate-400">يُضاف ولي الأمر فقط إذا كان حسابه مرتبطاً بسجل الطالب في قاعدة البيانات.</small></span>
+          </label>
+          <div class="bg-slate-50 border border-slate-200 rounded-lg py-2.5 px-4 text-center text-sm text-slate-700 font-medium flex items-center justify-center gap-2">
+            <i class="fa-solid fa-user-check text-blue-600"></i><span>تم تحديد <strong id="selectedCountBadge" class="text-blue-600 text-base">0</strong> طالب</span>
+          </div>
+          <div id="recipientSummary" class="text-xs text-slate-500 text-center">سيتم إرسال الإشعار إلى الطلاب المحددين وأولياء أمورهم المرتبطين.</div>
+          <button id="sendBtn" type="button" class="w-full py-2.5 px-4 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold rounded-lg shadow-sm transition flex items-center justify-center gap-2"><i class="fa-solid fa-paper-plane"></i><span>إرسال الإشعار</span></button>
+          <p class="text-[11px] text-slate-400 leading-6">يُحفظ الإشعار في جرس حساب المستخدم. إشعار الهاتف يصل إلى الأجهزة التي فعّلت إذن الإشعارات وسجّلت اشتراك Web Push.</p>
+        </section>
+
+        <section class="lg:col-span-8 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+          <div class="p-5 border-b border-slate-100 flex flex-wrap items-center justify-between gap-4">
+            <div><h2 class="text-lg font-bold text-slate-800">الطلاب</h2><p class="text-xs text-slate-400 mt-0.5">القائمة تُحمّل من حسابات الطلاب المسجلة في قاعدة البيانات</p></div>
+            <div class="flex items-center gap-2"><span id="studentsTotal" class="text-xs text-slate-400">— طالب</span><button id="refreshStudents" type="button" class="px-3 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-bold rounded-lg"><i class="fa-solid fa-rotate ml-1"></i>تحديث القائمة</button><button id="selectAllBtn" type="button" class="px-4 py-2 border border-blue-200 bg-blue-50/60 hover:bg-blue-100 text-blue-700 text-xs font-bold rounded-lg"><i class="fa-solid fa-check-double ml-1"></i><span id="selectAllText">تحديد كل الظاهرين</span></button></div>
+          </div>
+          <div class="overflow-x-auto max-h-[470px] overflow-y-auto soft-scroll">
+            <table class="w-full text-right border-collapse min-w-[730px]">
+              <thead class="bg-slate-50 text-slate-600 text-xs sticky top-0 z-10 border-b border-slate-200">
+                <tr><th class="py-3 px-4 w-10 text-center"><input type="checkbox" id="headerCheckbox" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"></th><th class="py-3 px-4 font-bold">الطالب</th><th class="py-3 px-4 font-bold">رقم الهاتف</th><th class="py-3 px-4 font-bold">الفئة / السنة</th><th class="py-3 px-4 font-bold text-center">المجموعات</th><th class="py-3 px-4 font-bold text-center">أجهزة الهاتف</th></tr>
+              </thead>
+              <tbody id="studentsTableBody" class="divide-y divide-slate-100 text-sm"><tr><td colspan="6" class="py-8 text-center text-slate-400">جارٍ تحميل الطلاب...</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="p-5 border-b border-slate-100 flex items-center justify-between gap-3"><div><h2 class="text-lg font-bold text-slate-800">الإشعارات السابقة</h2><p class="text-xs text-slate-400 mt-0.5">سجل الإشعارات التي أرسلتها المؤسسة</p></div><button id="refreshHistory" type="button" class="px-3 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-bold rounded-lg"><i class="fa-solid fa-rotate ml-1"></i>تحديث</button></div>
+        <div class="overflow-x-auto soft-scroll"><table class="w-full text-right border-collapse min-w-[760px]">
+          <thead class="bg-slate-100/80 text-slate-600 text-xs border-b border-slate-200"><tr><th class="py-3.5 px-5 font-bold">الرسالة</th><th class="py-3.5 px-5 font-bold text-center">الطلاب</th><th class="py-3.5 px-5 font-bold text-center">المستلمون مع أولياء الأمور</th><th class="py-3.5 px-5 font-bold text-center">إشعارات الهاتف</th><th class="py-3.5 px-5 font-bold text-left">وقت الإرسال</th></tr></thead>
+          <tbody id="historyTableBody" class="divide-y divide-slate-100 text-sm"><tr><td colspan="5" class="py-8 text-center text-slate-400">جارٍ تحميل سجل الإشعارات...</td></tr></tbody>
+        </table></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="fixed bottom-5 left-5 z-50 hidden bg-slate-800 text-white px-5 py-3 rounded-lg shadow-lg text-sm items-center gap-2"><i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i><span id="toastMsg"></span></div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    let studentsList = [];
+    let filteredStudents = [];
+    let selectedStudentIds = new Set();
+    let sentHistory = [];
+
+    async function api(url, options = {}) {
+      const response = await fetch(url, {
+        credentials:"same-origin",
+        ...options,
+        headers:{ "Content-Type":"application/json", ...(options.headers || {}) }
+      });
+      const data = await response.json().catch(() => ({}));
+      if (response.status === 401 || response.status === 403) {
+        location.replace("login.html");
+        throw new Error(data.message || "انتهت الجلسة أو لا تملك صلاحية الدخول.");
+      }
+      if (!response.ok || !data.ok) throw new Error(data.message || "تعذر تنفيذ الطلب.");
+      return data;
+    }
+    function showToast(message, error = false) {
+      $("toastMsg").textContent = message;
+      $("toastIcon").className = error ? "fa-solid fa-circle-exclamation text-amber-400" : "fa-solid fa-circle-check text-emerald-400";
+      $("toast").classList.remove("hidden"); $("toast").classList.add("flex");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => { $("toast").classList.add("hidden"); $("toast").classList.remove("flex"); }, 3500);
+    }
+    function addOptions(selectId, values) {
+      const select = $(selectId);
+      select.replaceChildren(new Option("الكل","all"));
+      for (const value of values || []) select.add(new Option(value,value));
+    }
+    function initials(name) {
+      return String(name || "ط").trim().split(/\s+/).slice(0,2).map(part=>part[0]||"").join("").toUpperCase() || "ط";
+    }
+    function makeCell(value, className) {
+      const cell=document.createElement("td");
+      cell.className=className || "py-3 px-4";
+      cell.textContent=value === null || value === undefined || value === "" ? "—" : String(value);
+      return cell;
+    }
+    function renderStudents() {
+      const body=$("studentsTableBody");
+      body.replaceChildren();
+      $("studentsTotal").textContent=studentsList.length.toLocaleString("en-US")+" طالب";
+      $("selectedCountBadge").textContent=selectedStudentIds.size;
+      const allVisible=filteredStudents.length>0 && filteredStudents.every(student=>selectedStudentIds.has(student.id));
+      $("headerCheckbox").checked=allVisible;
+      $("selectAllText").textContent=allVisible?"إلغاء تحديد الظاهرين":"تحديد كل الظاهرين";
+      $("selectAllBtn").disabled=filteredStudents.length===0;
+      $("selectAllBtn").classList.toggle("opacity-50",filteredStudents.length===0);
+      $("recipientSummary").textContent="المحددون: "+selectedStudentIds.size+" طالب. قد يُضاف أولياء الأمور المرتبطون عند الإرسال.";
+      if (!filteredStudents.length) {
+        const row=document.createElement("tr"); const cell=makeCell(studentsList.length?"لا يوجد طلاب مطابقون للفلاتر أو البحث":"لا توجد حسابات طلاب للعرض.", "py-9 text-center text-slate-400");
+        cell.colSpan=6; row.appendChild(cell); body.appendChild(row); return;
+      }
+      for (const student of filteredStudents) {
+        const checked=selectedStudentIds.has(student.id);
+        const row=document.createElement("tr");
+        row.className="cursor-pointer transition "+(checked?"bg-blue-50/70":"hover:bg-slate-50");
+        const checkboxCell=document.createElement("td"); checkboxCell.className="py-3 px-4 text-center";
+        const checkbox=document.createElement("input"); checkbox.type="checkbox"; checkbox.checked=checked; checkbox.className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer";
+        checkbox.addEventListener("click",event=>event.stopPropagation());
+        checkbox.addEventListener("change",()=>toggleStudent(student.id));
+        checkboxCell.appendChild(checkbox); row.appendChild(checkboxCell);
+        const nameCell=document.createElement("td"); nameCell.className="py-3 px-4";
+        const wrap=document.createElement("div"); wrap.className="flex items-center gap-2.5";
+        const avatar=document.createElement("div"); avatar.className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold text-xs flex items-center justify-center flex-shrink-0"; avatar.textContent=initials(student.name);
+        const name=document.createElement("span"); name.className="font-bold text-slate-700 text-xs sm:text-sm"; name.textContent=student.name;
+        wrap.append(avatar,name); nameCell.appendChild(wrap); row.appendChild(nameCell);
+        row.append(makeCell(student.phone || "—","py-3 px-4 font-mono text-xs text-slate-600"));
+        const gradeCell=document.createElement("td"); gradeCell.className="py-3 px-4";
+        const category=document.createElement("div"); category.className="font-bold text-slate-700 text-xs"; category.textContent=student.category || "—";
+        const grade=document.createElement("div"); grade.className="text-[11px] text-slate-400"; grade.textContent=student.grade || "—";
+        gradeCell.append(category,grade); row.appendChild(gradeCell);
+        row.append(makeCell((student.groups||[]).join("، ") || "—","py-3 px-4 text-center text-slate-500 text-xs"));
+        const deviceCell=document.createElement("td"); deviceCell.className="py-3 px-4 text-center";
+        const deviceBadge=document.createElement("span"); deviceBadge.className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-medium "+(student.devices>0?"bg-emerald-50 text-emerald-700 border border-emerald-200":"bg-slate-50 text-slate-500 border border-slate-200");
+        const deviceIcon=document.createElement("i");deviceIcon.className="fa-solid fa-mobile-screen text-[10px]";
+        const deviceText=document.createElement("span");deviceText.textContent=String(student.devices||0)+" جهاز";
+        deviceBadge.append(deviceIcon,deviceText);deviceCell.appendChild(deviceBadge);row.appendChild(deviceCell);
+        row.addEventListener("click",()=>toggleStudent(student.id));
+        body.appendChild(row);
+      }
+    }
+    function toggleStudent(id) {
+      if(selectedStudentIds.has(id)) selectedStudentIds.delete(id);
+      else selectedStudentIds.add(id);
+      renderStudents();
+    }
+    function toggleSelectAll() {
+      const allSelected=filteredStudents.length>0 && filteredStudents.every(student=>selectedStudentIds.has(student.id));
+      if(allSelected) filteredStudents.forEach(student=>selectedStudentIds.delete(student.id));
+      else filteredStudents.forEach(student=>selectedStudentIds.add(student.id));
+      renderStudents();
+    }
+    function applyFilters() {
+      const course=$("filterCourse").value, category=$("filterCategory").value, grade=$("filterGrade").value, group=$("filterGroup").value;
+      const search=$("searchInput").value.trim().toLocaleLowerCase();
+      filteredStudents=studentsList.filter(student=>{
+        const matchesCourse=course==="all"||(student.courses||[]).includes(course);
+        const matchesCategory=category==="all"||student.category===category;
+        const matchesGrade=grade==="all"||student.grade===grade;
+        const matchesGroup=group==="all"||(student.groups||[]).includes(group);
+        const matchesSearch=!search||String(student.name).toLocaleLowerCase().includes(search)||String(student.phone).toLocaleLowerCase().includes(search)||String(student.email).toLocaleLowerCase().includes(search);
+        return matchesCourse&&matchesCategory&&matchesGrade&&matchesGroup&&matchesSearch;
+      });
+      renderStudents();
+    }
+    async function loadStudents() {
+      $("studentsTableBody").innerHTML='<tr><td colspan="6" class="py-8 text-center text-slate-400">جارٍ تحميل الطلاب من قاعدة البيانات...</td></tr>';
+      try {
+        const data=await api("/api/admin/notification-recipients");
+        studentsList=data.students||[];
+        selectedStudentIds.clear();
+        addOptions("filterCourse",data.filters?.courses||[]);
+        addOptions("filterCategory",data.filters?.categories||[]);
+        addOptions("filterGrade",data.filters?.grades||[]);
+        addOptions("filterGroup",data.filters?.groups||[]);
+        if(data.capped){
+          $("pageNotice").textContent="يتم عرض أول 2000 حساب. يلزم ضبط الترقيم عند زيادة عدد الطلاب عن ذلك.";
+          $("pageNotice").className="rounded-xl border border-amber-200 bg-amber-50 text-amber-800 px-4 py-3 text-sm";
+          $("pageNotice").classList.remove("hidden");
+        } else $("pageNotice").classList.add("hidden");
+        applyFilters();
+      } catch(error) {
+        $("studentsTableBody").innerHTML='<tr><td colspan="6" class="py-8 text-center text-rose-600"></td></tr>';
+        $("studentsTableBody").querySelector("td").textContent=error.message;
+        $("studentsTotal").textContent="تعذر التحميل";
+      }
+    }
+    function updateCharCount(){ $("charCount").textContent=$("notificationText").value.length+"/500"; }
+    $("notificationText").addEventListener("input",updateCharCount);
+    async function sendNotification() {
+      const message=$("notificationText").value.trim();
+      if(!selectedStudentIds.size)return showToast("حدد طالباً واحداً على الأقل لإرسال الإشعار.",true);
+      if(!message)return showToast("اكتب نص رسالة الإشعار أولاً.",true);
+      const button=$("sendBtn");button.disabled=true;button.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i><span>جارٍ الإرسال...</span>';
+      try {
+        const result=await api("/api/admin/notifications/send",{
+          method:"POST",
+          body:JSON.stringify({message,studentIds:[...selectedStudentIds],includeParents:$("includeParents").checked})
+        });
+        $("notificationText").value="";updateCharCount();selectedStudentIds.clear();renderStudents();
+        const info=result.result||{};
+        showToast(result.message);
+        if(info.pushStatus==="not_configured") {
+          $("pageNotice").textContent="تم الحفظ داخل جرس حسابات المستلمين. إرسال الهاتف غير مكتمل حتى الآن: يلزم ضبط VAPID وتسجيل اشتراكات الأجهزة.";
+          $("pageNotice").className="rounded-xl border border-amber-200 bg-amber-50 text-amber-800 px-4 py-3 text-sm";
+          $("pageNotice").classList.remove("hidden");
+        } else {
+          $("pageNotice").textContent="نتيجة الإرسال: "+info.delivered+" جهاز وصل إليه الإشعار، وتعذر الإرسال إلى "+info.failed+" جهاز.";
+          $("pageNotice").className="rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-800 px-4 py-3 text-sm";
+          $("pageNotice").classList.remove("hidden");
+        }
+        await Promise.all([loadHistory(),loadStudents()]);
+      } catch(error){showToast(error.message,true);}
+      finally{button.disabled=false;button.innerHTML='<i class="fa-solid fa-paper-plane"></i><span>إرسال الإشعار</span>';}
+    }
+    $("sendBtn").addEventListener("click",sendNotification);
+    function dateText(value) {
+      if(!value)return "—";
+      const date=new Date(value);
+      return Number.isNaN(date.getTime())?"—":date.toLocaleString("ar-EG",{dateStyle:"medium",timeStyle:"short"});
+    }
+    function renderHistory() {
+      const body=$("historyTableBody");body.replaceChildren();
+      if(!sentHistory.length){
+        const row=document.createElement("tr"),cell=document.createElement("td");cell.colSpan=5;cell.className="py-8 text-center text-slate-400";cell.textContent="لا توجد إشعارات سابقة مسجلة.";row.appendChild(cell);body.appendChild(row);return;
+      }
+      for(const item of sentHistory){
+        const row=document.createElement("tr");row.className="hover:bg-slate-50/70 transition";
+        row.append(makeHistoryCell(item.message,"py-4 px-5 font-medium text-slate-700"));
+        row.append(makeHistoryCell((item.studentsCount??0)+" طالب","py-4 px-5 text-center font-bold"));
+        row.append(makeHistoryCell((item.recipientCount??0)+" حساب"+(item.parentCount?" ("+item.parentCount+" ولي أمر)":""),"py-4 px-5 text-center"));
+        const pushText=item.pushStatus==="sent"?"تم إرسال "+item.delivered+" هاتف":item.pushStatus==="partial"?"وصل "+item.delivered+" / فشل "+item.failed:item.pushStatus==="failed"?"فشل الإرسال":item.devicesCount+" جهاز مسجل — الهاتف غير مفعّل";
+        const pushCell=makeHistoryCell(pushText,"py-4 px-5 text-center text-xs");
+        pushCell.classList.add(item.pushStatus==="sent"?"text-emerald-700":"text-amber-700");row.append(pushCell);
+        row.append(makeHistoryCell(dateText(item.time),"py-4 px-5 text-left text-xs text-slate-500"));
+        body.appendChild(row);
+      }
+    }
+    function makeHistoryCell(value,className){const cell=document.createElement("td");cell.className=className;cell.textContent=value==null?"—":String(value);return cell;}
+    async function loadHistory() {
+      $("historyTableBody").innerHTML='<tr><td colspan="5" class="py-8 text-center text-slate-400">جارٍ تحميل سجل الإشعارات...</td></tr>';
+      try{const data=await api("/api/admin/notifications/history");sentHistory=data.history||[];renderHistory();}
+      catch(error){$("historyTableBody").innerHTML='<tr><td colspan="5" class="py-8 text-center text-rose-600"></td></tr>';$("historyTableBody").querySelector("td").textContent=error.message;}
+    }
+    for(const id of ["filterCourse","filterCategory","filterGrade","filterGroup"])$(id).addEventListener("change",applyFilters);
+    $("searchInput").addEventListener("input",applyFilters);
+    $("headerCheckbox").addEventListener("change",toggleSelectAll);
+    $("selectAllBtn").addEventListener("click",toggleSelectAll);
+    $("refreshStudents").addEventListener("click",loadStudents);
+    $("refreshHistory").addEventListener("click",loadHistory);
+    $("sidebarToggle").addEventListener("click",()=>{
+      const hidden=$("sidebarSubmenu").classList.toggle("hidden");
+      $("sidebarArrow").classList.toggle("rotate-180",hidden);
+    });
+    $("logoutBtn").addEventListener("click",async()=>{try{await fetch("/api/auth/logout",{method:"POST",credentials:"same-origin"});}finally{location.replace("login.html");}});
+    Promise.all([loadStudents(),loadHistory()]);
+  </script>
+</body>
+</html>
