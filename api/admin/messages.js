@@ -12,7 +12,7 @@ function safeMessage(doc, type) {
     code: doc.code || doc.studentCode || "—",
     category: doc.category || doc.gradeCategory || "—",
     grade: doc.grade || doc.schoolYear || "—",
-    status: doc.status || doc.userStatus || "—",
+    status: doc.userStatus || "—",
     message: doc.message || "—",
     createdAt: doc.createdAt || doc.date || null,
     requestStatus: doc.requestStatus || doc.status || "new"
