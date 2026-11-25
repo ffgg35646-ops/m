@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f5f6fa">
+<title>إدارة المدونة والمكتبة | منصة علي عليان الدولية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f6fa;--surface:#fff;--text:#1f2437;--muted:#7b8194;--line:#e8eaf2;--brand:#7c3aed;--brand2:#6366f1;--green:#10b981;--red:#ef4444;--blue:#3b82f6;--amber:#f59e0b;--cyan:#06b6d4;color-scheme:light}
+:root[data-theme="dark"]{--bg:#12141c;--surface:#1b1e2a;--text:#eceefa;--muted:#9aa1b8;--line:#2a2e3d;color-scheme:dark}
+:root[data-theme="light"]{color-scheme:light}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Tajawal",Tahoma,Arial,sans-serif;font-size:14px}
+a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}
+.topbar{background:var(--surface);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:20px;padding:12px 24px;position:sticky;top:0;z-index:5}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;line-height:1.1;color:var(--brand2)}.logo b{display:grid;place-items:center;width:34px;height:34px;border-radius:9px;background:var(--brand2);color:#fff;font-size:18px}.logo small{display:block;font-size:12px;letter-spacing:.5px}
+.nav{display:flex;gap:26px;margin-inline:auto}.nav a{color:var(--muted)}.nav a:hover{color:var(--brand)}
+.tools{display:flex;align-items:center;gap:10px}.sq{min-width:36px;height:36px;padding:0 9px;border:1px solid var(--line);color:var(--muted);background:transparent;border-radius:8px}
+.user-menu{position:relative;display:flex;align-items:center}.user-trigger{display:flex;align-items:center;gap:9px;border:0;background:transparent;color:var(--text);font-weight:700;padding:4px 6px;border-radius:10px}.user-trigger:hover{background:var(--bg)}.avatar{width:34px;height:34px;border-radius:50%;background:var(--brand2);color:#fff;display:grid;place-items:center}
+.user-dropdown{position:absolute;top:calc(100% + 9px);inset-inline-end:0;width:205px;padding:7px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 14px 35px rgba(15,23,42,.16);z-index:30}.user-dropdown[hidden]{display:none}.dropdown-item{width:100%;display:flex;align-items:center;gap:11px;padding:11px 10px;border:0;border-radius:8px;background:transparent;color:var(--text);font-size:13px;text-align:right}.dropdown-item:hover{background:var(--bg)}.dropdown-logout{color:var(--red)}
+.shell{display:flex;min-height:calc(100vh - 60px)}.side{width:230px;flex:none;background:var(--surface);border-inline-start:1px solid var(--line);padding:12px 10px}.side-title{color:var(--muted);font-size:11px;font-weight:800;padding:10px 12px 7px}.side a,.side button{width:100%;display:flex;align-items:center;gap:10px;padding:11px 10px;margin:2px 0;border:0;border-radius:8px;background:transparent;color:var(--muted);font-size:13px;text-align:right}.side a.active,.side button.active{background:var(--brand);color:#fff}.side a:hover:not(.active),.side button:hover:not(.active){background:var(--bg)}.side .ic{width:19px;text-align:center}.side .chev{margin-inline-start:auto;opacity:.6}
+main{flex:1;min-width:0;padding:0 0 42px}.hero{background:linear-gradient(100deg,#7c5bd5,#6240b7);color:#fff;padding:23px 28px;display:flex;align-items:center;gap:16px}.hero-icon{width:54px;height:54px;border-radius:13px;background:#ffffff24;display:grid;place-items:center;font-size:25px;flex:none}.hero-copy{min-width:0}.hero h1{margin:0 0 4px;font-size:23px}.hero p{margin:0;color:#ede9fe;font-size:12px}.hero-actions{margin-inline-start:auto;display:flex;align-items:center;gap:9px;flex-wrap:wrap}.site-pill{background:#fff;color:#334155;border-radius:9px;padding:7px 11px;font-size:11px}.site-pill small{display:block;color:#94a3b8;font-size:10px}.tour,.add-main{border:0;border-radius:9px;padding:10px 14px;font-size:12px;font-weight:800}.tour{background:#fff;color:#475569}.add-main{background:#16a34a;color:#fff}.wrap{padding:0 25px;max-width:1600px;margin:0 auto}
+.tabs{display:flex;gap:8px;margin:20px 0 15px;flex-wrap:wrap}.tab{background:var(--surface);border:1px solid var(--line);color:var(--muted);padding:10px 17px;border-radius:9px;font-size:12px;font-weight:800}.tab.active{background:var(--brand);border-color:var(--brand);color:#fff}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0}.toolbar h2{font-size:16px;margin:0}.toolbar p{font-size:11px;color:var(--muted);margin:4px 0 0}.filter-card{display:grid;grid-template-columns:minmax(200px,1.5fr) repeat(2,minmax(150px,1fr));gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:14px;margin-bottom:14px}.field-group label{display:block;font-size:11px;font-weight:800;margin-bottom:6px}.field{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 11px;background:var(--surface);color:var(--text);outline:none;font-size:12px;min-width:0}.field:focus{border-color:var(--brand2);box-shadow:0 0 0 3px #6366f11a}textarea.field{resize:vertical;line-height:1.8}.hint{display:block;color:var(--muted);font-size:10px;line-height:1.7;margin-top:5px}
+.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}.summary-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:13px 15px}.summary-card span{display:block;color:var(--muted);font-size:11px}.summary-card b{display:block;font-size:20px;margin-top:4px}
+.table-card{background:var(--surface);border:1px solid var(--line);border-radius:11px;overflow:hidden}.table-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 15px;border-bottom:1px solid var(--line);color:var(--muted);font-size:11px}.table-scroll{overflow:auto}table{width:100%;border-collapse:collapse;min-width:760px;text-align:right}thead{background:var(--bg);color:var(--muted);font-size:11px}th,td{padding:12px 13px;border-bottom:1px solid var(--line);vertical-align:middle}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:color-mix(in srgb,var(--bg) 55%,var(--surface))}.center{text-align:center}.name-cell{font-weight:800}.subline{display:block;color:var(--muted);font-size:10px;font-weight:400;margin-top:4px;max-width:390px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.thumb{width:54px;height:48px;border-radius:8px;object-fit:cover;border:1px solid var(--line);background:var(--bg)}.no-thumb{width:54px;height:48px;border:1px dashed var(--line);border-radius:8px;display:grid;place-items:center;color:var(--muted);font-size:10px}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:6px;font-size:10px;font-weight:800;white-space:nowrap}.badge.green{background:#dcfce7;color:#166534}.badge.red{background:#fee2e2;color:#991b1b}.badge.blue{background:#dbeafe;color:#1d4ed8}.badge.gray{background:#f1f5f9;color:#475569}.badge.amber{background:#fef3c7;color:#92400e}.badge.violet{background:#ede9fe;color:#5b21b6}
+.actions{display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap}.action-btn{width:30px;height:30px;border-radius:7px;background:transparent;font-size:13px;display:grid;place-items:center}.action-edit{border:1px solid #bfdbfe;color:#2563eb}.action-delete{border:1px solid #fecaca;color:#dc2626}.action-view{border:1px solid #a5f3fc;color:#0891b2}.action-sort{border:1px solid var(--line);color:var(--muted)}.action-btn:hover{background:var(--bg)}
+.empty{padding:45px 18px;text-align:center;color:var(--muted)}.empty strong{display:block;color:var(--text);font-size:15px;margin-bottom:6px}.state{margin:16px 0;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:10px;color:var(--muted)}.state.error{color:var(--red);border-color:#fecaca}.retry{margin-inline-start:10px;padding:7px 12px;border:0;border-radius:7px;background:var(--brand2);color:#fff}
+.preview-card{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:20px;margin-bottom:16px}.preview-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:14px}.preview-head h2{font-size:17px;margin:0 0 8px}.preview-card p{color:var(--muted);line-height:1.9;white-space:pre-wrap}.preview-image{display:block;max-width:240px;max-height:160px;object-fit:cover;border:1px solid var(--line);border-radius:9px;margin-top:12px}
+.modal-backdrop{position:fixed;inset:0;background:rgba(10,12,25,.58);display:none;align-items:center;justify-content:center;padding:16px;z-index:20}.modal-backdrop.open{display:flex}.modal{background:var(--surface);color:var(--text);width:min(700px,100%);max-height:min(92vh,920px);overflow:auto;border-radius:15px;box-shadow:0 18px 60px rgba(0,0,0,.24)}.modal.wide{width:min(800px,100%)}.modal-head{background:#1d56b8;color:#fff;padding:15px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:1}.modal-head h2{font-size:16px;margin:0}.close-btn{border:0;background:transparent;color:#fff;font-size:22px;line-height:1}.modal-body{padding:20px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.form-group{margin-bottom:13px}.form-group label{display:block;font-size:12px;font-weight:800;margin-bottom:7px}.form-group.full{grid-column:1/-1}.form-actions{display:flex;justify-content:flex-start;gap:8px;border-top:1px solid var(--line);padding-top:15px;margin-top:15px}.primary-btn,.secondary-btn{border:0;border-radius:8px;padding:10px 17px;font-weight:800;font-size:12px}.primary-btn{background:#1d56b8;color:white}.secondary-btn{background:var(--bg);color:var(--text);border:1px solid var(--line)}.primary-btn:disabled{opacity:.55}.image-grid{display:flex;flex-wrap:wrap;gap:9px;margin:8px 0 12px}.image-item{width:80px;height:80px;position:relative;border:1px solid var(--line);border-radius:8px;overflow:hidden}.image-item img{width:100%;height:100%;object-fit:cover}.image-remove{position:absolute;top:4px;left:4px;border:0;background:#dc2626;color:white;border-radius:50%;width:20px;height:20px;font-size:13px;line-height:20px;padding:0}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.detail-item{border:1px solid var(--line);border-radius:9px;padding:12px;min-width:0}.detail-item small{display:block;color:var(--muted);font-size:10px;margin-bottom:5px}.detail-item b{font-size:12px;overflow-wrap:anywhere}.toast{position:fixed;bottom:20px;left:20px;z-index:60;background:#1e293b;color:#fff;padding:12px 17px;border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.18);font-size:13px;max-width:min(440px,calc(100vw - 40px))}.toast.success{border-right:4px solid #10b981}.toast.error{border-right:4px solid #ef4444}
+@media(max-width:1100px){.nav{display:none}.summary{grid-template-columns:repeat(2,minmax(0,1fr))}.filter-card{grid-template-columns:1fr 1fr}.filter-card .field-group:first-child{grid-column:1/-1}}
+@media(max-width:760px){.side{display:none}.hero{padding:18px 15px;flex-wrap:wrap}.hero-actions{margin-inline-start:0;width:100%}.wrap{padding:0 13px}.topbar{padding:10px 13px}.filter-card,.form-grid,.detail-grid{grid-template-columns:1fr}.filter-card .field-group:first-child,.form-group.full{grid-column:auto}.tabs{width:100%}.tab{flex:1;padding-inline:10px}.site-pill{display:none}.hero-icon{width:46px;height:46px}.preview-head{flex-direction:column}.summary{gap:8px}.summary-card{padding:10px}.summary-card b{font-size:17px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="logo" href="index.html" aria-label="منصة علي عليان الدولية"><b>T</b><span>TEACHING<small>PORTALS</small></span></a>
+  <nav class="nav" aria-label="روابط الموقع"><a href="index.html">الرئيسية</a><a href="courses.html">الكورسات</a><a href="library.html">المكتبة</a><a href="support.html">تواصل معنا</a></nav>
+  <div class="tools">
+    <div class="user-menu">
+      <button class="user-trigger" id="adminMenuBtn" type="button" aria-haspopup="true" aria-expanded="false"><span class="avatar" id="adminAvatar">م</span><span id="greet">جاري التحقق...</span><span style="color:var(--muted)">⌄</span></button>
+      <nav class="user-dropdown" id="adminProfileMenu" hidden>
+        <a class="dropdown-item" href="admin.html">🏠 لوحة التحكم</a>
+        <a class="dropdown-item" href="admin-profile.html">👤 الملف الشخصي</a>
+        <button class="dropdown-item dropdown-logout" id="profileLogoutBtn" type="button">↪ تسجيل الخروج</button>
+      </nav>
+    </div>
+    <button class="sq" id="themeToggle" type="button" title="تغيير المظهر" aria-label="تغيير المظهر">◐</button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="side">
+    <div class="side-title">القائمة الرئيسية</div>
+    <a href="admin.html"><span class="ic">🏠</span>لوحة التحكم</a>
+    <div class="side-title">إدارة المنصة</div>
+    <a href="academic-structure.html"><span class="ic">🎓</span>الهيكل الأكاديمي</a>
+    <a href="admin-users.html"><span class="ic">👥</span>إدارة المستخدمين</a>
+    <a href="admin-courses.html"><span class="ic">📚</span>إدارة الدورات</a>
+    <a href="admin-blog-library.html" class="active"><span class="ic">📰</span>المدونة والمكتبة</a>
+    <a href="admin-messages.html"><span class="ic">✉️</span>رسائل التواصل</a>
+    <a href="admin-notifications.html"><span class="ic">🔔</span>الإشعارات</a>
+    <a href="admin-profile.html"><span class="ic">👤</span>الملف الشخصي</a>
+  </aside>
+
+  <main>
+    <section class="hero">
+      <div class="hero-icon" id="heroIcon">📰</div>
+      <div class="hero-copy"><h1 id="pageTitle">منتجات المكتبة</h1><p id="pageSubtitle">إدارة الكتب والمنتجات المادية والرقمية داخل المكتبة.</p></div>
+      <div class="hero-actions">
+        <a class="site-pill" id="sitePill" href="https://alielian.com" target="_blank" rel="noopener">🌐 <span><small>موقعك</small><b id="siteName">alielian.com</b></span></a>
+        <button class="tour" id="tourBtn" type="button">❔ جولة تعريفية</button>
+        <button class="add-main" id="addBtn" type="button">＋ إضافة منتج</button>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div id="loadState" class="state">جارٍ تحميل بيانات المدونة والمكتبة والتحقق من الصلاحيات...</div>
+      <div id="appContent" hidden>
+        <div class="tabs" role="tablist" aria-label="إدارة المدونة والمكتبة">
+          <button class="tab" type="button" data-tab="blog-edit">📰 المدونة</button>
+          <button class="tab" type="button" data-tab="blog-tags">🏷️ تصنيفات المدونة</button>
+          <button class="tab active" type="button" data-tab="store-products">🛍️ منتجات المكتبة</button>
+          <button class="tab" type="button" data-tab="store-orders">📦 طلبات المكتبة</button>
+        </div>
+
+        <section id="view-blog-edit" hidden>
+          <div class="summary">
+            <div class="summary-card"><span>إجمالي المقالات</span><b id="postCount">0</b></div>
+            <div class="summary-card"><span>منشور</span><b id="publishedCount">0</b></div>
+            <div class="summary-card"><span>مسودات</span><b id="draftCount">0</b></div>
+            <div class="summary-card"><span>التصنيفات</span><b id="postCategoryCount">0</b></div>
+          </div>
+          <div id="postPreview" class="preview-card" hidden></div>
+          <div class="toolbar"><div><h2>مقالات المدونة</h2><p>أنشئ المقالات وعدّل محتواها وحدد التصنيف وحالة النشر.</p></div></div>
+          <div class="table-card">
+            <div class="table-toolbar"><span>قائمة المقالات المحفوظة في قاعدة البيانات</span><span id="postTableCount">0 مقال</span></div>
+            <div class="table-scroll"><table><thead><tr><th class="center">الترتيب</th><th>عنوان المقال</th><th>التصنيف</th><th class="center">الحالة</th><th class="center">آخر تحديث</th><th class="center">الإجراءات</th></tr></thead><tbody id="postsBody"></tbody></table><div id="postsEmpty" class="empty" hidden><strong>لا توجد مقالات حتى الآن</strong><span>أضف أول مقال ليظهر هنا.</span></div></div>
+          </div>
+        </section>
+
+        <section id="view-blog-tags" hidden>
+          <div class="toolbar"><div><h2>تصنيفات المدونة</h2><p>تُستخدم التصنيفات لتنظيم المقالات وتسهيل الوصول إليها.</p></div></div>
+          <div class="table-card">
+            <div class="table-toolbar"><span>التصنيفات المسجلة</span><span id="categoryTableCount">0 تصنيف</span></div>
+            <div class="table-scroll"><table><thead><tr><th class="center">الترتيب</th><th>اسم التصنيف</th><th class="center">تاريخ الإنشاء</th><th class="center">الإجراءات</th></tr></thead><tbody id="categoriesBody"></tbody></table><div id="categoriesEmpty" class="empty" hidden><strong>لا توجد تصنيفات</strong><span>أضف تصنيفاً جديداً لتنظيم مقالاتك.</span></div></div>
+          </div>
+        </section>
+
+        <section id="view-store-products">
+          <div class="summary">
+            <div class="summary-card"><span>إجمالي المنتجات</span><b id="productCount">0</b></div>
+            <div class="summary-card"><span>منتجات نشطة</span><b id="activeProductCount">0</b></div>
+            <div class="summary-card"><span>منتجات رقمية</span><b id="digitalProductCount">0</b></div>
+            <div class="summary-card"><span>منتجات مطبوعة</span><b id="physicalProductCount">0</b></div>
+          </div>
+          <div class="filter-card">
+            <div class="field-group"><label for="productSearch">البحث عن منتج</label><input class="field" id="productSearch" type="search" placeholder="اسم المنتج أو الوصف..."></div>
+            <div class="field-group"><label for="productTypeFilter">نوع المنتج</label><select class="field" id="productTypeFilter"><option value="all">كل الأنواع</option><option value="physical">مطبوع</option><option value="رقمي">رقمي</option></select></div>
+            <div class="field-group"><label for="productStatusFilter">حالة المنتج</label><select class="field" id="productStatusFilter"><option value="all">كل الحالات</option><option value="active">نشط</option><option value="inactive">غير نشط</option></select></div>
+          </div>
+          <div class="table-card">
+            <div class="table-toolbar"><span>المنتجات المحفوظة داخل المكتبة</span><span id="productTableCount">0 منتج</span></div>
+            <div class="table-scroll"><table><thead><tr><th class="center">ترتيب العرض</th><th class="center">الصورة</th><th>العنوان</th><th class="center">نوع المنتج</th><th class="center">السعر</th><th class="center">الحالة</th><th class="center">الإجراءات</th></tr></thead><tbody id="productsBody"></tbody></table><div id="productsEmpty" class="empty" hidden><strong>لا توجد منتجات في المكتبة</strong><span>أضف منتجاً مطبوعاً أو رقمياً ليظهر هنا.</span></div></div>
+          </div>
+        </section>
+
+        <section id="view-store-orders" hidden>
+          <div class="summary">
+            <div class="summary-card"><span>إجمالي الطلبات</span><b id="orderCount">0</b></div>
+            <div class="summary-card"><span>طلبات مدفوعة</span><b id="paidOrderCount">0</b></div>
+            <div class="summary-card"><span>بانتظار الدفع</span><b id="pendingOrderCount">0</b></div>
+            <div class="summary-card"><span>بانتظار التوصيل</span><b id="deliveryOrderCount">0</b></div>
+          </div>
+          <div class="filter-card">
+            <div class="field-group"><label for="orderProductFilter">اسم المنتج</label><select class="field" id="orderProductFilter"><option value="all">كل المنتجات</option></select></div>
+            <div class="field-group"><label for="orderTypeFilter">نوع المنتج</label><select class="field" id="orderTypeFilter"><option value="all">كل الأنواع</option><option value="physical">مطبوع</option><option value="رقمي">رقمي</option></select></div>
+            <div class="field-group"><label for="orderStudentSearch">الطالب</label><input class="field" id="orderStudentSearch" type="search" placeholder="اسم الطالب أو الهاتف أو الكود"></div>
+          </div>
+          <div class="table-card">
+            <div class="table-toolbar"><span>طلبات منتجات المكتبة فقط</span><span id="orderTableCount">0 طلب</span></div>
+            <div class="table-scroll"><table><thead><tr><th>المنتج</th><th>الطالب</th><th class="center">الهاتف / الكود</th><th class="center">قيمة الطلب</th><th class="center">الدفع</th><th class="center">التوصيل</th><th class="center">التاريخ</th></tr></thead><tbody id="ordersBody"></tbody></table><div id="ordersEmpty" class="empty" hidden><strong>لا توجد طلبات للمكتبة</strong><span>ستظهر هنا سجلات الطلبات المرتبطة بمنتجات المكتبة عند توفرها.</span></div></div>
+          </div>
+          <p class="hint" id="ordersUnavailable" hidden>مجموعة الطلبات غير موجودة أو لا تحتوي حالياً على سجلات مرتبطة بمنتجات المكتبة.</p>
+        </section>
+
+        <p class="hint" id="updatedAt"></p>
+        <p class="hint" id="truncatedNote" hidden>تم الوصول إلى حد العرض الأقصى لبعض السجلات. استخدم البحث لتضييق النتائج.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="modal-backdrop" id="postBackdrop" role="dialog" aria-modal="true" aria-labelledby="postModalTitle">
+  <div class="modal wide"><div class="modal-head"><h2 id="postModalTitle">إضافة مقال</h2><button class="close-btn" type="button" data-close="postBackdrop">×</button></div>
+    <form class="modal-body" id="postForm">
+      <div class="form-grid">
+        <div class="form-group full"><label for="postTitle">عنوان المقال *</label><input class="field" id="postTitle" maxlength="240" required></div>
+        <div class="form-group full"><label for="postExcerpt">المقتطف *</label><textarea class="field" id="postExcerpt" rows="2" maxlength="1200" required></textarea></div>
+        <div class="form-group full"><label for="postContent">محتوى المقال *</label><textarea class="field" id="postContent" rows="9" maxlength="100000" required placeholder="اكتب محتوى المقال هنا..."></textarea><small class="hint">المحتوى يُحفظ كنص، ويُعرض دون تنفيذ أي أكواد أو وسوم مضافة من المحرر.</small></div>
+        <div class="form-group"><label for="postCategory">التصنيف</label><select class="field" id="postCategory"><option value="">بدون تصنيف</option></select></div>
+        <div class="form-group"><label for="postStatus">حالة المقال</label><select class="field" id="postStatus"><option value="draft">مسودة</option><option value="published">منشور</option></select></div>
+        <div class="form-group full"><label for="postImageUrl">رابط الصورة</label><input class="field" id="postImageUrl" type="url" placeholder="https://..." dir="ltr"><small class="hint">اتركه فارغاً عند عدم الحاجة إلى صورة.</small></div>
+      </div>
+      <div class="form-actions"><button class="primary-btn" id="savePostBtn" type="submit">💾 حفظ المقال</button><button class="secondary-btn" type="button" data-close="postBackdrop">إلغاء</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="categoryBackdrop" role="dialog" aria-modal="true" aria-labelledby="categoryModalTitle">
+  <div class="modal"><div class="modal-head"><h2 id="categoryModalTitle">تصنيف جديد</h2><button class="close-btn" type="button" data-close="categoryBackdrop">×</button></div>
+    <form class="modal-body" id="categoryForm">
+      <div class="form-group"><label for="categoryName">اسم التصنيف *</label><input class="field" id="categoryName" maxlength="140" required></div>
+      <div class="form-group"><label for="categoryOrder">الترتيب</label><input class="field" id="categoryOrder" type="number" min="0" step="1" value="0"></div>
+      <div class="form-actions"><button class="primary-btn" id="saveCategoryBtn" type="submit">💾 حفظ</button><button class="secondary-btn" type="button" data-close="categoryBackdrop">إلغاء</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="productBackdrop" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
+  <div class="modal"><div class="modal-head"><h2 id="productModalTitle">إضافة منتج</h2><button class="close-btn" type="button" data-close="productBackdrop">×</button></div>
+    <form class="modal-body" id="productForm">
+      <div class="form-grid">
+        <div class="form-group"><label for="productType">نوع المنتج</label><select class="field" id="productType"><option value="physical">مطبوع</option><option value="رقمي">رقمي</option></select></div>
+        <div class="form-group"><label for="productTitle">اسم المنتج *</label><input class="field" id="productTitle" maxlength="240" required></div>
+        <div class="form-group full"><label for="productDescription">الوصف</label><textarea class="field" id="productDescription" rows="3" maxlength="4000"></textarea></div>
+        <div class="form-group"><label for="productPrice">السعر (EGP)</label><input class="field" id="productPrice" type="number" min="0" step="0.01" value="0"></div>
+        <div class="form-group"><label for="productOrder">ترتيب العرض</label><input class="field" id="productOrder" type="number" min="0" step="1" value="0"></div>
+        <div class="form-group full">
+          <label>صور المنتج</label><div class="image-grid" id="productImageGrid"></div>
+          <input class="field" id="productImages" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+          <small class="hint">يمكن إضافة حتى 8 صور. سيتم ضغط الصور قبل حفظها لتقليل حجم البيانات.</small>
+        </div>
+        <div class="form-group full">
+          <label style="display:flex;align-items:center;gap:9px"><input id="productFree" type="checkbox"> منتج مجاني</label>
+          <label style="display:flex;align-items:center;gap:9px"><input id="productActive" type="checkbox" checked> المنتج نشط ومتاح للعرض</label>
+          <label style="display:flex;align-items:center;gap:9px"><input id="productFeatured" type="checkbox"> تثبيت في الصفحة الرئيسية</label>
+        </div>
+      </div>
+      <div class="form-actions"><button class="primary-btn" id="saveProductBtn" type="submit">💾 حفظ المنتج</button><button class="secondary-btn" type="button" data-close="productBackdrop">إلغاء</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="detailBackdrop" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+  <div class="modal"><div class="modal-head"><h2 id="detailTitle">تفاصيل المنتج</h2><button class="close-btn" type="button" data-close="detailBackdrop">×</button></div><div class="modal-body" id="detailBody"></div></div>
+</div>
+
+<div class="modal-backdrop" id="tourBackdrop" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+  <div class="modal"><div class="modal-body"><h2 id="tourTitle" style="margin:0 0 10px;font-size:18px">جولة المدونة والمكتبة</h2><p style="color:var(--muted);line-height:1.9;margin:0 0 18px">من هنا يمكنك إدارة المقالات وتصنيفاتها، وإضافة منتجات المكتبة المطبوعة والرقمية، وضبط الأسعار والصور وحالة العرض وترتيب المنتجات، ومراجعة الطلبات المرتبطة بمنتجات المكتبة.</p><button class="primary-btn" type="button" data-close="tourBackdrop">إغلاق</button></div></div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const state = {
+  activeTab:"store-products", posts:[], categories:[], products:[], orders:[],
+  capabilities:{}, actor:{name:"مدير النظام"}, availability:{}, truncated:{},
+  editingPostId:null, editingCategoryId:null, editingProductId:null,
+  productImages:[], detailProductId:null, busy:false
+};
+const tabMeta = {
+  "blog-edit":{title:"المدونة",subtitle:"إدارة مقالات المدونة ونشر المحتوى التعليمي.",icon:"📰",cta:"إضافة مقال",canCreate:"blogCreate"},
+  "blog-tags":{title:"تصنيفات المدونة",subtitle:"إدارة تصنيفات المدونة وتنظيم المقالات.",icon:"🏷️",cta:"تصنيف جديد",canCreate:"tagsCreate"},
+  "store-products":{title:"منتجات المكتبة",subtitle:"إدارة الكتب والمنتجات المطبوعة والرقمية في المكتبة العامة.",icon:"🛍️",cta:"إضافة منتج",canCreate:"productsCreate"},
+  "store-orders":{title:"طلبات المكتبة",subtitle:"مراجعة المدفوعات وبيانات الطلاب وحالة التوصيل لطلبات المكتبة.",icon:"📦",cta:"",canCreate:""}
+};
+const permissionByTab = {
+  "blog-edit":"blogView","blog-tags":"tagsView","store-products":"productsView","store-orders":"ordersView"
+};
+function showToast(message,type="success"){
+  const box=$("toast");box.textContent=message;box.className="toast "+type;box.hidden=false;
+  clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>box.hidden=true,3600);
+}
+function node(tag,className,text){
+  const el=document.createElement(tag);if(className)el.className=className;if(text!==undefined)el.textContent=text;return el;
+}
+function money(value,isFree=false){return isFree?"مجاني":"EGP "+Number(value||0).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});}
+function formatDate(value){
+  if(!value)return "—";const date=new Date(value);return Number.isNaN(date.getTime())?"—":date.toLocaleDateString("ar-EG");
+}
+function statusBadge(value){
+  const status=String(value||"").toLowerCase();
+  if(["published","active","paid","مدفوع","نشط","تم الدفع","مكتمل"].includes(status))return ["منشور/نشط","green"];
+  if(["draft","pending","قيد الانتظار","بانتظار الدفع","معلق","غير نشط"].includes(status))return ["مسودة/معلق","amber"];
+  if(["failed","cancelled","canceled","ملغي","فشل","محذوف"].includes(status))return ["غير مكتمل","red"];
+  return [value||"غير محدد","gray"];
+}
+function appendBadge(parent,label,css){
+  const b=node("span","badge "+css,label);parent.appendChild(b);return b;
+}
+async function api(action,data={}){
+  const response=await fetch("/api/admin/blog-library",{
+    method:action?"POST":"GET",credentials:"same-origin",cache:"no-store",
+    headers:action?{"Content-Type":"application/json"}:undefined,
+    body:action?JSON.stringify({action,...data}):undefined
+  });
+  let result={};try{result=await response.json()}catch(_){}
+  if(response.status===401){location.replace("login.html");throw new Error("انتهت جلسة الدخول.");}
+  if(!response.ok||!result.ok)throw new Error(result.message||"تعذر تنفيذ الطلب.");
+  return result;
+}
+function allowed(key){return state.capabilities[key]===true;}
+function setBusy(value){
+  state.busy=value;
+  ["addBtn","savePostBtn","saveCategoryBtn","saveProductBtn"].forEach(id=>{if($(id))$(id).disabled=value;});
+}
+function applyPermissions(){
+  document.querySelectorAll("[data-tab]").forEach(button=>{
+    const key=permissionByTab[button.dataset.tab];button.hidden=!allowed(key);
+  });
+  const available=Object.keys(permissionByTab).filter(key=>allowed(permissionByTab[key]));
+  if(!available.includes(state.activeTab))state.activeTab=available[0]||"store-products";
+  if(!available.length){
+    $("appContent").hidden=true;$("loadState").className="state error";
+    $("loadState").textContent="لا توجد صلاحية لعرض المدونة أو المكتبة. اطلب من مدير النظام تفعيل صلاحية العرض المناسبة.";
+    return false;
+  }
+  return true;
+}
+function switchTab(tab){
+  if(!allowed(permissionByTab[tab]))return;
+  state.activeTab=tab;
+  Object.keys(tabMeta).forEach(key=>{
+    const section=$("view-"+key);if(section)section.hidden=key!==tab;
+    const button=document.querySelector('[data-tab="'+key+'"]');if(button)button.classList.toggle("active",key===tab);
+  });
+  const meta=tabMeta[tab];$("pageTitle").textContent=meta.title;$("pageSubtitle").textContent=meta.subtitle;$("heroIcon").textContent=meta.icon;
+  const canCreate=meta.canCreate&&allowed(meta.canCreate);
+  $("addBtn").hidden=!meta.cta||!canCreate;$("addBtn").textContent="＋ "+meta.cta;
+  renderCurrent();
+}
+function renderCurrent(){
+  if(state.activeTab==="blog-edit")renderPosts();
+  if(state.activeTab==="blog-tags")renderCategories();
+  if(state.activeTab==="store-products")renderProducts();
+  if(state.activeTab==="store-orders")renderOrders();
+}
+function fillPostCategories(selected=""){
+  const select=$("postCategory");select.replaceChildren(new Option("بدون تصنيف",""));
+  state.categories.forEach(item=>select.add(new Option(item.name,item.id)));
+  select.value=selected||"";
+}
+function postCategoryName(post){
+  const category=state.categories.find(item=>item.id===post.categoryId);
+  return post.tag||category?.name||"بدون تصنيف";
+}
+function renderPosts(){
+  const body=$("postsBody");body.replaceChildren();
+  $("postCount").textContent=state.posts.length.toLocaleString("en-US");
+  $("publishedCount").textContent=state.posts.filter(x=>x.status==="published").length.toLocaleString("en-US");
+  $("draftCount").textContent=state.posts.filter(x=>x.status!=="published").length.toLocaleString("en-US");
+  $("postCategoryCount").textContent=state.categories.length.toLocaleString("en-US");
+  $("postTableCount").textContent=state.posts.length.toLocaleString("en-US")+" مقال";
+  $("postsEmpty").hidden=state.posts.length>0;
+  const sorted=[...state.posts].sort((a,b)=>(a.sortOrder||0)-(b.sortOrder||0));
+  sorted.forEach(post=>{
+    const row=node("tr");
+    row.appendChild(node("td","center",String(post.sortOrder||0)));
+    const title=node("td","name-cell",post.title);title.appendChild(node("small","subline",post.excerpt));row.appendChild(title);
+    row.appendChild(node("td","",postCategoryName(post)));
+    const status=node("td","center");const badge=statusBadge(post.status);appendBadge(status,post.status==="published"?"منشور":"مسودة",badge[1]);row.appendChild(status);
+    row.appendChild(node("td","center",formatDate(post.updatedAt||post.createdAt)));
+    const actions=node("td","center");const group=node("div","actions");
+    if(allowed("blogEdit"))group.appendChild(actionButton("تعديل المقال","action-edit","✎",()=>openPost(post)));
+    if(allowed("blogDelete"))group.appendChild(actionButton("حذف المقال","action-delete","⌫",()=>deletePost(post)));
+    group.appendChild(actionButton("معاينة","action-view","◉",()=>previewPost(post)));
+    actions.appendChild(group);row.appendChild(actions);body.appendChild(row);
+  });
+}
+function previewPost(post){
+  const preview=$("postPreview");preview.hidden=false;preview.replaceChildren();
+  const header=node("div","preview-head");const main=node("div","");
+  main.appendChild(node("h2","",post.title));main.appendChild(node("span","badge violet",postCategoryName(post)));
+  const status=node("span","badge "+(post.status==="published"?"green":"amber"),post.status==="published"?"منشور":"مسودة");
+  header.append(main,status);preview.appendChild(header);
+  preview.appendChild(node("p","",post.excerpt));preview.appendChild(node("p","",post.content));
+  if(post.imageUrl){const image=node("img","preview-image");image.src=post.imageUrl;image.alt=post.title;preview.appendChild(image);}
+}
+function renderCategories(){
+  const body=$("categoriesBody");body.replaceChildren();$("categoryTableCount").textContent=state.categories.length.toLocaleString("en-US")+" تصنيف";$("categoriesEmpty").hidden=state.categories.length>0;
+  [...state.categories].sort((a,b)=>(a.order||0)-(b.order||0)).forEach(item=>{
+    const row=node("tr");row.appendChild(node("td","center",String(item.order||0)));row.appendChild(node("td","name-cell",item.name));row.appendChild(node("td","center",formatDate(item.createdAt)));
+    const actionCell=node("td","center");const group=node("div","actions");
+    if(allowed("tagsEdit"))group.appendChild(actionButton("تعديل","action-edit","✎",()=>openCategory(item)));
+    if(allowed("tagsDelete"))group.appendChild(actionButton("حذف","action-delete","⌫",()=>deleteCategory(item)));
+    actionCell.appendChild(group);row.appendChild(actionCell);body.appendChild(row);
+  });
+}
+function productFilters(){
+  const q=$("productSearch").value.trim().toLocaleLowerCase("ar"),type=$("productTypeFilter").value,status=$("productStatusFilter").value;
+  return state.products.filter(item=>{
+    const searchable=(item.title+" "+item.description).toLocaleLowerCase("ar");
+    return (!q||searchable.includes(q))&&(type==="all"||item.type===type)&&(status==="all"||(status==="active"?item.isActive:!item.isActive));
+  });
+}
+function actionButton(label,css,icon,callback,disabled=false){
+  const button=node("button","action-btn "+css,icon);button.type="button";button.title=label;button.setAttribute("aria-label",label);button.disabled=disabled;button.addEventListener("click",callback);return button;
+}
+function renderProducts(){
+  const body=$("productsBody");body.replaceChildren();
+  $("productCount").textContent=state.products.length.toLocaleString("en-US");
+  $("activeProductCount").textContent=state.products.filter(x=>x.isActive).length.toLocaleString("en-US");
+  $("digitalProductCount").textContent=state.products.filter(x=>x.type==="رقمي").length.toLocaleString("en-US");
+  $("physicalProductCount").textContent=state.products.filter(x=>x.type==="physical").length.toLocaleString("en-US");
+  const visible=productFilters();$("productTableCount").textContent=visible.length.toLocaleString("en-US")+" منتج";$("productsEmpty").hidden=visible.length>0;
+  const filtered=$("productSearch").value||$("productTypeFilter").value!=="all"||$("productStatusFilter").value!=="all";
+  visible.forEach(product=>{
+    const index=state.products.findIndex(x=>x.id===product.id),row=node("tr"),sort=node("td","center"),sortGroup=node("div","actions");
+    sortGroup.appendChild(actionButton("رفع الترتيب","action-sort","▲",()=>moveProduct(product.id,-1),filtered||index<=0||!allowed("productsEdit")));
+    sortGroup.appendChild(actionButton("خفض الترتيب","action-sort","▼",()=>moveProduct(product.id,1),filtered||index>=state.products.length-1||!allowed("productsEdit")));
+    sort.appendChild(sortGroup);row.appendChild(sort);
+    const imageCell=node("td","center");
+    if(product.images?.[0]){const img=node("img","thumb");img.src=product.images[0];img.alt=product.title;img.onerror=()=>img.removeAttribute("src");imageCell.appendChild(img);}
+    else imageCell.appendChild(node("div","no-thumb","بدون صورة"));
+    row.appendChild(imageCell);
+    const title=node("td","name-cell",product.title);title.appendChild(node("small","subline",product.description||"بدون وصف"));row.appendChild(title);
+    const typeCell=node("td","center");appendBadge(typeCell,product.type==="physical"?"مطبوع":"رقمي","gray");row.appendChild(typeCell);
+    row.appendChild(node("td","center",money(product.price,product.isFree)));
+    const statusCell=node("td","center");appendBadge(statusCell,product.isActive?"نشط":"غير نشط",product.isActive?"green":"gray");row.appendChild(statusCell);
+    const actions=node("td","center"),group=node("div","actions");
+    group.appendChild(actionButton("تفاصيل المنتج","action-view","◉",()=>showProductDetails(product.id)));
+    if(allowed("productsEdit"))group.appendChild(actionButton("تعديل المنتج","action-edit","✎",()=>openProduct(product)));
+    if(allowed("productsDelete"))group.appendChild(actionButton("حذف المنتج","action-delete","⌫",()=>deleteProduct(product)));
+    actions.appendChild(group);row.appendChild(actions);body.appendChild(row);
+  });
+}
+function moveProduct(id,direction){
+  const index=state.products.findIndex(x=>x.id===id),target=index+direction;if(index<0||target<0||target>=state.products.length)return;
+  [state.products[index],state.products[target]]=[state.products[target],state.products[index]];
+  saveReorder("reorderProducts",state.products);
+}
+async function saveReorder(action,items){
+  try{await api(action,{ids:items.map(x=>x.id)});state.products.forEach((p,i)=>p.order=i);renderProducts();showToast("تم حفظ الترتيب.");}
+  catch(error){showToast(error.message,"error");await loadData(false);}
+}
+function renderOrderFilters(){
+  const select=$("orderProductFilter"),selected=select.value;select.replaceChildren(new Option("كل المنتجات","all"));
+  state.products.forEach(p=>select.add(new Option(p.title,p.title)));select.value=[...select.options].some(o=>o.value===selected)?selected:"all";
+}
+function renderOrders(){
+  renderOrderFilters();
+  $("orderCount").textContent=state.orders.length.toLocaleString("en-US");
+  const paid=state.orders.filter(o=>["paid","مدفوع","تم الدفع","مكتمل"].includes(String(o.paymentStatus).toLowerCase())).length;
+  const pending=state.orders.filter(o=>["pending","قيد الانتظار","بانتظار الدفع","معلق"].includes(String(o.paymentStatus).toLowerCase())).length;
+  const delivery=state.orders.filter(o=>["pending","بانتظار التوصيل","processing","قيد التجهيز"].includes(String(o.deliveryStatus).toLowerCase())).length;
+  $("paidOrderCount").textContent=paid.toLocaleString("en-US");$("pendingOrderCount").textContent=pending.toLocaleString("en-US");$("deliveryOrderCount").textContent=delivery.toLocaleString("en-US");
+  const q=$("orderStudentSearch").value.trim().toLocaleLowerCase("ar"),product=$("orderProductFilter").value,type=$("orderTypeFilter").value;
+  const rows=state.orders.filter(order=>{
+    const student=[order.studentName,order.studentPhone,order.studentEmail,order.studentCode].join(" ").toLocaleLowerCase("ar");
+    return (!q||student.includes(q))&&(product==="all"||order.productName===product)&&(type==="all"||order.productType===type);
+  });
+  $("orderTableCount").textContent=rows.length.toLocaleString("en-US")+" طلب";$("ordersEmpty").hidden=rows.length>0;
+  $("ordersUnavailable").hidden=state.availability.orders===true;
+  const body=$("ordersBody");body.replaceChildren();
+  rows.forEach(order=>{
+    const row=node("tr");row.appendChild(node("td","name-cell",order.productName));row.appendChild(node("td","",order.studentName));
+    row.appendChild(node("td","center",[order.studentPhone,order.studentCode].filter(Boolean).join(" / ")||"—"));
+    row.appendChild(node("td","center",money(order.amount)));
+    const pay=node("td","center");const p=statusBadge(order.paymentStatus);appendBadge(pay,p[0],p[1]);row.appendChild(pay);
+    const deliveryCell=node("td","center");const d=statusBadge(order.deliveryStatus);appendBadge(deliveryCell,d[0],d[1]);row.appendChild(deliveryCell);
+    row.appendChild(node("td","center",formatDate(order.createdAt)));body.appendChild(row);
+  });
+}
+function openBackdrop(id){$(id).classList.add("open");}
+function closeBackdrop(id){$(id).classList.remove("open");}
+function openPost(post=null){
+  state.editingPostId=post?.id||null;$("postModalTitle").textContent=post?"تعديل المقال":"إضافة مقال";
+  $("postTitle").value=post?.title||"";$("postExcerpt").value=post?.excerpt||"";$("postContent").value=post?.content||"";
+  $("postImageUrl").value=post?.imageUrl||"";$("postStatus").value=post?.status||"draft";
+  fillPostCategories(post?.categoryId||"");openBackdrop("postBackdrop");$("postTitle").focus();
+}
+function openCategory(category=null){
+  state.editingCategoryId=category?.id||null;$("categoryModalTitle").textContent=category?"تعديل تصنيف":"تصنيف جديد";
+  $("categoryName").value=category?.name||"";$("categoryOrder").value=category?.order??state.categories.length;
+  openBackdrop("categoryBackdrop");$("categoryName").focus();
+}
+function resetProductImages(images=[]){
+  state.productImages=[...images];renderProductImageGrid();
+}
+function renderProductImageGrid(){
+  const grid=$("productImageGrid");grid.replaceChildren();
+  state.productImages.forEach((src,index)=>{
+    const wrap=node("div","image-item"),img=node("img");img.src=src;img.alt="صورة المنتج";
+    const remove=node("button","image-remove","×");remove.type="button";remove.title="إزالة الصورة";remove.addEventListener("click",()=>{state.productImages.splice(index,1);renderProductImageGrid();});
+    wrap.append(img,remove);grid.appendChild(wrap);
+  });
+}
+function openProduct(product=null){
+  state.editingProductId=product?.id||null;$("productModalTitle").textContent=product?"تعديل منتج":"إضافة منتج";
+  $("productType").value=product?.type||"physical";$("productTitle").value=product?.title||"";$("productDescription").value=product?.description||"";
+  $("productPrice").value=product?.price??0;$("productOrder").value=product?.order??state.products.length;
+  $("productFree").checked=product?.isFree===true;$("productActive").checked=product?.isActive!==false;
+  $("productFeatured").checked=product?.featuredHome===true;$("productPrice").disabled=$("productFree").checked;
+  resetProductImages(product?.images||[]);$("productImages").value="";openBackdrop("productBackdrop");$("productTitle").focus();
+}
+function showProductDetails(id){
+  const product=state.products.find(x=>x.id===id);if(!product)return;state.detailProductId=id;
+  const body=$("detailBody");body.replaceChildren();
+  const grid=node("div","detail-grid");
+  const details=[
+    ["معرف المنتج",product.id],["العنوان",product.title],["الوصف",product.description||"—"],
+    ["نوع المنتج",product.type==="physical"?"مطبوع":"رقمي"],["السعر",money(product.price,product.isFree)],
+    ["ترتيب العرض",String(product.order??0)],["الحالة",product.isActive?"نشط":"غير نشط"],
+    ["الظهور في الرئيسية",product.featuredHome?"مثبت":"غير مثبت"]
+  ];
+  details.forEach(([label,value])=>{const item=node("div","detail-item");item.append(node("small","",label),node("b","",value));grid.appendChild(item);});
+  body.appendChild(grid);
+  if(product.images?.length){body.appendChild(node("h3","","صور المنتج"));const images=node("div","image-grid");product.images.forEach(src=>{const wrap=node("div","image-item");const img=node("img");img.src=src;img.alt=product.title;wrap.appendChild(img);images.appendChild(wrap);});body.appendChild(images);}
+  openBackdrop("detailBackdrop");
+}
+async function compressImage(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();reader.onerror=()=>reject(new Error("تعذرت قراءة الصورة."));
+    reader.onload=()=>{
+      const image=new Image();image.onerror=()=>reject(new Error("ملف الصورة غير صالح."));
+      image.onload=()=>{
+        let width=image.naturalWidth,height=image.naturalHeight;const max=900;
+        if(width>max||height>max){const scale=Math.min(max/width,max/height);width=Math.round(width*scale);height=Math.round(height*scale);}
+        const canvas=document.createElement("canvas");canvas.width=width;canvas.height=height;
+        const context=canvas.getContext("2d");context.drawImage(image,0,0,width,height);
+        let result=canvas.toDataURL("image/jpeg",.68);
+        if(result.length>365000){result=canvas.toDataURL("image/jpeg",.5);}
+        if(result.length>380000)reject(new Error("حجم الصورة ما زال كبيراً؛ اختر صورة أصغر."));
+        else resolve(result);
+      };image.src=String(reader.result);
+    };reader.readAsDataURL(file);
+  });
+}
+async function deletePost(post){
+  if(!confirm("هل تريد حذف المقال «"+post.title+"»؟"))return;
+  try{await api("deletePost",{id:post.id});state.posts=state.posts.filter(x=>x.id!==post.id);renderPosts();showToast("تم حذف المقال.");}
+  catch(error){showToast(error.message,"error");}
+}
+async function deleteCategory(category){
+  if(!confirm("هل تريد حذف التصنيف «"+category.name+"»؟"))return;
+  try{await api("deleteCategory",{id:category.id});state.categories=state.categories.filter(x=>x.id!==category.id);renderCategories();showToast("تم حذف التصنيف.");}
+  catch(error){showToast(error.message,"error");}
+}
+async function deleteProduct(product){
+  if(!confirm("سيتم إخفاء المنتج من المكتبة مع الاحتفاظ بالطلبات المرتبطة به. متابعة؟"))return;
+  try{await api("deleteProduct",{id:product.id});state.products=state.products.filter(x=>x.id!==product.id);renderProducts();showToast("تم حذف المنتج من العرض.");}
+  catch(error){showToast(error.message,"error");}
+}
+async function savePost(event){
+  event.preventDefault();if(state.busy)return;setBusy(true);
+  const data={
+    id:state.editingPostId,title:$("postTitle").value,excerpt:$("postExcerpt").value,content:$("postContent").value,
+    categoryId:$("postCategory").value,tag:$("postCategory").selectedOptions[0]?.textContent||"",
+    status:$("postStatus").value,imageUrl:$("postImageUrl").value,hasImage:Boolean($("postImageUrl").value.trim())
+  };
+  try{
+    await api(state.editingPostId?"updatePost":"createPost",data);closeBackdrop("postBackdrop");showToast("تم حفظ المقال بنجاح.");await loadData(false);
+  }catch(error){showToast(error.message,"error");}
+  finally{setBusy(false);}
+}
+async function saveCategory(event){
+  event.preventDefault();if(state.busy)return;setBusy(true);
+  const data={id:state.editingCategoryId,name:$("categoryName").value,order:$("categoryOrder").value};
+  try{
+    await api(state.editingCategoryId?"updateCategory":"createCategory",data);closeBackdrop("categoryBackdrop");showToast("تم حفظ التصنيف.");await loadData(false);
+  }catch(error){showToast(error.message,"error");}
+  finally{setBusy(false);}
+}
+async function saveProduct(event){
+  event.preventDefault();if(state.busy)return;
+  if(state.productImages.length>8){showToast("الحد الأقصى 8 صور.","error");return;}
+  setBusy(true);
+  const data={
+    id:state.editingProductId,type:$("productType").value,title:$("productTitle").value,description:$("productDescription").value,
+    price:$("productPrice").value,isFree:$("productFree").checked,isActive:$("productActive").checked,
+    featuredHome:$("productFeatured").checked,order:$("productOrder").value,images:state.productImages
+  };
+  try{
+    await api(state.editingProductId?"updateProduct":"createProduct",data);closeBackdrop("productBackdrop");showToast("تم حفظ المنتج في قاعدة البيانات.");await loadData(false);
+  }catch(error){showToast(error.message,"error");}
+  finally{setBusy(false);}
+}
+async function moveProduct(id,direction){
+  const index=state.products.findIndex(x=>x.id===id),target=index+direction;
+  if(index<0||target<0||target>=state.products.length)return;
+  [state.products[index],state.products[target]]=[state.products[target],state.products[index]];
+  state.products.forEach((p,i)=>p.order=i);renderProducts();
+  try{await api("reorderProducts",{ids:state.products.map(x=>x.id)});showToast("تم حفظ ترتيب المنتجات.");}
+  catch(error){showToast(error.message,"error");await loadData(false);}
+}
+async function loadData(showLoading=true){
+  if(showLoading){$("loadState").hidden=false;$("loadState").className="state";$("loadState").textContent="جارٍ تحميل البيانات...";$("appContent").hidden=true;}
+  try{
+    const data=await api();
+    state.posts=data.posts||[];state.categories=data.categories||[];state.products=data.products||[];state.orders=data.orders||[];
+    state.capabilities=data.capabilities||{};state.availability=data.availability||{};state.truncated=data.truncated||{};state.actor=data.actor||state.actor;
+    $("greet").textContent="مرحباً "+(state.actor.name||"مدير النظام");$("adminAvatar").textContent=(state.actor.name||"م").trim().charAt(0);
+    if(data.site?.url){$("sitePill").href=data.site.url;try{$("siteName").textContent=new URL(data.site.url).host;}catch{$("siteName").textContent=data.site.url;}}
+    if(!applyPermissions())return;
+    $("loadState").hidden=true;$("appContent").hidden=false;
+    $("truncatedNote").hidden=!Object.values(state.truncated).some(Boolean);
+    $("updatedAt").textContent="آخر تحديث: "+new Date(data.generatedAt||Date.now()).toLocaleString("ar-EG");
+    switchTab(state.activeTab);
+  }catch(error){
+    $("loadState").hidden=false;$("loadState").className="state error";$("loadState").textContent=error.message+" ";
+    const retry=node("button","retry","إعادة المحاولة");retry.type="button";retry.addEventListener("click",()=>loadData(true));$("loadState").appendChild(retry);
+  }
+}
+document.querySelectorAll("[data-tab]").forEach(button=>button.addEventListener("click",()=>switchTab(button.dataset.tab)));
+$("addBtn").addEventListener("click",()=>{
+  if(state.activeTab==="blog-edit")openPost();
+  else if(state.activeTab==="blog-tags")openCategory();
+  else if(state.activeTab==="store-products")openProduct();
+});
+document.querySelectorAll("[data-close]").forEach(button=>button.addEventListener("click",()=>closeBackdrop(button.dataset.close)));
+document.querySelectorAll(".modal-backdrop").forEach(backdrop=>backdrop.addEventListener("click",event=>{if(event.target===backdrop)closeBackdrop(backdrop.id);}));
+document.addEventListener("keydown",event=>{if(event.key==="Escape")document.querySelectorAll(".modal-backdrop.open").forEach(item=>closeBackdrop(item.id));});
+$("postForm").addEventListener("submit",savePost);$("categoryForm").addEventListener("submit",saveCategory);$("productForm").addEventListener("submit",saveProduct);
+$("productFree").addEventListener("change",()=>{$("productPrice").disabled=$("productFree").checked;if($("productFree").checked)$("productPrice").value="0";});
+$("productSearch").addEventListener("input",renderProducts);$("productTypeFilter").addEventListener("change",renderProducts);$("productStatusFilter").addEventListener("change",renderProducts);
+["orderProductFilter","orderTypeFilter"].forEach(id=>$(id).addEventListener("change",renderOrders));$("orderStudentSearch").addEventListener("input",renderOrders);
+$("productImages").addEventListener("change",async event=>{
+  const files=Array.from(event.target.files||[]);if(!files.length)return;
+  if(state.productImages.length+files.length>8){showToast("يمكن إضافة 8 صور كحد أقصى.","error");event.target.value="";return;}
+  try{for(const file of files){if(!/^image\/(jpeg|png|webp)$/.test(file.type))throw new Error("الصيغ المدعومة JPG وPNG وWEBP فقط.");state.productImages.push(await compressImage(file));}renderProductImageGrid();}
+  catch(error){showToast(error.message,"error");}
+  finally{event.target.value="";}
+});
+$("tourBtn").addEventListener("click",()=>openBackdrop("tourBackdrop"));
+$("themeToggle").addEventListener("click",()=>{
+  const root=document.documentElement,next=root.dataset.theme==="dark"?"light":"dark";root.dataset.theme=next;
+  try{localStorage.setItem("admin-theme",next);}catch(_){}
+});
+try{const saved=localStorage.getItem("admin-theme");if(saved)document.documentElement.dataset.theme=saved;}catch(_){}
+const adminMenuBtn=$("adminMenuBtn"),adminProfileMenu=$("adminProfileMenu");
+adminMenuBtn.addEventListener("click",event=>{event.stopPropagation();const opening=adminProfileMenu.hidden;adminProfileMenu.hidden=!opening;adminMenuBtn.setAttribute("aria-expanded",String(opening));});
+document.addEventListener("click",event=>{if(!event.target.closest(".user-menu")){adminProfileMenu.hidden=true;adminMenuBtn.setAttribute("aria-expanded","false");}});
+$("profileLogoutBtn").addEventListener("click",async()=>{
+  $("profileLogoutBtn").disabled=true;
+  try{await fetch("/api/auth/logout",{method:"POST",credentials:"same-origin"});}catch(_){}
+  location.replace("login.html");
+});
+loadData(true);
+</script>
+</body>
+</html>
