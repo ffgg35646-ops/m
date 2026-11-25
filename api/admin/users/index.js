@@ -502,8 +502,11 @@ async function writeAdmin(database, auth, action, payload) {
   const parsedId = parseMongoId(adminId);
   const target = await admins.findOne({ $or: [{ _id: parsedId }, { _id: adminId }] });
   if (!target) throw new Error("لم يتم العثور على المشرف.");
+  if (String(target._id) === String(auth.session.userId)) {
+    throw new Error("لا يمكن تعديل حسابك الحالي من صفحة إدارة المشرفين. استخدم صفحة الملف الشخصي.");
+  }
   if (isOwnerRecord(target) || (!auth.builtInAdmin && hasElevatedAdminRole(target))) {
-    throw new Error("هذا حساب مدير بصلاحيات مرتفعة ولا يمكن للمشرف تعديله.");
+    throw new Error("هذا حساب مالك أو مدير بصلاحيات مرتفعة ولا يمكن تعديله من هذا الحساب.");
   }
 
   if (action === "updateAdmin") {
