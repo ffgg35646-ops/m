@@ -2,6 +2,7 @@ const crypto = require("crypto");
 const { db, collectionName, json, method } = require("../_lib/auth");
 
 const numberEnv = (name) => {
+  if (process.env[name] === undefined || process.env[name] === "") return null;
   const value = Number(process.env[name]);
   return Number.isFinite(value) && value >= 0 ? value : null;
 };
