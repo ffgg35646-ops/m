@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تسجيل الدخول - منصة علي عليان الدولية</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Cairo', 'Tajawal', sans-serif; background-color: #f3f5f8; color: #1e293b; overflow-x: hidden; }
+    .promo-panel { background: linear-gradient(145deg, #279be4 0%, #1c8ed6 55%, #1579ba 100%); position: relative; overflow: hidden; }
+    .promo-circle-top { position: absolute; width: 260px; height: 260px; border-radius: 9999px; background: rgba(255,255,255,.08); top: -90px; left: -60px; pointer-events: none; }
+    .promo-circle-bottom { position: absolute; width: 300px; height: 300px; border-radius: 9999px; background: rgba(255,255,255,.07); bottom: -110px; right: -80px; pointer-events: none; }
+    .feature-card { background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22); backdrop-filter: blur(4px); border-radius: 14px; transition: transform .2s ease, background-color .2s ease; }
+    .feature-card:hover { transform: translateY(-2px); background: rgba(255,255,255,.2); }
+    .teal-btn { background: linear-gradient(180deg,#109ab3 0%,#0c8ea6 100%); transition: transform .15s ease,box-shadow .2s ease,filter .2s ease; }
+    .teal-btn:hover { filter: brightness(1.05); box-shadow: 0 8px 20px rgba(12,142,166,.28); }
+    .teal-btn:active { transform: scale(.99); }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <header class="sticky top-0 z-40 w-full bg-white border-b border-slate-200/80 shadow-[0_2px_10px_rgba(15,23,42,0.03)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-4 lg:gap-7 min-w-0">
+        <a href="index.html" class="flex items-center gap-2 shrink-0" title="منصة علي عليان الدولية">
+          <span class="w-9 h-9 rounded-full overflow-hidden border border-slate-200 bg-slate-100 flex items-center justify-center">
+            <svg viewBox="0 0 64 64" class="w-full h-full"><rect width="64" height="64" fill="#e2e8f0" /><circle cx="32" cy="24" r="11" fill="#475569" /><path d="M12 60 C12 43, 52 43, 52 60 Z" fill="#1e293b" /></svg>
+          </span>
+        </a>
+        <nav class="hidden md:flex items-center gap-5 lg:gap-6 text-sm font-semibold text-slate-600">
+          <a href="index.html" class="hover:text-[#0c8ea6] transition-colors py-1">الرئيسية</a>
+          <a href="courses.html" class="hover:text-[#0c8ea6] transition-colors py-1">الكورسات</a>
+          <a href="#live" class="hover:text-[#0c8ea6] transition-colors py-1">الجلسات المباشرة</a>
+          <a href="#library" class="hover:text-[#0c8ea6] transition-colors py-1">المكتبه</a>
+          <a href="#blog" class="hover:text-[#0c8ea6] transition-colors py-1">المدونة</a>
+          <a href="support.html" class="hover:text-[#0c8ea6] transition-colors py-1">تواصل معنا</a>
+        </nav>
+      </div>
+      <div class="flex items-center gap-2 sm:gap-2.5 shrink-0">
+        <button type="button" id="registerNavBtn" class="px-3.5 sm:px-4 h-9 rounded-lg text-xs sm:text-sm font-bold text-white bg-[#0c8ea6] hover:bg-[#09788d] transition-colors shadow-xs">إنشاء حساب</button>
+        <a href="#login-form" class="px-3.5 sm:px-4 h-9 rounded-lg text-xs sm:text-sm font-bold text-[#0c8ea6] border border-[#0c8ea6] bg-white hover:bg-[#0c8ea6]/5 transition-colors inline-flex items-center justify-center">تسجيل الدخول</a>
+        <button type="button" id="langToggleBtn" aria-label="اللغة" class="w-9 h-9 rounded-full border border-slate-200 text-[#1c8ed6] hover:bg-slate-50 flex items-center justify-center transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </button>
+        <span class="px-2.5 h-9 rounded-full border border-slate-200 text-xs font-bold text-[#1c8ed6] inline-flex items-center justify-center select-none">EGP</span>
+      </div>
+    </div>
+    <div class="flex md:hidden items-center gap-2 overflow-x-auto no-scrollbar px-4 py-2 border-t border-slate-100 bg-slate-50/80 text-xs font-semibold">
+      <a href="index.html" class="px-2.5 py-1 rounded-md text-slate-600 whitespace-nowrap">الرئيسية</a>
+      <a href="courses.html" class="px-2.5 py-1 rounded-md text-slate-600 whitespace-nowrap">الكورسات</a>
+      <a href="#live" class="px-2.5 py-1 rounded-md text-slate-600 whitespace-nowrap">الجلسات المباشرة</a>
+      <a href="#library" class="px-2.5 py-1 rounded-md text-slate-600 whitespace-nowrap">المكتبه</a>
+      <a href="#blog" class="px-2.5 py-1 rounded-md text-slate-600 whitespace-nowrap">المدونة</a>
+      <a href="support.html" class="px-2.5 py-1 rounded-md text-slate-600 whitespace-nowrap">تواصل معنا</a>
+    </div>
+  </header>
+
+  <main class="flex-1 py-8 sm:py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+    <div class="w-full max-w-6xl bg-white rounded-3xl shadow-[0_14px_45px_rgba(15,23,42,0.07)] border border-slate-100 overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+      <section class="lg:col-span-6 promo-panel text-white p-6 sm:p-9 lg:p-10 flex flex-col justify-between">
+        <div class="promo-circle-top"></div><div class="promo-circle-bottom"></div>
+        <div class="relative z-10">
+          <div class="flex justify-start mb-4"><div class="w-12 h-12 rounded-xl bg-white/20 border border-white/30 overflow-hidden flex items-center justify-center shadow-xs"><svg viewBox="0 0 64 64" class="w-full h-full"><rect width="64" height="64" fill="#dbeafe" /><circle cx="32" cy="23" r="11" fill="#334155" /><path d="M10 60 C10 42, 54 42, 54 60 Z" fill="#0f172a" /></svg></div></div>
+          <h1 class="text-2xl sm:text-3xl font-extrabold leading-snug mb-6">مرحباً بعودتك إلى منصة علي عليان الدولية</h1>
+          <div class="space-y-3.5">
+            <div class="feature-card p-3.5 sm:p-4 flex items-start gap-3.5"><div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0 mt-0.5"><svg class="w-5 h-5 text-amber-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div><h2 class="text-sm sm:text-base font-bold text-white">محتوى تعليمي متميز</h2><p class="text-xs sm:text-[13px] text-white/90 leading-relaxed mt-0.5">دورات تعليمية عالية الجودة مع شرح مفصل ومبسط لجميع المواد الدراسية</p></div></div>
+            <div class="feature-card p-3.5 sm:p-4 flex items-start gap-3.5"><div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0 mt-0.5"><svg class="w-5 h-5 text-rose-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div><h2 class="text-sm sm:text-base font-bold text-white">امتحانات دوريه</h2><p class="text-xs sm:text-[13px] text-white/90 leading-relaxed mt-0.5">يمكن حل الامتحانات المخصصه لكل درس وتحميل ملفات الكورس بدون قيود</p></div></div>
+            <div class="feature-card p-3.5 sm:p-4 flex items-start gap-3.5"><div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0 mt-0.5"><svg class="w-5 h-5 text-emerald-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div><div><h2 class="text-sm sm:text-base font-bold text-white">مراجعات مجانيه</h2><p class="text-xs sm:text-[13px] text-white/90 leading-relaxed mt-0.5">نقدم مراجعات مستمره مع كل وحده وشامل</p></div></div>
+            <div class="feature-card p-3.5 sm:p-4 flex items-start gap-3.5"><div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0 mt-0.5"><svg class="w-5 h-5 text-sky-100" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 9l-5 5-2-2-4 4"/></svg></div><div><h2 class="text-sm sm:text-base font-bold text-white">مشاهدات غير محدوده للكورسات</h2><p class="text-xs sm:text-[13px] text-white/90 leading-relaxed mt-0.5">يمكنك مشاهده الكورسات عدد غير محدود حتي نهايه السنه الدراسيه</p></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="login-form" class="lg:col-span-6 bg-white p-6 sm:p-10 lg:p-12 flex flex-col justify-center">
+        <div class="w-full max-w-md mx-auto">
+          <div class="text-center mb-7"><h2 class="text-2xl sm:text-[28px] font-extrabold text-[#1289a7] mb-1.5">تسجيل الدخول</h2><p class="text-xs sm:text-sm text-slate-400 font-medium">مرحباً بعودتك! سجل دخولك للمتابعة</p><div class="w-12 h-1 bg-[#1289a7]/30 rounded-full mx-auto mt-3"></div></div>
+          <form id="loginForm" class="space-y-5" novalidate>
+            <div><label for="identityInput" class="block text-xs sm:text-sm font-bold text-slate-700 mb-2">رقم الهاتف أو البريد الإلكتروني</label><div class="relative flex items-center"><input type="text" id="identityInput" value="gjjfd435@gmail.com" required class="w-full bg-slate-100/90 border border-slate-200/80 focus:border-[#0c8ea6] focus:bg-white focus:ring-2 focus:ring-[#0c8ea6]/15 rounded-xl py-3 pr-4 pl-11 text-sm text-slate-700 font-medium outline-none transition-all text-left" dir="ltr" /><span class="absolute left-3.5 text-slate-400 pointer-events-none"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></span></div></div>
+            <div><label for="passwordInput" class="block text-xs sm:text-sm font-bold text-slate-700 mb-2">كلمة المرور</label><div class="relative flex items-center"><input type="password" id="passwordInput" value="••••••••••••" required class="w-full bg-slate-100/90 border border-slate-200/80 focus:border-[#0c8ea6] focus:bg-white focus:ring-2 focus:ring-[#0c8ea6]/15 rounded-xl py-3 pr-10 pl-10 text-sm text-slate-700 tracking-widest outline-none transition-all text-left" dir="ltr" /><button type="button" id="togglePasswordBtn" aria-label="إظهار أو إخفاء كلمة المرور" class="absolute right-3 text-slate-400 hover:text-slate-600 transition-colors"><svg id="eyeIcon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><span class="absolute left-3.5 text-slate-400 pointer-events-none"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></span></div><div class="mt-2.5"><button type="button" id="forgotPasswordBtn" class="text-xs font-semibold text-[#1898b6] hover:underline">نسيت كلمة المرور؟</button></div></div>
+            <div id="statusBox" class="hidden rounded-xl px-4 py-3 text-xs sm:text-sm font-semibold border"></div>
+            <button type="submit" id="submitLoginBtn" class="teal-btn w-full py-3.5 rounded-xl text-white font-bold text-sm sm:text-base shadow-md cursor-pointer">تسجيل الدخول</button>
+          </form>
+          <div class="relative my-6 flex items-center justify-center"><div class="w-full border-t border-slate-200"></div><span class="bg-white px-3 text-xs font-semibold text-slate-400">أو</span></div>
+          <div class="text-center"><button type="button" id="passkeyBtn" class="inline-flex items-center justify-center gap-2 text-xs sm:text-sm font-bold text-[#1493b0] hover:text-[#0b7088] py-2 px-4 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer"><svg class="w-4 h-4 text-[#1493b0]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg><span>تسجيل الدخول بمفتاح المرور</span></button></div>
+          <div class="mt-6 text-center text-xs sm:text-sm text-slate-500"><span>ليس لديك حساب؟</span><button type="button" id="createAccountLink" class="font-bold text-[#1493b0] hover:underline mr-1 cursor-pointer">إنشاء حساب جديد</button></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer id="contact" class="bg-[#0e1726] text-slate-300 pt-14 pb-8 px-4 sm:px-6 lg:px-8 border-t border-slate-800/80">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 pb-12 border-b border-slate-800 text-center md:text-right">
+        <div class="flex flex-col items-center md:items-start">
+          <div class="flex items-center gap-2.5 mb-4"><span class="w-7 h-7 rounded-full overflow-hidden border border-slate-600 bg-slate-700 inline-flex items-center justify-center shrink-0"><svg viewBox="0 0 40 40" class="w-full h-full"><circle cx="20" cy="14" r="7" fill="#cbd5e1"/><path d="M8 38 C8 27, 32 27, 32 38 Z" fill="#94a3b8"/></svg></span><h3 class="text-white font-bold text-lg">منصة علي عليان الدولية</h3></div>
+          <p class="text-xs sm:text-sm leading-relaxed text-slate-300/90 mb-5 max-w-sm">"المنصة الدولية | نصنع التفوق في اللغة العربية برؤية عالمية وأدوات عصرية. مناهج متخصصة، وتأسيس احترافي، وتجربة تعليمية ذكية تواكب طموحك"</p>
+          <div class="flex items-center justify-center md:justify-start gap-2.5 mb-5">
+            <a href="#youtube" aria-label="YouTube" class="w-9 h-9 rounded-lg bg-[#1c283b] hover:bg-[#263650] text-white flex items-center justify-center transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg></a>
+            <a href="#instagram" aria-label="Instagram" class="w-9 h-9 rounded-lg bg-[#1c283b] hover:bg-[#263650] text-white flex items-center justify-center transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+            <a href="#facebook" aria-label="Facebook" class="w-9 h-9 rounded-lg bg-[#1c283b] hover:bg-[#263650] text-white flex items-center justify-center transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5z"/></svg></a>
+          </div>
+          <div class="grid grid-cols-2 gap-2.5 w-full max-w-[270px]" dir="ltr">
+            <a href="#google-play" class="flex items-center gap-2 bg-[#090e17] hover:bg-black border border-slate-700/80 rounded-lg px-2.5 py-1.5 transition-colors"><svg class="w-4 h-4 text-emerald-400 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M3 20.5v-17c0-.83.94-1.3 1.6-.8l14 8.5c.6.37.6 1.23 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z"/></svg><div class="leading-tight text-left"><div class="text-[8px] uppercase text-slate-400">GET IT ON</div><div class="text-[11px] font-bold text-white">Google Play</div></div></a>
+            <a href="#app-store" class="flex items-center gap-2 bg-[#090e17] hover:bg-black border border-slate-700/80 rounded-lg px-2.5 py-1.5 transition-colors"><svg class="w-4 h-4 text-white shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.96 6.32c.67-.81 1.12-1.94 1-3.07-.96.04-2.13.64-2.82 1.45-.61.71-1.15 1.87-1.01 2.97 1.07.08 2.16-.54 2.83-1.35z"/></svg><div class="leading-tight text-left"><div class="text-[8px] text-slate-400">Download on the</div><div class="text-[11px] font-bold text-white">App Store</div></div></a>
+            <a href="#macos" class="flex items-center gap-2 bg-[#090e17] hover:bg-black border border-slate-700/80 rounded-lg px-2.5 py-1.5 transition-colors"><svg class="w-4 h-4 text-white shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.96 6.32c.67-.81 1.12-1.94 1-3.07-.96.04-2.13.64-2.82 1.45-.61.71-1.15 1.87-1.01 2.97 1.07.08 2.16-.54 2.83-1.35z"/></svg><div class="leading-tight text-left"><div class="text-[8px] text-slate-400">Download for</div><div class="text-[11px] font-bold text-white">macOS</div></div></a>
+            <a href="#windows" class="flex items-center gap-2 bg-[#090e17] hover:bg-black border border-slate-700/80 rounded-lg px-2.5 py-1.5 transition-colors"><svg class="w-4 h-4 text-sky-400 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M3 5.55L10.35 4.5v7.05H3V5.55zm0 12.9l7.35 1.05v-7.05H3v6zm8.25 1.18L21 21v-8.55h-9.75v7.18zm0-15.26v7.18H21V3l-9.75 1.37z"/></svg><div class="leading-tight text-left"><div class="text-[8px] text-slate-400">Download for</div><div class="text-[11px] font-bold text-white">Windows</div></div></a>
+          </div>
+        </div>
+        <div class="flex flex-col items-center text-center"><h3 class="text-white font-bold text-base mb-5">اتصل بنا</h3><div class="space-y-3 text-sm text-slate-300" dir="ltr"><div><a href="tel:+201126529544" class="hover:text-white transition-colors">201126529544+</a></div><div><a href="tel:+966547803289" class="hover:text-white transition-colors">+966547803289</a></div><div><a href="mailto:alimohammed20204@gmail.com" class="hover:text-white transition-colors">alimohammed20204@gmail.com</a></div></div></div>
+        <div class="flex flex-col items-center text-center"><h3 class="text-white font-bold text-base mb-5">قانوني</h3><ul class="space-y-3 text-sm text-slate-300"><li><a href="#terms" class="hover:text-white transition-colors">الشروط والأحكام</a></li><li><a href="#privacy" class="hover:text-white transition-colors">سياسة الخصوصية</a></li><li><a href="support.html" class="hover:text-white transition-colors">تواصل معنا</a></li></ul></div>
+      </div>
+      <div class="pt-7 flex flex-col items-center justify-center gap-2 text-center text-xs sm:text-sm text-slate-400"><div>© 2026 منصة علي عليان الدولية جميع الحقوق محفوظة</div><div class="text-xs text-slate-400/90" dir="ltr">صُنع بـ <span class="text-rose-500">♥</span> بواسطة TeachingPortals</div></div>
+    </div>
+  </footer>
+  <a href="#support-chat" aria-label="المساعدة والدعم" class="fixed bottom-5 left-5 z-40 w-12 h-12 rounded-full bg-[#1c8ed6] hover:bg-[#1577b5] text-white shadow-lg flex items-center justify-center transition-transform hover:scale-105"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></a>
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const identityInput = document.getElementById('identityInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+    const submitLoginBtn = document.getElementById('submitLoginBtn');
+    const statusBox = document.getElementById('statusBox');
+    const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
+    const passkeyBtn = document.getElementById('passkeyBtn');
+    const createAccountLink = document.getElementById('createAccountLink');
+    const registerNavBtn = document.getElementById('registerNavBtn');
+    function showMessage(text, type = 'info') {
+      statusBox.textContent = text;
+      statusBox.classList.remove('hidden','bg-emerald-50','text-emerald-700','border-emerald-200','bg-sky-50','text-sky-700','border-sky-200','bg-rose-50','text-rose-700','border-rose-200');
+      if (type === 'success') statusBox.classList.add('bg-emerald-50','text-emerald-700','border-emerald-200');
+      else if (type === 'error') statusBox.classList.add('bg-rose-50','text-rose-700','border-rose-200');
+      else statusBox.classList.add('bg-sky-50','text-sky-700','border-sky-200');
+    }
+    togglePasswordBtn.addEventListener('click', () => {
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+      passwordInput.classList.toggle('tracking-widest', !isPassword);
+    });
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const identity = identityInput.value.trim();
+      const password = passwordInput.value.trim();
+      if (!identity || !password) { showMessage('يرجى إدخال البريد الإلكتروني أو رقم الهاتف وكلمة المرور.','error'); return; }
+      submitLoginBtn.disabled = true;
+      submitLoginBtn.textContent = 'جاري تسجيل الدخول...';
+      setTimeout(() => {
+        submitLoginBtn.disabled = false;
+        submitLoginBtn.textContent = 'تسجيل الدخول';
+        showMessage(`تم التحقق من بيانات الحساب (${identity}) بنجاح.`,'success');
+      }, 650);
+    });
+    forgotPasswordBtn.addEventListener('click', () => {
+      const identity = identityInput.value.trim() || 'حسابك';
+      showMessage(`تم إرسال رابط استعادة كلمة المرور إلى ${identity}.`,'info');
+    });
+    passkeyBtn.addEventListener('click', () => showMessage('جاري تهيئة تسجيل الدخول عبر مفتاح المرور (Passkey)...','info'));
+    const goToRegister = () => showMessage('يمكنك الانتقال إلى صفحة إنشاء حساب جديد عبر منصة علي عليان الدولية.','info');
+    createAccountLink.addEventListener('click', goToRegister);
+    registerNavBtn.addEventListener('click', goToRegister);
+  </script>
+</body>
+</html>
