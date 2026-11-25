@@ -70,6 +70,7 @@ td{padding:12px;border-bottom:1px solid var(--line);font-size:12px;vertical-alig
       <nav class="user-dropdown" id="adminProfileMenu" hidden>
         <a class="dropdown-item" id="menuDashboardLink" href="admin.html">🏠 لوحة التحكم</a>
         <a class="dropdown-item" id="menuCoursesLink" href="admin-courses.html">📚 إدارة الدورات</a>
+        <a class="dropdown-item" id="menuBlogLibraryLink" href="admin-blog-library.html">📰 المدونة والمكتبة</a>
         <a class="dropdown-item" id="menuProfileLink" href="admin-profile.html">👤 الملف الشخصي</a>
         <button class="dropdown-item dropdown-logout" id="profileLogoutBtn" type="button">↪ تسجيل الخروج</button>
       </nav>
@@ -85,6 +86,7 @@ td{padding:12px;border-bottom:1px solid var(--line);font-size:12px;vertical-alig
     <div class="side-title">إدارة المنصة</div>
     <a id="academicLink" href="academic-structure.html">🎓 الهيكل الأكاديمي</a>
     <a href="admin-courses.html" id="coursesLink">📚 إدارة الدورات</a>
+    <a href="admin-blog-library.html" id="blogLibraryLink">📰 المدونة والمكتبة</a>
     <a href="admin-users.html" class="active">👥 إدارة المستخدمين</a>
     <a id="messagesLink" href="admin-messages.html">✉️ رسائل التواصل</a>
     <a id="notificationsLink" href="admin-notifications.html">🔔 الإشعارات</a>
@@ -530,6 +532,8 @@ function bindHeader(data) {
   $("academicLink").hidden=state.capabilities.academic!==true;
   $("coursesLink").hidden=state.capabilities.courses!==true;
   $("menuCoursesLink").hidden=state.capabilities.courses!==true;
+  $("blogLibraryLink").hidden=state.capabilities.blogLibrary!==true;
+  $("menuBlogLibraryLink").hidden=state.capabilities.blogLibrary!==true;
   if(data.site?.url){
     try{$("sitePill").href=data.site.url;$("siteName").textContent=new URL(data.site.url).host;$("sitePill").hidden=false;}catch(_){}
   }
@@ -561,8 +565,8 @@ async function loadUsers(showLoading=true) {
     state.admins=data.admins||[];state.students=data.students||[];state.roles=data.roles||[];
     state.academic=data.academic||{categories:[],years:[]};state.capabilities=data.capabilities||{};
     state.updatedAt=data.generatedAt;state.truncatedAdmins=Boolean(data.truncated?.admins);state.truncatedStudents=Boolean(data.truncated?.students);
-    if(!state.capabilities.admins&&!state.capabilities.students&&!state.capabilities.roles&&state.capabilities.courses){
-      location.replace("admin-courses.html");return;
+    if(!state.capabilities.admins&&!state.capabilities.students&&!state.capabilities.roles&&(state.capabilities.courses||state.capabilities.blogLibrary)){
+      location.replace(state.capabilities.courses?"admin-courses.html":"admin-blog-library.html");return;
     }
     bindHeader(data);
     if(!state.capabilities[state.activeTab]) {
