@@ -164,7 +164,7 @@ function publicAdmin(record, actorId) {
   const fullName = text(record.fullName || record.name || [firstName, lastName].filter(Boolean).join(" "));
   const owner = isOwnerRecord(record) || String(record._id) === String(actorId);
   const statusActive = record.isActive !== false && record.active !== false &&
-    !["blocked", "disabled", "deleted", "محظور", "غير نشط", "محذوف"].includes(normalizeRole(record.status));
+    !["blocked", "disabled", "inactive", "deleted", "محظور", "غير نشط", "غير فعال", "محذوف"].includes(normalizeRole(record.status));
   return {
     id: String(record._id),
     firstName: firstName || fullName.split(/\s+/)[0] || "",
