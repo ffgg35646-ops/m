@@ -22,6 +22,11 @@ USERS_COLLECTION=users
 COURSES_COLLECTION=courses
 ENROLLMENTS_COLLECTION=enrollments
 ORDERS_COLLECTION=orders
+BLOG_POSTS_COLLECTION=blog_posts
+BLOG_CATEGORIES_COLLECTION=blog_categories
+LIBRARY_PRODUCTS_COLLECTION=library_products
+# Optional override when library orders use a separate collection
+# LIBRARY_ORDERS_COLLECTION=library_orders
 COUPONS_COLLECTION=coupons
 ACCESS_CODES_COLLECTION=access_codes
 
