@@ -1,9 +1,8 @@
-const crypto = require("crypto");
 const { json } = require("../_lib/auth");
 const { requireAdmin } = require("../_lib/admin");
 
 const COLLECTION = process.env.ACADEMIC_STRUCTURE_COLLECTION || "academic_structure";
-const IMAGE_LIMIT = 900000;
+const IMAGE_LIMIT = 380000;
 
 const DEFAULT_STRUCTURE = {
   categories: [
@@ -97,6 +96,12 @@ function normalizeStructure(input, previous) {
   });
 
   const categoryNamesSet = new Set(categories.map(item => item.name));
+  const removedCategoryStillUsed = (old.categories || []).find(category =>
+    !categoryNamesSet.has(category.name) && yearsInput.some(year => String(year?.category || "") === category.name)
+  );
+  if (removedCategoryStillUsed) {
+    throw new Error("لا يمكن حذف فئة مرتبطة بسنوات دراسية. انقل سنواتها أو احذفها أولاً.");
+  }
   const yearIds = new Set();
   const years = yearsInput.map(item => {
     const id = cleanId(item?.id, yearIds);
@@ -131,14 +136,6 @@ function normalizeStructure(input, previous) {
       createdAt: cleanCreatedAt(item.createdAt, oldByType.subjects.get(id)?.createdAt)
     };
   });
-
-  const usedCategories = new Set(years.map(item => item.category));
-  const removedInUse = (old.categories || []).filter(item =>
-    !categoryNamesSet.has(item.name) && usedCategories.has(item.name)
-  );
-  if (removedInUse.length) {
-    throw new Error("لا يمكن حذف فئة مرتبطة بسنوات دراسية. انقل سنواتها أو احذفها أولاً.");
-  }
 
   return { categories, years, subjects };
 }
