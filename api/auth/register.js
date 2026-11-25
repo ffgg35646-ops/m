@@ -32,7 +32,14 @@ async function academicOptions(database) {
       { id: "cat-6", name: "الكورسات المجانية" },
       { id: "cat-7", name: "تعليم اللغة لغير الناطقين بها" }
     ],
-    years: []
+    years: [
+      { id: "year-1", name: "KG1 , KG2", category: "النيل" },
+      { id: "year-2", name: "Grade 1", category: "النيل" },
+      { id: "year-3", name: "Grade 2", category: "النيل" },
+      { id: "year-4", name: "Grade 3", category: "النيل" },
+      { id: "year-5", name: "Grade 4", category: "النيل" },
+      { id: "year-6", name: "Grade 5", category: "النيل" }
+    ]
   };
 }
 
