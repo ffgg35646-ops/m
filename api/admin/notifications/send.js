@@ -22,9 +22,9 @@ module.exports = async function handler(req, res) {
   try {
     const auth = await requireAdmin(req);
     if (!auth.ok) return json(res, auth.status, { ok:false, message:auth.message });
-    const message = String(req.body?.message || "").trim().slice(0, 2000);
+    const message = String(req.body?.message || "").trim().slice(0, 500);
     const studentIds = Array.isArray(req.body?.studentIds)
-      ? [...new Set(req.body.studentIds.map(id => String(id).trim()).filter(Boolean))].slice(0, 500)
+      ? [...new Set(req.body.studentIds.map(id => String(id).trim()).filter(Boolean))].slice(0, 2000)
       : [];
     const includeParents = req.body?.includeParents !== false;
     if (message.length < 2) return json(res, 400, { ok:false, message:"اكتب نص الإشعار أولاً." });
