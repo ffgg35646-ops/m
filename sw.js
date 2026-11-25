@@ -5,8 +5,8 @@ self.addEventListener("push", event => {
   const title = payload.title || "منصة علي عليان الدولية";
   const options = {
     body: payload.body || "لديك إشعار جديد من المنصة.",
-    icon: "/icons/icon-192.png",
-    badge: "/icons/icon-192.png",
+    icon: "/icons/icon.svg",
+    badge: "/icons/icon.svg",
     data: { url: payload.url || "/dashboard.html" },
     dir: "rtl",
     lang: "ar"
