@@ -10,7 +10,7 @@ module.exports = async function handler(req,res) {
     const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
     const session = await database.collection("auth_sessions").findOne({tokenHash,expiresAt:{$gt:new Date()}});
     if (!session) return json(res,401,{ok:false,message:"انتهت جلسة الدخول."});
-    if (["admin","super_admin","owner","administrator"].includes(String(session.role).toLowerCase())) {
+    if (["admin","super_admin","owner","administrator","مدير النظام","مدير","مسؤول"].includes(String(session.role).toLowerCase())) {
       return json(res,403,{ok:false,message:"تسجيل هذا الجهاز مخصص لحسابات الطلاب وأولياء الأمور."});
     }
     const subscription = req.body?.subscription;
