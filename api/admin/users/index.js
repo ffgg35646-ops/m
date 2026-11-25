@@ -147,7 +147,7 @@ function isOwnerRecord(record, reqEmail = "") {
   const ownerEmail = String(process.env.OWNER_EMAIL || "").trim().toLowerCase();
   const ownerId = String(process.env.OWNER_ADMIN_ID || "").trim();
   return record?.isOwner === true ||
-    ["admin", "owner", "super_admin", "مالك"].includes(normalizeRole(record?.role)) ||
+    ["admin", "owner", "super_admin", "مدير النظام", "مالك"].includes(normalizeRole(record?.role)) ||
     Boolean(ownerEmail && String(record?.email || "").toLowerCase() === ownerEmail) ||
     Boolean(ownerId && String(record?._id || "") === ownerId);
 }
@@ -618,26 +618,25 @@ module.exports = async function handler(req, res) {
   try {
     const database = await getDatabase();
     if (req.method === "GET") {
-      const auth = await requireAdmin(req, { section: "صلاحيات المستخدمين", module: "الملف الشخصي", action: "عرض" });
-      if (!auth.ok) {
-        // Built-in administrators are allowed; custom roles need at least one visible section below.
-        const fallback = await requireAdmin(req, { section: "صلاحيات المستخدمين", module: "الطلاب", action: "عرض" });
-        if (!fallback.ok) {
-          const fallbackAdmins = await requireAdmin(req, { section: "صلاحيات المستخدمين", module: "المشرفون", action: "عرض" });
-          if (!fallbackAdmins.ok) {
-            const fallbackRoles = await requireAdmin(req, { section: "صلاحيات المستخدمين", module: "الأدوار والصلاحيات", action: "عرض" });
-            if (!fallbackRoles.ok) return json(res, fallbackRoles.status, { ok: false, message: fallbackRoles.message });
-            const capabilities = await roleCapabilities(database, fallbackRoles.roleName, fallbackRoles.builtInAdmin);
-            return json(res, 200, await loadData(fallbackRoles, capabilities));
-          }
-          const capabilities = await roleCapabilities(database, fallbackAdmins.roleName, fallbackAdmins.builtInAdmin);
-          return json(res, 200, await loadData(fallbackAdmins, capabilities));
+      const viewPermissions = [
+        { section: "صلاحيات المستخدمين", module: "المشرفون", action: "عرض" },
+        { section: "صلاحيات المستخدمين", module: "الطلاب", action: "عرض" },
+        { section: "صلاحيات المستخدمين", module: "الأدوار والصلاحيات", action: "عرض" },
+        { section: "صلاحيات المستخدمين", module: "الملف الشخصي", action: "عرض" }
+      ];
+      let authorized = null;
+      let lastFailure = { status: 403, message: "ليس لديك صلاحية عرض إدارة المستخدمين." };
+      for (const permission of viewPermissions) {
+        const candidate = await requireAdmin(req, permission);
+        if (!candidate.ok) { lastFailure = candidate; continue; }
+        const candidateCapabilities = await roleCapabilities(database, candidate.roleName, candidate.builtInAdmin);
+        if (candidateCapabilities.admins || candidateCapabilities.students || candidateCapabilities.roles) {
+          authorized = { auth: candidate, capabilities: candidateCapabilities };
+          break;
         }
-        const capabilities = await roleCapabilities(database, fallback.roleName, fallback.builtInAdmin);
-        return json(res, 200, await loadData(fallback, capabilities));
       }
-      const capabilities = await roleCapabilities(database, auth.roleName, auth.builtInAdmin);
-      return json(res, 200, await loadData(auth, capabilities));
+      if (!authorized) return json(res, lastFailure.status, { ok: false, message: lastFailure.message });
+      return json(res, 200, await loadData(authorized.auth, authorized.capabilities));
     }
 
     if (req.method !== "POST") {
