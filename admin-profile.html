@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f4f6f9" />
+  <title>الملف الشخصي - لوحة الإدارة | منصة علي عليان الدولية</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Tajawal', sans-serif; background-color: #f4f6f9; }
+    .side-link { display:flex; align-items:center; gap:12px; padding:11px 14px; border-radius:9px; color:#64748b; font-size:14px; transition:background .18s,color .18s; }
+    .side-link:hover { background:#f8fafc; color:#334155; }
+    .side-link.active { background:#eef2ff; color:#4f46e5; font-weight:700; }
+    .field { width:100%; border:1px solid #e2e8f0; border-radius:9px; padding:10px 14px; font-size:14px; outline:none; transition:border-color .18s,box-shadow .18s; background:#fff; }
+    .field:focus { border-color:#3b82f6; box-shadow:0 0 0 3px rgba(59,130,246,.12); }
+    .primary-btn { background:#2563eb; color:#fff; border-radius:9px; font-weight:700; transition:background .18s; }
+    .primary-btn:hover { background:#1d4ed8; }
+    .primary-btn:disabled { opacity:.65; cursor:not-allowed; }
+    .password-wrap { position:relative; }
+    .password-wrap .field { padding-left:42px; }
+    .password-toggle { position:absolute; left:13px; top:50%; transform:translateY(-50%); color:#94a3b8; }
+    .toast { position:fixed; bottom:20px; left:20px; z-index:60; display:flex; align-items:center; gap:9px; background:#1e293b; color:#fff; padding:12px 18px; border-radius:10px; box-shadow:0 8px 24px rgba(15,23,42,.18); font-size:13px; }
+    .toast[hidden] { display:none; }
+    @media(max-width:1023px){ .admin-sidebar{display:none;} }
+  </style>
+</head>
+<body class="text-slate-700 antialiased">
+  <div class="flex min-h-screen">
+    <aside class="admin-sidebar w-64 bg-white border-l border-slate-200 shadow-sm flex-shrink-0">
+      <div class="p-5 border-b border-slate-100 flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-lg">TP</div>
+        <span class="font-bold text-slate-800 text-lg">لوحة الإدارة</span>
+      </div>
+      <nav class="p-3 space-y-1 text-sm">
+        <a href="admin.html" class="side-link"><i class="fa-solid fa-house w-5 text-center text-slate-400"></i><span>لوحة التحكم</span></a>
+        <a href="#" class="side-link"><i class="fa-solid fa-gear w-5 text-center text-slate-400"></i><span>إعدادات المؤسسة</span></a>
+        <a href="#" class="side-link"><i class="fa-solid fa-crown w-5 text-center text-slate-400"></i><span>الاشتراك والفواتير</span></a>
+        <a href="admin-messages.html" class="side-link"><i class="fa-solid fa-envelope-open-text w-5 text-center text-slate-400"></i><span>الرسائل والإشعارات</span></a>
+        <a href="#" class="side-link"><i class="fa-solid fa-sitemap w-5 text-center text-slate-400"></i><span>الهيكل الأكاديمي</span></a>
+        <a href="#" class="side-link"><i class="fa-solid fa-users w-5 text-center text-slate-400"></i><span>إدارة المستخدمين</span></a>
+      </nav>
+    </aside>
+
+    <main class="flex-1 p-5 lg:p-6 space-y-6 max-w-6xl mx-auto min-w-0">
+      <section class="bg-gradient-to-l from-blue-600 to-indigo-700 rounded-xl p-6 text-white shadow-md flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-4 min-w-0">
+          <button id="avatarPickBtn" type="button" class="relative group cursor-pointer shrink-0" title="تغيير الصورة الشخصية" aria-label="تغيير الصورة الشخصية">
+            <span id="avatarPreview" class="w-16 h-16 rounded-full bg-white/20 border-2 border-white/60 flex items-center justify-center text-2xl overflow-hidden shadow-inner block"><i class="fa-solid fa-user text-white"></i></span>
+            <span class="absolute bottom-0 right-0 w-6 h-6 bg-blue-500 border-2 border-white rounded-full flex items-center justify-center text-[10px]"><i class="fa-solid fa-camera"></i></span>
+          </button>
+          <input type="file" id="avatarInput" accept="image/png,image/jpeg,image/webp" class="hidden" />
+          <div class="min-w-0">
+            <h1 id="headerFullName" class="text-xl sm:text-2xl font-bold truncate">جاري تحميل الحساب...</h1>
+            <p id="headerEmail" class="text-blue-100 text-sm break-all" dir="ltr"></p>
+            <button id="siteBadge" type="button" hidden class="mt-2 inline-flex items-center gap-2 bg-white text-slate-700 px-3 py-1 rounded-lg text-xs font-bold shadow-sm hover:bg-blue-50 transition">
+              <i class="fa-solid fa-globe text-blue-600"></i>
+              <span class="flex flex-col leading-tight text-right"><span class="text-[10px] text-slate-400 font-normal">موقعك</span><span id="siteDomain"></span></span>
+              <i class="fa-regular fa-copy text-slate-400 mr-1"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <section class="lg:col-span-7 bg-white rounded-xl shadow-sm border border-slate-200 p-5 sm:p-6">
+          <div class="flex items-center gap-2 text-slate-800 font-bold text-lg pb-4 mb-5 border-b border-slate-100">
+            <i class="fa-solid fa-circle-user text-blue-600"></i><h2>المعلومات الشخصية</h2>
+          </div>
+          <form id="personalForm" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div><label for="firstName" class="block text-xs font-bold text-slate-600 mb-1.5">الاسم الأول</label><input type="text" id="firstName" maxlength="80" required class="field" /></div>
+              <div><label for="lastName" class="block text-xs font-bold text-slate-600 mb-1.5">الاسم الأخير</label><input type="text" id="lastName" maxlength="100" required class="field" /></div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div><label for="phoneInput" class="block text-xs font-bold text-slate-600 mb-1.5">رقم الهاتف</label><input type="tel" id="phoneInput" maxlength="32" class="field text-left" dir="ltr" /></div>
+              <div><label for="emailInput" class="block text-xs font-bold text-slate-600 mb-1.5">البريد الإلكتروني</label><input type="email" id="emailInput" maxlength="254" required class="field text-left" dir="ltr" /></div>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">سيتم حفظ التغييرات على حساب المدير في قاعدة البيانات.</p>
+            <div class="pt-2"><button id="saveProfileBtn" type="submit" class="primary-btn w-full py-2.5 px-4 text-sm shadow-sm flex items-center justify-center gap-2"><i class="fa-solid fa-floppy-disk"></i><span>تحديث المعلومات</span></button></div>
+          </form>
+        </section>
+
+        <div class="lg:col-span-5 space-y-6">
+          <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 sm:p-6">
+            <div class="flex items-center gap-2 text-slate-800 font-bold text-lg pb-4 mb-5 border-b border-slate-100"><i class="fa-solid fa-shield-halved text-blue-600"></i><h2>الأمان</h2></div>
+            <form id="passwordForm" class="space-y-4">
+              <div><label for="currentPassword" class="block text-xs font-bold text-slate-600 mb-1.5">كلمة المرور الحالية</label><div class="password-wrap"><input type="password" id="currentPassword" autocomplete="current-password" required maxlength="200" placeholder="أدخل كلمة المرور الحالية" class="field" /><button type="button" class="password-toggle" data-toggle="currentPassword" aria-label="إظهار كلمة المرور"><i class="fa-solid fa-eye text-xs"></i></button></div></div>
+              <div><label for="newPassword" class="block text-xs font-bold text-slate-600 mb-1.5">كلمة المرور الجديدة</label><div class="password-wrap"><input type="password" id="newPassword" autocomplete="new-password" required minlength="6" maxlength="200" placeholder="أدخل كلمة المرور الجديدة" class="field" /><button type="button" class="password-toggle" data-toggle="newPassword" aria-label="إظهار كلمة المرور"><i class="fa-solid fa-eye text-xs"></i></button></div></div>
+              <div class="pt-2"><button id="changePasswordBtn" type="submit" class="primary-btn w-full py-2.5 px-4 text-sm shadow-sm flex items-center justify-center gap-2"><i class="fa-solid fa-key"></i><span>تغيير كلمة المرور</span></button></div>
+            </form>
+          </section>
+
+          <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 sm:p-6">
+            <div class="flex items-center gap-2 text-slate-800 font-bold text-lg pb-4 mb-4 border-b border-slate-100"><i class="fa-solid fa-circle-info text-blue-600"></i><h2>معلومات الحساب</h2></div>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between gap-3 bg-slate-50 border border-slate-100 rounded-lg p-3.5"><div class="w-9 h-9 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-calendar-plus"></i></div><div class="text-left min-w-0"><div class="text-xs text-slate-400">تاريخ الإنشاء</div><div id="createdAtText" class="text-sm font-bold text-slate-700 mt-0.5">غير مسجل</div></div></div>
+              <div class="flex items-center justify-between gap-3 bg-slate-50 border border-slate-100 rounded-lg p-3.5"><div class="w-9 h-9 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-calendar-check"></i></div><div class="text-left min-w-0"><div class="text-xs text-slate-400">آخر تحديث</div><div id="updatedAtText" class="text-sm font-bold text-slate-700 mt-0.5">غير مسجل</div></div></div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="flex justify-start"><a href="admin.html" class="text-sm font-bold text-blue-600 hover:text-blue-800"><i class="fa-solid fa-arrow-right ml-1"></i>العودة إلى لوحة التحكم</a></div>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden><i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i><span id="toastMsg"></span></div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    let siteUrl = "";
+    let avatarData = "";
+
+    function showToast(message, isError = false) {
+      $("toastMsg").textContent = message;
+      $("toastIcon").className = isError ? "fa-solid fa-circle-exclamation text-amber-400" : "fa-solid fa-circle-check text-emerald-400";
+      $("toast").hidden = false;
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => { $("toast").hidden = true; }, 3200);
+    }
+
+    function formattedDate(value) {
+      if (!value) return "غير مسجل";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "غير مسجل";
+      return date.toLocaleDateString("ar-EG", { day:"numeric", month:"long", year:"numeric" });
+    }
+
+    function renderAvatar(value) {
+      const preview = $("avatarPreview");
+      preview.replaceChildren();
+      if (value) {
+        const image = document.createElement("img");
+        image.src = value;
+        image.alt = "الصورة الشخصية";
+        image.className = "w-full h-full object-cover";
+        preview.appendChild(image);
+      } else {
+        const icon = document.createElement("i");
+        icon.className = "fa-solid fa-user text-white";
+        preview.appendChild(icon);
+      }
+    }
+
+    function renderProfile(user) {
+      $("firstName").value = user.firstName || "";
+      $("lastName").value = user.lastName || "";
+      $("phoneInput").value = user.phone || "";
+      $("emailInput").value = user.email || "";
+      $("headerFullName").textContent = user.name || [user.firstName,user.lastName].filter(Boolean).join(" ") || "المدير";
+      $("headerEmail").textContent = user.email || "";
+      avatarData = user.avatarData || "";
+      renderAvatar(avatarData);
+      $("createdAtText").textContent = formattedDate(user.createdAt);
+      $("updatedAtText").textContent = formattedDate(user.updatedAt);
+    }
+
+    async function loadProfile() {
+      try {
+        const response = await fetch("/api/admin/profile", { credentials:"same-origin", cache:"no-store" });
+        if (response.status === 401 || response.status === 403) { location.replace("login.html"); return; }
+        const data = await response.json();
+        if (!response.ok || !data.ok) throw new Error(data.message || "تعذر تحميل بيانات الحساب.");
+        renderProfile(data.user);
+        siteUrl = data.siteUrl || "";
+        if (siteUrl) {
+          try { $("siteDomain").textContent = new URL(siteUrl).host; $("siteBadge").hidden = false; }
+          catch (_) { $("siteBadge").hidden = true; }
+        }
+      } catch (error) {
+        showToast(error.message || "تعذر تحميل الملف الشخصي.", true);
+      }
+    }
+
+    $("avatarPickBtn").addEventListener("click", () => $("avatarInput").click());
+    $("avatarInput").addEventListener("change", async event => {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      if (!["image/jpeg","image/png","image/webp"].includes(file.type)) {
+        showToast("اختر صورة بصيغة JPG أو PNG أو WEBP.", true); event.target.value = ""; return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        showToast("حجم الصورة الأصلي يجب ألا يتجاوز 5 ميجابايت.", true); event.target.value = ""; return;
+      }
+      try {
+        const dataUrl = await new Promise((resolve,reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(String(reader.result || ""));
+          reader.onerror = () => reject(new Error("تعذرت قراءة الصورة."));
+          reader.readAsDataURL(file);
+        });
+        const image = new Image();
+        await new Promise((resolve,reject) => { image.onload = resolve; image.onerror = () => reject(new Error("الصورة غير صالحة.")); image.src = dataUrl; });
+        const scale = Math.min(1, 360 / Math.max(image.width,image.height));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.max(1,Math.round(image.width * scale));
+        canvas.height = Math.max(1,Math.round(image.height * scale));
+        const context = canvas.getContext("2d");
+        context.drawImage(image,0,0,canvas.width,canvas.height);
+        const compressed = await new Promise(resolve => canvas.toBlob(resolve,"image/jpeg",0.78));
+        if (!compressed) throw new Error("تعذر تجهيز الصورة.");
+        avatarData = await new Promise((resolve,reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(String(reader.result || ""));
+          reader.onerror = () => reject(new Error("تعذر تجهيز الصورة للحفظ."));
+          reader.readAsDataURL(compressed);
+        });
+        renderAvatar(avatarData);
+        showToast("تم تجهيز الصورة. اضغط «تحديث المعلومات» لحفظها.");
+      } catch (error) { showToast(error.message || "تعذر تجهيز الصورة.",true); }
+      finally { event.target.value = ""; }
+    });
+
+    $("siteBadge").addEventListener("click", async () => {
+      if (!siteUrl) return;
+      try {
+        await navigator.clipboard.writeText(siteUrl);
+        showToast("تم نسخ رابط الموقع.");
+      } catch (_) {
+        const input = document.createElement("textarea");
+        input.value = siteUrl; document.body.appendChild(input); input.select();
+        const copied = document.execCommand("copy"); input.remove();
+        showToast(copied ? "تم نسخ رابط الموقع." : "تعذر نسخ الرابط.",!copied);
+      }
+    });
+
+    $("personalForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      const button = $("saveProfileBtn");
+      button.disabled = true;
+      try {
+        const response = await fetch("/api/admin/profile", {
+          method:"PUT", credentials:"same-origin",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({
+            firstName:$("firstName").value.trim(),
+            lastName:$("lastName").value.trim(),
+            phone:$("phoneInput").value.trim(),
+            email:$("emailInput").value.trim(),
+            avatarData
+          })
+        });
+        const data = await response.json();
+        if (response.status === 401 || response.status === 403) { location.replace("login.html"); return; }
+        if (!response.ok || !data.ok) throw new Error(data.message || "تعذر حفظ المعلومات.");
+        renderProfile(data.user);
+        showToast(data.message || "تم تحديث المعلومات الشخصية بنجاح.");
+      } catch (error) { showToast(error.message || "تعذر حفظ المعلومات.",true); }
+      finally { button.disabled = false; }
+    });
+
+    $("passwordForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      const button = $("changePasswordBtn");
+      button.disabled = true;
+      try {
+        const response = await fetch("/api/admin/profile/password", {
+          method:"POST", credentials:"same-origin",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({
+            currentPassword:$("currentPassword").value,
+            newPassword:$("newPassword").value
+          })
+        });
+        const data = await response.json();
+        if (response.status === 401 && data.message === "يلزم تسجيل الدخول.") { location.replace("login.html"); return; }
+        if (response.status === 401 || response.status === 403) throw new Error(data.message || "تعذر التحقق من صلاحية الحساب.");
+        if (!response.ok || !data.ok) throw new Error(data.message || "تعذر تغيير كلمة المرور.");
+        $("passwordForm").reset();
+        $("updatedAtText").textContent = formattedDate(data.updatedAt || new Date().toISOString());
+        showToast(data.message || "تم تغيير كلمة المرور بنجاح.");
+      } catch (error) { showToast(error.message || "تعذر تغيير كلمة المرور.",true); }
+      finally { button.disabled = false; }
+    });
+
+    document.querySelectorAll("[data-toggle]").forEach(button => button.addEventListener("click", () => {
+      const input = $(button.dataset.toggle);
+      const icon = button.querySelector("i");
+      input.type = input.type === "password" ? "text" : "password";
+      icon.className = input.type === "password" ? "fa-solid fa-eye text-xs" : "fa-solid fa-eye-slash text-xs";
+    }));
+
+    loadProfile();
+  </script>
+</body>
+</html>

@@ -32,7 +32,16 @@ button{font:inherit}
 .nav a{color:var(--muted)}.nav a:hover{color:var(--brand)}
 .tools{display:flex;align-items:center;gap:10px}
 .sq{min-width:36px;height:36px;padding:0 9px;border:1px solid var(--line);color:var(--muted);background:transparent;border-radius:8px;display:grid;place-items:center;font:inherit;cursor:pointer}
-.user{display:flex;align-items:center;gap:10px;font-weight:700}
+.user-menu{position:relative;display:flex;align-items:center}
+.user-trigger{display:flex;align-items:center;gap:9px;border:0;background:transparent;color:var(--text);font:inherit;font-weight:700;cursor:pointer;padding:4px 6px;border-radius:10px}
+.user-trigger:hover,.user-trigger[aria-expanded="true"]{background:var(--bg)}
+.menu-caret{font-size:13px;color:var(--muted)}
+.user-dropdown{position:absolute;top:calc(100% + 9px);inset-inline-end:0;width:205px;padding:7px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 14px 35px rgba(15,23,42,.16);z-index:30}
+.user-dropdown[hidden]{display:none}
+.dropdown-item{width:100%;display:flex;align-items:center;gap:11px;padding:11px 10px;border:0;border-radius:8px;background:transparent;color:var(--text);font:inherit;font-size:13px;text-align:right;cursor:pointer}
+.dropdown-item:hover{background:var(--bg);color:var(--brand)}
+.dropdown-item span{width:20px;text-align:center}
+.dropdown-logout{color:var(--red)}
 .avatar{width:34px;height:34px;border-radius:50%;background:var(--brand2);color:#fff;display:grid;place-items:center}
 .shell{display:flex;min-height:calc(100vh - 60px)}
 .side{width:210px;flex:none;background:var(--surface);border-inline-start:1px solid var(--line);padding:10px 9px}
@@ -91,9 +100,17 @@ main{flex:1;min-width:0;padding:0 0 40px}
     <a href="index.html">الرئيسية</a><a href="courses.html">الكورسات</a><a href="support.html">تواصل معنا</a>
   </nav>
   <div class="tools">
-    <div class="user"><div class="avatar" id="adminAvatar">م</div><span id="greet">جاري التحقق...</span></div>
+    <div class="user-menu">
+      <button class="user-trigger" id="adminMenuBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="adminProfileMenu">
+        <span class="avatar" id="adminAvatar">م</span><span id="greet">جاري التحقق...</span><span class="menu-caret" aria-hidden="true">⌄</span>
+      </button>
+      <nav class="user-dropdown" id="adminProfileMenu" aria-label="قائمة المدير" hidden>
+        <a class="dropdown-item" href="admin.html"><span>🏠</span>لوحة التحكم</a>
+        <a class="dropdown-item" href="admin-profile.html"><span>👤</span>الملف الشخصي</a>
+        <button class="dropdown-item dropdown-logout" id="profileLogoutBtn" type="button"><span>↪</span>تسجيل الخروج</button>
+      </nav>
+    </div>
     <button class="sq" id="themeToggle" type="button" title="تغيير المظهر" aria-label="تغيير المظهر">◐</button>
-    <button class="sq" id="logoutBtn" type="button" title="تسجيل الخروج" aria-label="تسجيل الخروج">↪</button>
   </div>
 </header>
 
@@ -283,8 +300,26 @@ try {
   const savedTheme = localStorage.getItem("admin-theme");
   if (savedTheme) document.documentElement.dataset.theme = savedTheme;
 } catch (_) {}
-$("logoutBtn").addEventListener("click", async () => {
-  $("logoutBtn").disabled = true;
+const adminMenuBtn = $("adminMenuBtn");
+const adminProfileMenu = $("adminProfileMenu");
+function closeAdminProfileMenu() {
+  adminProfileMenu.hidden = true;
+  adminMenuBtn.setAttribute("aria-expanded","false");
+}
+adminMenuBtn.addEventListener("click", event => {
+  event.stopPropagation();
+  const opening = adminProfileMenu.hidden;
+  adminProfileMenu.hidden = !opening;
+  adminMenuBtn.setAttribute("aria-expanded",String(opening));
+});
+document.addEventListener("click", event => {
+  if (!event.target.closest(".user-menu")) closeAdminProfileMenu();
+});
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeAdminProfileMenu();
+});
+$("profileLogoutBtn").addEventListener("click", async () => {
+  $("profileLogoutBtn").disabled = true;
   try { await fetch("/api/auth/logout", { method:"POST", credentials:"same-origin" }); }
   finally { location.replace("login.html"); }
 });
