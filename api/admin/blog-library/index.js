@@ -203,15 +203,22 @@ async function loadOrders(db, products) {
     });
   }).map(row => {
     const product = row.product || row.item || {};
+    const items = Array.isArray(row.items) ? row.items : [];
+    const ids = [row.productId, product._id, product.id, row.item?.productId]
+      .filter(value => value !== undefined && value !== null).map(String);
+    const names = [row.productName, product.title, product.name, row.itemName, row.title,
+      ...items.map(item => item.title || item.name || item.productName)]
+      .filter(Boolean).map(value => String(value).trim().toLocaleLowerCase("ar"));
+    const matchedProduct = products.find(item => ids.includes(item.id) || names.includes(item.title.trim().toLocaleLowerCase("ar")));
     const name = str(row.productName || product.title || product.name || row.itemName || row.title, 240) ||
-      (Array.isArray(row.items) ? row.items.map(x => str(x.title || x.name || x.productName, 120)).filter(Boolean).join("، ") : "");
+      matchedProduct?.title || items.map(x => str(x.title || x.name || x.productName, 120)).filter(Boolean).join("، ");
     const student = row.student || row.user || row.customer || {};
     const createdAt = row.createdAt || row.orderedAt || row.date || null;
     return {
       id: String(row._id),
-      productId: str(row.productId || product._id || product.id, 100),
+      productId: str(row.productId || product._id || product.id || matchedProduct?.id, 100),
       productName: name || "منتج مكتبة",
-      productType: normalizeType(row.productType || row.itemType || product.type),
+      productType: matchedProduct?.type || normalizeType(row.productType || product.type),
       studentName: str(row.studentName || row.customerName || student.fullName || student.name || row.userName, 200) || "غير محدد",
       studentPhone: str(row.studentPhone || row.phone || student.phone || student.mobile, 50),
       studentEmail: str(row.studentEmail || row.email || student.email, 254),
@@ -400,7 +407,12 @@ module.exports = async function handler(req, res) {
       const posts = postsResult.rows.map(publicPost);
       const categories = categoriesResult.rows.map(publicCategory);
       const products = productsResult.rows.map(publicProduct);
-      const orderResult = perms.ordersView ? await loadOrders(db, products) : { available: false, orders: [] };
+      let orderProducts = products;
+      if (perms.ordersView && !perms.productsView) {
+        const lookupProducts = await loadCollection(db, PRODUCTS);
+        orderProducts = lookupProducts.rows.map(publicProduct);
+      }
+      const orderResult = perms.ordersView ? await loadOrders(db, orderProducts) : { available: false, orders: [] };
       return json(res, 200, {
         ok: true, posts, categories, products, orders: orderResult.orders,
         availability: {
