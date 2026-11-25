@@ -25,7 +25,7 @@ module.exports = async function handler(req, res) {
       createdAt: new Date(), expiresAt: new Date(Date.now() + 7 * 86400000)
     });
     res.setHeader("Set-Cookie", `ali_admin_session=${token}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=604800`);
-    return json(res, 200, { ok:true, redirect:"dashboard.html" });
+    return json(res, 200, { ok:true, redirect:"admin.html" });
   } catch (error) {
     console.error("auth login failed:", error.message);
     return json(res, 500, { ok:false, message:"تعذر تسجيل الدخول حالياً. راجع إعدادات الخادم." });
