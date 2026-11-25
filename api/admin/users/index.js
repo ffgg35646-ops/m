@@ -245,7 +245,8 @@ async function roleCapabilities(database, roleName, builtInAdmin) {
     admins: true, students: true, roles: true,
     adminCreate: true, adminEdit: true,
     studentCreate: true, studentEdit: true, studentDelete: true,
-    academic: true, courses: true, courseCreate: true, courseEdit: true, courseDelete: true
+    academic: true, courses: true, courseCreate: true, courseEdit: true, courseDelete: true,
+    blogLibrary: true
   };
   const roles = await ensureDefaultRoles(database);
   const role = roles.find(item => normalizeRole(item.roleName) === normalizeRole(roleName));
@@ -265,7 +266,11 @@ async function roleCapabilities(database, roleName, builtInAdmin) {
     courses: roleAllows(role, { section: "إدارة المحتوى", module: "الكورسات ومحتواها", action: "عرض" }),
     courseCreate: roleAllows(role, { section: "إدارة المحتوى", module: "الكورسات ومحتواها", action: "إنشاء" }),
     courseEdit: roleAllows(role, { section: "إدارة المحتوى", module: "الكورسات ومحتواها", action: "تعديل" }),
-    courseDelete: roleAllows(role, { section: "إدارة المحتوى", module: "الكورسات ومحتواها", action: "حذف" })
+    courseDelete: roleAllows(role, { section: "إدارة المحتوى", module: "الكورسات ومحتواها", action: "حذف" }),
+    blogLibrary: [
+      roleAllows(role, { section: "المدونة", modules: ["المدونات", "تصنيفات المدونات"], action: "عرض" }),
+      roleAllows(role, { section: "المكتبة", modules: ["منتجات المكتبة", "طلبات المكتبة"], action: "عرض" })
+    ].some(Boolean)
   };
 }
 
@@ -636,7 +641,11 @@ module.exports = async function handler(req, res) {
         { section: "صلاحيات المستخدمين", module: "الطلاب", action: "عرض" },
         { section: "صلاحيات المستخدمين", module: "الأدوار والصلاحيات", action: "عرض" },
         { section: "صلاحيات المستخدمين", module: "الملف الشخصي", action: "عرض" },
-        { section: "إدارة المحتوى", module: "الكورسات ومحتواها", action: "عرض" }
+        { section: "إدارة المحتوى", module: "الكورسات ومحتواها", action: "عرض" },
+        { section: "المدونة", module: "المدونات", action: "عرض" },
+        { section: "المدونة", module: "تصنيفات المدونات", action: "عرض" },
+        { section: "المكتبة", module: "منتجات المكتبة", action: "عرض" },
+        { section: "المكتبة", module: "طلبات المكتبة", action: "عرض" }
       ];
       let authorized = null;
       let lastFailure = { status: 403, message: "ليس لديك صلاحية عرض إدارة المستخدمين." };
@@ -644,7 +653,7 @@ module.exports = async function handler(req, res) {
         const candidate = await requireAdmin(req, permission);
         if (!candidate.ok) { lastFailure = candidate; continue; }
         const candidateCapabilities = await roleCapabilities(database, candidate.roleName, candidate.builtInAdmin);
-        if (candidateCapabilities.admins || candidateCapabilities.students || candidateCapabilities.roles || candidateCapabilities.courses) {
+        if (candidateCapabilities.admins || candidateCapabilities.students || candidateCapabilities.roles || candidateCapabilities.courses || candidateCapabilities.blogLibrary) {
           authorized = { auth: candidate, capabilities: candidateCapabilities };
           break;
         }
