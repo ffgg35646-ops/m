@@ -51,4 +51,5 @@ $('#browseBtn').onclick=$('#browseMore').onclick=()=>switchView('store');$('#bac
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>switchView(b.dataset.view));document.querySelectorAll('[data-info]').forEach(b=>b.onclick=()=>dialog(b.dataset.info,'قسم '+b.dataset.info+' غير مربوط حالياً ببيانات فعلية.'));document.querySelectorAll('a[data-info]').forEach(a=>a.onclick=e=>{e.preventDefault();dialog(a.dataset.info,'تم اختيار '+a.dataset.info+'.')});
 $('#menuBtn').onclick=()=>{$('#sidebar').classList.add('open');$('#overlay').classList.add('open')};function closeMenu(){$('#sidebar').classList.remove('open');$('#overlay').classList.remove('open')}$('#closeMenu').onclick=$('#overlay').onclick=closeMenu;$('#chatBtn').onclick=()=>dialog('المساعدة الفورية','مرحباً mohajmed! يمكنك التنقل بين مكتبتي ومكتبتنا وامتحاناتي من القائمة الجانبية.');$('#notifBtn').onclick=()=>dialog('الإشعارات','لا توجد إشعارات جديدة حالياً.');$('#profileBtn').onclick=()=>dialog('الملف الشخصي','اسم الطالب: mohajmed');render();
 </script>
+  <script src="/site-branding.js" defer></script>
 </body></html>

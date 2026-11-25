@@ -110,6 +110,11 @@
               <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-palette text-blue-600"></i><span>الهوية البصرية</span></h2>
               <p class="text-xs text-slate-400 mt-1">الشعار والأيقونة وصورة البانر والألوان التي تحدد مظهر المنصة.</p>
             </div>
+            <div class="rounded-xl border border-indigo-100 bg-indigo-50/50 p-4 space-y-2">
+              <label for="platformNameInput" class="setting-label text-slate-800">اسم المنصة</label>
+              <input id="platformNameInput" type="text" maxlength="140" required class="field" placeholder="اكتب اسم المنصة الذي سيظهر في جميع صفحات الموقع">
+              <p class="text-xs text-slate-500">سيتم تطبيق الاسم المحفوظ على واجهة الموقع وصفحات تسجيل الدخول والتسجيل وحسابات الطلاب ولوحات الإدارة.</p>
+            </div>
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
               <div><label class="block text-sm font-bold text-slate-700 mb-2">شعار المنظمة</label><div class="upload-card"><div class="flex items-center gap-3 min-w-0"><img id="logoPreview" class="preview-img" alt="معاينة الشعار"><label class="cursor-pointer px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-bold hover:bg-slate-50">تغيير الشعار<input id="logoFile" type="file" accept="image/png,image/jpeg,image/webp" class="hidden"></label></div><button type="button" data-reset-image="logoData" class="w-9 h-9 shrink-0 rounded-lg bg-rose-600 hover:bg-rose-700 text-white"><i class="fa-solid fa-trash-can"></i></button></div></div>
               <div><label class="block text-sm font-bold text-slate-700 mb-2">الأيقونة (Favicon)</label><div class="upload-card"><div class="flex items-center gap-3 min-w-0"><img id="faviconPreview" class="preview-img" alt="معاينة الأيقونة"><label class="cursor-pointer px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-bold hover:bg-slate-50">تغيير الأيقونة<input id="faviconFile" type="file" accept="image/png,image/jpeg,image/webp" class="hidden"></label></div><button type="button" data-reset-image="faviconData" class="w-9 h-9 shrink-0 rounded-lg bg-rose-600 hover:bg-rose-700 text-white"><i class="fa-solid fa-trash-can"></i></button></div></div>
@@ -495,6 +500,7 @@
     function fillSettings(data) {
       const s = data.settings;
       $("organizationName").textContent = s.organization.name || "منصة علي عليان الدولية";
+      setText("platformNameInput", s.organization.name || "منصة علي عليان الدولية");
       $("organizationEmail").textContent = s.contact.email || "";
       const site = data.siteUrl || "";
       $("siteAddress").textContent = site ? site.replace(/^https?:\/\//, "").replace(/\/$/, "") : "لم يتم ضبط رابط الموقع";
@@ -557,7 +563,7 @@
 
     function collectSettings() {
       return {
-        organization: { name: $("organizationName").textContent.trim() },
+        organization: { name: $("platformNameInput").value.trim() },
         branding: {
           logoData: imageState.logoData,
           faviconData: imageState.faviconData,
@@ -705,5 +711,6 @@
     switchSettingTab(validTabs.includes(pageTab) ? pageTab : "branding");
     loadSettings();
   </script>
+  <script src="/site-branding.js" defer></script>
 </body>
 </html>
