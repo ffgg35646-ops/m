@@ -660,10 +660,10 @@ async function compressImage(file) {
   context.drawImage(image, 0, 0, canvas.width, canvas.height);
   let blob = await new Promise(resolve => canvas.toBlob(resolve, "image/jpeg", 0.78));
   if (!blob) throw new Error("تعذر ضغط الصورة.");
-  if (blob.size > 650000) {
-    blob = await new Promise(resolve => canvas.toBlob(resolve, "image/jpeg", 0.58));
+  if (blob.size > 280000) {
+    blob = await new Promise(resolve => canvas.toBlob(resolve, "image/jpeg", 0.52));
   }
-  if (!blob || blob.size > 650000) throw new Error("الصورة كبيرة بعد الضغط. اختر صورة أصغر.");
+  if (!blob || blob.size > 280000) throw new Error("الصورة كبيرة بعد الضغط. اختر صورة أصغر.");
   return await new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(String(reader.result || ""));
