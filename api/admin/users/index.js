@@ -240,7 +240,8 @@ async function roleCapabilities(database, roleName, builtInAdmin) {
   if (builtInAdmin) return {
     admins: true, students: true, roles: true,
     adminCreate: true, adminEdit: true,
-    studentCreate: true, studentEdit: true, studentDelete: true
+    studentCreate: true, studentEdit: true, studentDelete: true,
+    academic: true
   };
   const roles = await ensureDefaultRoles(database);
   const role = roles.find(item => normalizeRole(item.roleName) === normalizeRole(roleName));
@@ -255,7 +256,8 @@ async function roleCapabilities(database, roleName, builtInAdmin) {
     adminEdit: allowed("المشرفون", "تعديل"),
     studentCreate: allowed("الطلاب", "إنشاء"),
     studentEdit: allowed("الطلاب", "تعديل"),
-    studentDelete: allowed("الطلاب", "حذف")
+    studentDelete: allowed("الطلاب", "حذف"),
+    academic: roleAllows(role, { section: "الهيكل الأكاديمي", modules: ["فئات السنوات الدراسية", "السنوات الدراسية", "المواد"], action: "عرض" })
   };
 }
 
@@ -550,7 +552,7 @@ async function loadData(auth, capabilities) {
           { projection: SAFE_STUDENT_PROJECTION }
         ).sort({ createdAt: -1 }).limit(MAX_LIST).toArray()
       : Promise.resolve([]),
-    (capabilities.roles || capabilities.adminCreate) ? ensureDefaultRoles(database) : Promise.resolve([])
+    (capabilities.roles || capabilities.adminCreate || capabilities.adminEdit) ? ensureDefaultRoles(database) : Promise.resolve([])
   ]);
 
   const enrollmentIds = new Set();
