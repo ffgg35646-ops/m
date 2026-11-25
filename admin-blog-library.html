@@ -219,7 +219,7 @@ main{flex:1;min-width:0;padding:0 0 42px}.hero{background:linear-gradient(100deg
 <script>
 const $ = id => document.getElementById(id);
 const state = {
-  activeTab:"store-products", posts:[], categories:[], products:[], orders:[],
+  activeTab:(["blog-edit","blog-tags","store-products","store-orders"].includes(new URLSearchParams(location.search).get("tab"))?new URLSearchParams(location.search).get("tab"):"store-products"), posts:[], categories:[], products:[], orders:[],
   capabilities:{}, actor:{name:"مدير النظام"}, availability:{}, truncated:{},
   editingPostId:null, editingCategoryId:null, editingProductId:null,
   productImages:[], detailProductId:null, busy:false
@@ -389,15 +389,6 @@ function renderProducts(){
     if(allowed("productsDelete"))group.appendChild(actionButton("حذف المنتج","action-delete","⌫",()=>deleteProduct(product)));
     actions.appendChild(group);row.appendChild(actions);body.appendChild(row);
   });
-}
-function moveProduct(id,direction){
-  const index=state.products.findIndex(x=>x.id===id),target=index+direction;if(index<0||target<0||target>=state.products.length)return;
-  [state.products[index],state.products[target]]=[state.products[target],state.products[index]];
-  saveReorder("reorderProducts",state.products);
-}
-async function saveReorder(action,items){
-  try{await api(action,{ids:items.map(x=>x.id)});state.products.forEach((p,i)=>p.order=i);renderProducts();showToast("تم حفظ الترتيب.");}
-  catch(error){showToast(error.message,"error");await loadData(false);}
 }
 function renderOrderFilters(){
   const select=$("orderProductFilter"),selected=select.value;select.replaceChildren(new Option("كل المنتجات","all"));
