@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f5f6fa">
+<title>إدارة الدورات | منصة علي عليان الدولية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f6fa;--surface:#fff;--text:#1f2437;--muted:#7b8194;--line:#e8eaf2;--brand:#7c3aed;--brand2:#6366f1;--green:#10b981;--red:#ef4444;--blue:#3b82f6;--amber:#f59e0b;--cyan:#06b6d4;color-scheme:light}
+:root[data-theme="dark"]{--bg:#12141c;--surface:#1b1e2a;--text:#eceefa;--muted:#9aa1b8;--line:#2a2e3d;color-scheme:dark}
+:root[data-theme="light"]{color-scheme:light}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Tajawal",Tahoma,Arial,sans-serif;font-size:14px}
+a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}
+.topbar{background:var(--surface);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:20px;padding:12px 24px;position:sticky;top:0;z-index:5}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;line-height:1.1;color:var(--brand2)}.logo b{display:grid;place-items:center;width:34px;height:34px;border-radius:9px;background:var(--brand2);color:#fff;font-size:18px}.logo small{display:block;font-size:12px;letter-spacing:.5px}
+.nav{display:flex;gap:26px;margin-inline:auto}.nav a{color:var(--muted)}.nav a:hover{color:var(--brand)}
+.tools{display:flex;align-items:center;gap:10px}.sq{min-width:36px;height:36px;padding:0 9px;border:1px solid var(--line);color:var(--muted);background:transparent;border-radius:8px;display:grid;place-items:center}
+.user-menu{position:relative;display:flex;align-items:center}.user-trigger{display:flex;align-items:center;gap:9px;border:0;background:transparent;color:var(--text);font-weight:700;padding:4px 6px;border-radius:10px}.user-trigger:hover{background:var(--bg)}.avatar{width:34px;height:34px;border-radius:50%;background:var(--brand2);color:#fff;display:grid;place-items:center}.user-dropdown{position:absolute;top:calc(100% + 9px);inset-inline-end:0;width:205px;padding:7px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 14px 35px rgba(15,23,42,.16);z-index:30}.dropdown-item{width:100%;display:flex;align-items:center;gap:11px;padding:11px 10px;border:0;border-radius:8px;background:transparent;color:var(--text);font-size:13px;text-align:right}.dropdown-item:hover{background:var(--bg)}.dropdown-logout{color:var(--red)}
+.shell{display:flex;min-height:calc(100vh - 60px)}.side{width:220px;flex:none;background:var(--surface);border-inline-start:1px solid var(--line);padding:12px 10px}.side-title{color:var(--muted);font-size:11px;font-weight:800;padding:10px 12px 7px}.side a{width:100%;display:flex;align-items:center;gap:10px;padding:11px 10px;margin:2px 0;border-radius:8px;color:var(--muted);font-size:13px}.side a.active{background:var(--brand);color:#fff}.side a:hover:not(.active){background:var(--bg)}
+main{flex:1;min-width:0;padding:0 0 42px}.hero{background:linear-gradient(100deg,#7c5bd5,#6240b7);color:#fff;padding:23px 28px;display:flex;align-items:center;gap:16px}.hero-icon{width:54px;height:54px;border-radius:13px;background:#ffffff24;display:grid;place-items:center;font-size:25px}.hero-copy{min-width:0}.hero h1{margin:0 0 4px;font-size:23px}.hero p{margin:0;color:#ede9fe;font-size:12px}.hero-actions{margin-inline-start:auto;display:flex;align-items:center;gap:9px;flex-wrap:wrap}.site-pill{background:#fff;color:#334155;border-radius:9px;padding:7px 11px;font-size:11px}.site-pill small{display:block;color:#94a3b8;font-size:10px}.tour,.add-main{border:0;border-radius:9px;padding:10px 14px;font-size:12px;font-weight:800}.tour{background:#fff;color:#475569}.add-main{background:#16a34a;color:#fff}.wrap{padding:0 25px;max-width:1600px;margin:0 auto}.state{padding:18px;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin:18px 0;color:var(--muted)}.state.error{color:var(--red)}.retry{margin-inline-start:10px;border:0;border-radius:8px;background:var(--brand2);color:#fff;padding:8px 12px}
+.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}.counter{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:14px 16px;color:var(--muted);font-size:12px}.counter b{display:block;color:var(--text);font-size:22px;margin-top:5px}
+.toolbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:16px 0}.toolbar .hint{color:var(--muted);font-size:11px;margin-inline-start:auto}.filters{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:15px;margin-bottom:16px}.filter-grid{display:grid;grid-template-columns:repeat(6,minmax(130px,1fr));gap:11px}.form-group{min-width:0}.form-group label{display:block;font-size:11px;font-weight:800;color:var(--muted);margin-bottom:6px}.field{width:100%;min-width:0;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:10px 11px;outline:none;font-size:12px}.field:focus{border-color:var(--brand2);box-shadow:0 0 0 3px #6366f11a}.field:disabled{opacity:.6}.table-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}.table-scroll{overflow:auto}table{width:100%;border-collapse:collapse;min-width:1050px;text-align:right}th{background:color-mix(in srgb,var(--bg) 80%,var(--surface));color:var(--muted);font-size:11px;padding:13px 11px;white-space:nowrap;border-bottom:1px solid var(--line)}td{padding:12px 11px;border-bottom:1px solid var(--line);font-size:12px;vertical-align:middle}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:color-mix(in srgb,var(--bg) 55%,var(--surface))}.center{text-align:center}.sort-cell{min-width:55px;text-align:center}.sort-btn{display:block;margin:2px auto;width:25px;height:20px;border:0;background:transparent;color:var(--muted);font-size:11px}.course-thumb{width:55px;height:38px;border:1px solid var(--line);border-radius:7px;object-fit:cover;background:var(--bg);display:block}.name-cell{font-weight:800;color:var(--text);min-width:170px}.subline{display:block;color:var(--muted);font-size:10px;margin-top:4px;font-weight:400}.badge{display:inline-flex;align-items:center;justify-content:center;border-radius:99px;padding:4px 8px;font-size:10px;font-weight:800;white-space:nowrap}.active-badge{background:#d1fae5;color:#047857}.inactive-badge{background:#fee2e2;color:#b91c1c}.free-badge{background:#e0f2fe;color:#0369a1}.pinned-badge{background:#fef3c7;color:#92400e}.hidden-badge{background:#f1f5f9;color:#64748b}.actions{display:flex;gap:5px;align-items:center;justify-content:center;white-space:nowrap}.action-btn{width:29px;height:29px;border:1px solid var(--line);background:var(--surface);border-radius:7px;display:grid;place-items:center;font-size:12px;color:var(--muted)}.action-btn:hover{border-color:currentColor}.action-view{color:var(--cyan)}.action-edit{color:var(--blue)}.action-delete{color:var(--red)}.action-pin{color:var(--amber)}.action-status{color:var(--green)}.action-hide{color:var(--muted)}.empty{padding:45px 15px;text-align:center;color:var(--muted);font-size:13px}.empty strong{display:block;color:var(--text);font-size:15px;margin-bottom:5px}
+.detail-top{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;margin:18px 0;display:flex;align-items:flex-start;gap:15px}.back-btn{border:0;background:transparent;color:var(--brand2);font-size:12px;font-weight:800;padding:0 0 12px}.detail-image{width:116px;height:82px;border:1px solid var(--line);border-radius:10px;object-fit:cover;background:var(--bg);flex:none}.detail-copy{flex:1;min-width:0}.detail-copy h2{font-size:20px;margin:0 0 8px}.detail-meta{display:flex;gap:7px;flex-wrap:wrap}.detail-price{font-weight:800;color:#b45309;background:#fef3c7;border-radius:6px;padding:4px 8px;font-size:11px}.detail-layout{display:grid;grid-template-columns:minmax(280px,4fr) minmax(0,8fr);gap:17px;align-items:start}.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:17px;min-width:0}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:13px}.panel-head h3{margin:0;font-size:14px}.small-btn{border:0;border-radius:7px;background:var(--brand2);color:#fff;padding:7px 10px;font-size:11px;font-weight:800}.section-card{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:9px 0}.section-head{display:flex;align-items:center;gap:7px;padding:10px;background:var(--bg)}.section-toggle{border:0;background:transparent;color:var(--text);font-weight:800;font-size:12px;text-align:right;flex:1;min-width:0}.section-actions{display:flex;gap:4px}.section-actions button{width:25px;height:25px;border:0;border-radius:6px;background:var(--surface);color:var(--muted);font-size:11px}.section-items{padding:7px;display:grid;gap:6px}.item-row{display:flex;align-items:center;gap:9px;width:100%;border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:9px;text-align:right}.item-row.selected{border-color:var(--brand2);background:color-mix(in srgb,#6366f1 7%,var(--surface))}.item-kind{width:29px;height:29px;flex:none;border-radius:50%;display:grid;place-items:center;background:#ede9fe;color:#6d28d9}.item-copy{min-width:0;flex:1}.item-copy b{display:block;font-size:11px}.item-copy small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.item-controls{display:flex;gap:3px}.item-controls button{border:0;background:transparent;color:var(--muted);font-size:10px;padding:4px}.preview{min-height:320px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted);padding:25px}.preview-content{width:100%;max-width:650px}.preview-icon{width:65px;height:65px;border-radius:18px;background:#ede9fe;color:#6d28d9;display:grid;place-items:center;font-size:25px;margin:0 auto 13px}.preview h3{color:var(--text);font-size:17px}.preview p{font-size:12px;line-height:1.9}.preview video{max-width:100%;max-height:380px;border-radius:9px;background:#111827}.preview a{display:inline-flex;color:var(--brand2);font-weight:800;margin-top:10px}.enroll-panel{margin-top:17px}.enroll-search{margin:12px 0}.enroll-list{display:grid;gap:7px}.enroll-row{display:grid;grid-template-columns:1.4fr 1fr 1fr auto;gap:9px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:10px;font-size:11px}.enroll-row small{display:block;color:var(--muted);margin-top:3px}.notice{border:1px solid #fde68a;background:#fffbeb;color:#92400e;border-radius:9px;padding:11px;font-size:11px;line-height:1.8}
+.modal-backdrop{position:fixed;inset:0;background:#0f172a99;display:none;align-items:center;justify-content:center;padding:15px;z-index:40}.modal-backdrop.open{display:flex}.modal{width:min(700px,100%);max-height:92vh;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:15px;box-shadow:0 20px 70px #0004}.modal-head{display:flex;align-items:center;justify-content:space-between;padding:15px 19px;background:var(--brand2);color:#fff}.modal-head h2{font-size:16px;margin:0}.close-btn{border:0;background:#ffffff22;color:#fff;width:30px;height:30px;border-radius:50%;font-size:21px;line-height:1}.modal-body{padding:19px;display:grid;gap:14px}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.form-group small{display:block;color:var(--muted);font-size:10px;margin-top:5px;line-height:1.6}.form-actions{display:flex;justify-content:flex-start;gap:8px;border-top:1px solid var(--line);padding-top:14px}.primary-btn,.secondary-btn{border:0;border-radius:8px;padding:10px 18px;font-size:12px;font-weight:800}.primary-btn{background:var(--brand2);color:#fff}.secondary-btn{background:var(--bg);color:var(--text);border:1px solid var(--line)}.checkline{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);font-weight:700}.checkline input{accent-color:var(--brand2)}
+.toast{position:fixed;bottom:19px;left:19px;z-index:60;background:#1e293b;color:#fff;padding:12px 17px;border-radius:10px;box-shadow:0 8px 24px #0f172a30;font-size:12px;max-width:min(450px,calc(100vw - 38px))}.toast.success{border-right:4px solid var(--green)}.toast.error{border-right:4px solid var(--red)}
+@media(max-width:1250px){.filter-grid{grid-template-columns:repeat(3,minmax(120px,1fr))}.summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1000px){.detail-layout{grid-template-columns:1fr}.side{width:195px}.nav{display:none}}
+@media(max-width:760px){.side{display:none}.hero{padding:18px 14px;flex-wrap:wrap}.hero-actions{margin-inline-start:0;width:100%}.wrap{padding:0 13px}.topbar{padding:10px 13px}.site-pill{display:none}.filter-grid{grid-template-columns:1fr 1fr}.detail-top{flex-wrap:wrap}.detail-image{width:90px;height:68px}.enroll-row{grid-template-columns:1fr 1fr}.summary{gap:8px}.counter{padding:11px}.counter b{font-size:19px}}
+@media(max-width:480px){.filter-grid,.form-grid{grid-template-columns:1fr}.hero h1{font-size:20px}.hero-actions>*{flex:1}.detail-copy h2{font-size:17px}.modal{max-height:95vh}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="logo" href="index.html"><b>T</b><span>TEACHING<small>PORTALS</small></span></a>
+  <nav class="nav"><a href="index.html">الرئيسية</a><a href="courses.html">الكورسات</a><a href="support.html">تواصل معنا</a></nav>
+  <div class="tools">
+    <div class="user-menu"><button class="user-trigger" id="adminMenuBtn" type="button" aria-expanded="false"><span class="avatar" id="adminAvatar">م</span><span id="greet">جاري التحقق...</span><span style="color:var(--muted)">⌄</span></button>
+      <nav class="user-dropdown" id="adminProfileMenu" hidden><a class="dropdown-item" href="admin.html">🏠 لوحة التحكم</a><a class="dropdown-item" href="admin-profile.html">👤 الملف الشخصي</a><button class="dropdown-item dropdown-logout" id="logoutBtn" type="button">↪ تسجيل الخروج</button></nav>
+    </div>
+    <button class="sq" id="themeToggle" type="button" aria-label="تغيير المظهر" title="تغيير المظهر">◐</button>
+  </div>
+</header>
+<div class="shell">
+  <aside class="side">
+    <div class="side-title">القائمة الرئيسية</div>
+    <a href="admin.html">🏠 لوحة التحكم</a>
+    <div class="side-title">إدارة المنصة</div>
+    <a href="academic-structure.html" id="academicLink">🎓 الهيكل الأكاديمي</a>
+    <a href="admin-users.html" id="usersLink">👥 إدارة المستخدمين</a>
+    <a href="admin-courses.html" class="active">📚 إدارة الدورات</a>
+  </aside>
+  <main>
+    <section class="hero">
+      <div class="hero-icon">📚</div>
+      <div class="hero-copy"><h1>إدارة الدورات</h1><p>إدارة دورات المنصة ومحتواها والاشتراكات المرتبطة بها</p></div>
+      <div class="hero-actions"><a class="site-pill" id="sitePill" href="#" target="_blank" rel="noopener" hidden>🌐 <span><small>موقعك</small><b id="siteName"></b></span></a><button class="tour" id="tourBtn" type="button">❔ جولة تعريفية</button><button class="add-main" id="addCourseBtn" type="button" hidden>＋ إضافة دورة جديدة</button></div>
+    </section>
+    <div class="wrap">
+      <div id="loadState" class="state">جارٍ تحميل الدورات والتحقق من الصلاحيات...</div>
+      <div id="appContent" hidden>
+        <section id="coursesListView">
+          <div class="summary">
+            <div class="counter">إجمالي الدورات<b id="totalCount">0</b></div>
+            <div class="counter">الدورات النشطة<b id="activeCount">0</b></div>
+            <div class="counter">الدورات المجانية<b id="freeCount">0</b></div>
+            <div class="counter">إجمالي الاشتراكات<b id="enrollmentCount">—</b></div>
+          </div>
+          <div class="toolbar"><span style="font-weight:800">قائمة الدورات</span><span class="hint" id="permissionHint"></span></div>
+          <section class="filters">
+            <div class="filter-grid">
+              <div class="form-group"><label for="searchFilter">بحث عن دورة</label><input class="field" id="searchFilter" type="search" placeholder="اكتب اسم الدورة..."></div>
+              <div class="form-group"><label for="filterStatus">الحالة</label><select class="field" id="filterStatus"><option value="all">الكل</option><option value="active">نشط</option><option value="inactive">غير نشط</option></select></div>
+              <div class="form-group"><label for="filterCategory">فئة السنة الدراسية</label><select class="field" id="filterCategory"><option value="all">كل الفئات</option></select></div>
+              <div class="form-group"><label for="filterGrade">السنة الدراسية</label><select class="field" id="filterGrade"><option value="all">كل السنوات</option></select></div>
+              <div class="form-group"><label for="filterSubject">المادة</label><select class="field" id="filterSubject"><option value="all">كل المواد</option></select></div>
+              <div class="form-group"><label for="filterTrack">الشعبة</label><select class="field" id="filterTrack"><option value="all">كل الشعب</option><option value="-">بدون شعبة</option><option value="علمي">علمي</option><option value="أدبي">أدبي</option></select></div>
+            </div>
+          </section>
+          <section class="table-card"><div class="table-scroll"><table><thead><tr>
+            <th class="center">الترتيب</th><th class="center">الصورة</th><th>العنوان</th><th>المادة</th><th>فئة السنة الدراسية</th><th>السنة الدراسية</th><th class="center">الشعبة</th><th>السعر</th><th class="center">الحالة والظهور</th><th class="center">الإجراءات</th>
+          </tr></thead><tbody id="coursesTableBody"></tbody></table><div class="empty" id="coursesEmpty" hidden><strong>لا توجد دورات مسجلة حتى الآن</strong><span>أضف أول دورة لتظهر هنا. لا يتم عرض بيانات تجريبية.</span></div></div></section>
+          <p id="truncatedNote" class="subline" hidden>تم عرض أول 500 دورة فقط.</p>
+        </section>
+
+        <section id="courseDetailsView" hidden>
+          <div class="detail-top">
+            <div style="width:100%"><button class="back-btn" id="backToCourses">→ العودة إلى الدورات</button>
+              <div style="display:flex;align-items:flex-start;gap:14px"><img class="detail-image" id="detailImage" alt="صورة الدورة"><div class="detail-copy"><h2 id="detailTitle"></h2><div class="detail-meta" id="detailMeta"></div></div></div>
+            </div>
+          </div>
+          <div class="detail-layout">
+            <section class="panel"><div class="panel-head"><h3>الأقسام والعناصر</h3><button class="small-btn" id="addSectionBtn" type="button" hidden>＋ إضافة قسم</button></div><div id="sectionsAccordion"></div><div class="empty" id="sectionsEmpty" hidden>لا توجد أقسام في هذه الدورة.</div></section>
+            <section class="panel preview" id="previewPane"><div class="preview-content"><div class="preview-icon">▶</div><p>اختر عنصراً من القائمة لعرض محتواه هنا</p></div></section>
+          </div>
+          <section class="panel enroll-panel"><div class="panel-head"><h3>اشتراكات الدورة <span id="enrollmentTotal">(0)</span></h3><span class="subline" id="enrollmentAvailability"></span></div>
+            <div class="form-group enroll-search"><label for="enrollSearch">بحث في الاشتراكات</label><input class="field" id="enrollSearch" type="search" placeholder="ابحث باسم الطالب أو رقم الهاتف أو هاتف ولي الأمر أو الكود"></div>
+            <div class="enroll-list" id="enrollmentsList"></div><div class="empty" id="enrollmentsEmpty" hidden>لا توجد اشتراكات لهذه الدورة.</div>
+          </section>
+        </section>
+        <p id="updatedAt" class="subline" style="margin:12px 2px"></p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="modal-backdrop" id="editorBackdrop" role="dialog" aria-modal="true" aria-labelledby="editorTitle">
+  <div class="modal"><div class="modal-head"><h2 id="editorTitle">إضافة دورة جديدة</h2><button class="close-btn" id="closeEditor" type="button" aria-label="إغلاق">×</button></div>
+    <form class="modal-body" id="courseForm">
+      <div class="form-group"><label for="courseTitle">عنوان الدورة *</label><input class="field" id="courseTitle" maxlength="200" required></div>
+      <div class="form-group"><label for="courseDescription">الوصف</label><textarea class="field" id="courseDescription" rows="3" maxlength="4000" placeholder="أدخل وصف الدورة"></textarea></div>
+      <div class="form-grid">
+        <div class="form-group"><label for="courseCategory">فئة السنة الدراسية *</label><select class="field" id="courseCategory" required><option value="">اختر الفئة</option></select></div>
+        <div class="form-group"><label for="courseGrade">السنة الدراسية *</label><select class="field" id="courseGrade" required disabled><option value="">اختر الفئة أولاً</option></select></div>
+        <div class="form-group"><label for="courseSubject">المادة</label><select class="field" id="courseSubject"><option value="">بدون مادة</option></select></div>
+        <div class="form-group"><label for="courseTrack">الشعبة</label><select class="field" id="courseTrack"><option value="-">بدون شعبة (-)</option><option value="علمي">علمي</option><option value="أدبي">أدبي</option></select></div>
+        <div class="form-group"><label for="coursePrice">السعر بالجنيه المصري *</label><input class="field" id="coursePrice" type="number" min="0" step="0.01" required></div>
+        <div class="form-group"><label for="courseImageUrl">رابط صورة الدورة (اختياري)</label><input class="field" id="courseImageUrl" type="url" placeholder="https://..."><small>أو اختر صورة من جهازك بالأسفل.</small></div>
+        <div class="form-group"><label for="courseImageFile">رفع صورة من الجهاز</label><input class="field" id="courseImageFile" type="file" accept="image/jpeg,image/png,image/webp"><small>سيتم ضغط الصورة قبل حفظها.</small></div>
+        <div class="form-group"><label for="expiryMode">مدة وصول الطالب للدورة</label><select class="field" id="expiryMode"><option value="none">بدون تاريخ انتهاء</option><option value="date">تاريخ محدد</option><option value="days">عدد أيام</option></select></div>
+        <div class="form-group" id="expiryDateGroup" hidden><label for="accessEndsAt">تاريخ انتهاء الوصول</label><input class="field" id="accessEndsAt" type="date"></div>
+        <div class="form-group" id="expiryDaysGroup" hidden><label for="accessDays">عدد الأيام</label><input class="field" id="accessDays" type="number" min="1" max="3650"></div>
+      </div>
+      <div class="form-actions"><button class="primary-btn" id="saveCourseBtn" type="submit">💾 حفظ الدورة</button><button class="secondary-btn" id="cancelEditor" type="button">إلغاء</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="contentBackdrop" role="dialog" aria-modal="true" aria-labelledby="contentTitle">
+  <div class="modal" style="width:min(540px,100%)"><div class="modal-head"><h2 id="contentTitle">إضافة قسم</h2><button class="close-btn" id="closeContent" type="button">×</button></div>
+    <form class="modal-body" id="contentForm">
+      <div class="form-group" id="contentNameGroup"><label id="contentNameLabel" for="contentName">اسم القسم</label><input class="field" id="contentName" maxlength="200" required></div>
+      <div class="form-grid" id="itemFields" hidden>
+        <div class="form-group"><label for="itemType">نوع العنصر</label><select class="field" id="itemType"><option value="video">فيديو</option><option value="file">ملف</option></select></div>
+        <div class="form-group"><label for="itemUrl">رابط الفيديو أو الملف</label><input class="field" id="itemUrl" type="url" placeholder="https://..."></div>
+        <div class="form-group" style="grid-column:1/-1"><label for="itemDescription">وصف أو ملاحظات</label><textarea class="field" id="itemDescription" rows="3" maxlength="2000"></textarea></div>
+      </div>
+      <p id="contentHelp" class="subline">سيتم حفظ العنصر داخل محتوى الدورة.</p>
+      <div class="form-actions"><button class="primary-btn" id="saveContentBtn" type="submit">حفظ</button><button class="secondary-btn" id="cancelContent" type="button">إلغاء</button></div>
+    </form>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const state = {
+  courses: [], academic: {categories: [], years: [], subjects: []}, capabilities: {},
+  actor: {}, selectedCourse: null, enrollments: [], activeItemId: null,
+  editorId: null, editorMode: null, contentMode: null, activeSectionId: null,
+  saving: false, enrollmentsAvailable: false, generatedAt: null
+};
+
+function node(tag, className, value) {
+  const item = document.createElement(tag);
+  if (className) item.className = className;
+  if (value !== undefined && value !== null) item.textContent = String(value);
+  return item;
+}
+function toast(message, error = false) {
+  const box = $("toast"); box.textContent = message;
+  box.className = "toast " + (error ? "error" : "success"); box.hidden = false;
+  clearTimeout(toast.timer); toast.timer = setTimeout(() => { box.hidden = true; }, 3600);
+}
+function dateText(value) {
+  if (!value) return "—";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "—" : date.toLocaleDateString("ar-EG", {day:"numeric",month:"short",year:"numeric"});
+}
+function money(value, free) {
+  return free || Number(value) === 0 ? "مجاني" : "EGP " + Number(value).toLocaleString("en-US", {minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function setOptions(select, list, placeholder, selected = "") {
+  select.replaceChildren(new Option(placeholder, ""));
+  (list || []).forEach(item => select.add(new Option(item.name, item.name)));
+  if (selected && (list || []).some(item => item.name === selected)) select.value = selected;
+}
+function courseFilters() {
+  const q = $("searchFilter").value.trim().toLocaleLowerCase("ar");
+  const status = $("filterStatus").value, category = $("filterCategory").value;
+  const grade = $("filterGrade").value, subject = $("filterSubject").value, track = $("filterTrack").value;
+  return state.courses.filter(course => {
+    const searchable = [course.title, course.description, course.subject, course.category, course.grade].join(" ").toLocaleLowerCase("ar");
+    return (!q || searchable.includes(q)) && (status === "all" || course.status === status) &&
+      (category === "all" || course.category === category) && (grade === "all" || course.grade === grade) &&
+      (subject === "all" || course.subject === subject) && (track === "all" || course.track === track);
+  });
+}
+function filtersAreClear() {
+  return !$("searchFilter").value && $("filterStatus").value === "all" && $("filterCategory").value === "all" &&
+    $("filterGrade").value === "all" && $("filterSubject").value === "all" && $("filterTrack").value === "all";
+}
+function setFilterOptions(select, list, placeholder, selected = "all") {
+  select.replaceChildren(new Option(placeholder, "all"));
+  (list || []).forEach(item => select.add(new Option(item.name, item.name)));
+  select.value = selected || "all";
+}
+function setupAcademicFilters() {
+  const categories = state.academic.categories || [], years = state.academic.years || [], subjects = state.academic.subjects || [];
+  const keep = {category:$("filterCategory").value, grade:$("filterGrade").value, subject:$("filterSubject").value};
+  setFilterOptions($("filterCategory"), categories, "كل الفئات", keep.category);
+  setFilterOptions($("filterSubject"), subjects, "كل المواد", keep.subject);
+  const selectedCategory = $("filterCategory").value;
+  const availableYears = selectedCategory === "all" ? years : years.filter(item => item.category === selectedCategory);
+  setFilterOptions($("filterGrade"), availableYears, "كل السنوات", keep.grade);
+  setOptions($("courseCategory"), categories, "اختر الفئة");
+  setOptions($("courseSubject"), subjects, "بدون مادة");
+}
+function updateCourseGradeOptions(selected = "") {
+  const category = $("courseCategory").value;
+  const years = (state.academic.years || []).filter(item => item.category === category);
+  setOptions($("courseGrade"), years, category ? "اختر السنة الدراسية" : "اختر الفئة أولاً", selected);
+  $("courseGrade").disabled = !category || years.length === 0;
+}
+function updateFilterGradeOptions() {
+  const category = $("filterCategory").value;
+  const selected = $("filterGrade").value;
+  const years = (state.academic.years || []).filter(item => category === "all" || item.category === category);
+  const keep = selected === "all" || years.some(item => item.name === selected) ? selected : "all";
+  setFilterOptions($("filterGrade"), years, "كل السنوات", keep);
+}
+function actionButton(label, css, icon, callback, disabled = false) {
+  const button = node("button", "action-btn " + css, icon);
+  button.type = "button"; button.title = label; button.setAttribute("aria-label", label); button.disabled = disabled;
+  button.addEventListener("click", callback); return button;
+}
+function appendBadge(parent, value, css) { parent.appendChild(node("span", "badge " + css, value)); }
+function renderSummary() {
+  $("totalCount").textContent = state.courses.length.toLocaleString("en-US");
+  $("activeCount").textContent = state.courses.filter(item => item.status === "active").length.toLocaleString("en-US");
+  $("freeCount").textContent = state.courses.filter(item => item.isFree).length.toLocaleString("en-US");
+  const enrollmentTotal = state.courses.reduce((sum, item) => sum + (Number(item.enrollmentCount) || 0), 0);
+  $("enrollmentCount").textContent = state.courses.some(item => item.enrollmentCount === null) ? "غير متاح" : enrollmentTotal.toLocaleString("en-US");
+}
+function renderCourses() {
+  const body = $("coursesTableBody"); body.replaceChildren();
+  const visible = courseFilters();
+  $("coursesEmpty").hidden = visible.length > 0;
+  $("truncatedNote").hidden = !state.truncated;
+  visible.forEach((course, index) => {
+    const row = node("tr");
+    const sort = node("td", "sort-cell");
+    const filtered = !filtersAreClear();
+    const originalIndex = state.courses.findIndex(item => item.id === course.id);
+    const up = node("button", "sort-btn", "▲"); up.type = "button"; up.disabled = filtered || originalIndex <= 0 || !state.capabilities.edit; up.title = "رفع الترتيب"; up.onclick = () => moveCourse(course.id, -1);
+    const down = node("button", "sort-btn", "▼"); down.type = "button"; down.disabled = filtered || originalIndex >= state.courses.length - 1 || !state.capabilities.edit; down.title = "خفض الترتيب"; down.onclick = () => moveCourse(course.id, 1);
+    sort.append(up, down); row.appendChild(sort);
+    const imageCell = node("td", "center"); const image = node("img", "course-thumb"); image.alt = course.title;
+    if (course.image) image.src = course.image; else image.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='76' viewBox='0 0 110 76'%3E%3Crect width='110' height='76' fill='%23eef2ff'/%3E%3Ctext x='55' y='43' font-size='24' text-anchor='middle' fill='%236366f1'%3E%2B%3C/text%3E%3C/svg%3E";
+    image.onerror = () => { image.removeAttribute("src"); image.alt = "لا توجد صورة"; image.style.display = "none"; };
+    imageCell.appendChild(image); row.appendChild(imageCell);
+    const title = node("td", "name-cell"); title.appendChild(node("div", "", course.title || "بدون عنوان"));
+    title.appendChild(node("small", "subline", course.description || "بدون وصف")); row.appendChild(title);
+    row.appendChild(node("td", "", course.subject || "—"));
+    row.appendChild(node("td", "", course.category || "—"));
+    row.appendChild(node("td", "", course.grade || "—"));
+    row.appendChild(node("td", "center", course.track || "-"));
+    const price = node("td", "", money(course.price, course.isFree)); if (course.isFree) price.style.color = "#0284c7"; row.appendChild(price);
+    const stateCell = node("td", "center"); const flags = node("div", "actions");
+    flags.appendChild(actionButton(course.pinned ? "إلغاء التثبيت" : "تثبيت الدورة", "action-pin", course.pinned ? "📌" : "♧", () => toggleCourse(course, "toggleCoursePin", {pinned:!course.pinned}), !state.capabilities.edit));
+    flags.appendChild(actionButton(course.status === "active" ? "إيقاف الدورة" : "تفعيل الدورة", "action-status", course.status === "active" ? "✓" : "○", () => toggleCourse(course, "toggleCourseStatus", {status:course.status === "active" ? "inactive" : "active"}), !state.capabilities.edit));
+    flags.appendChild(actionButton(course.isVisible ? "إخفاء عن الطلاب" : "إظهار للطلاب", "action-hide", course.isVisible ? "◉" : "◎", () => toggleCourse(course, "toggleCourseVisibility", {isVisible:!course.isVisible}), !state.capabilities.edit));
+    stateCell.appendChild(flags); stateCell.appendChild(node("div", "", ""));
+    if (course.status === "active") appendBadge(stateCell, "نشط", "active-badge"); else appendBadge(stateCell, "غير نشط", "inactive-badge");
+    if (course.pinned) appendBadge(stateCell, "مثبت", "pinned-badge");
+    if (!course.isVisible) appendBadge(stateCell, "مخفي", "hidden-badge");
+    row.appendChild(stateCell);
+    const actions = node("td", "actions");
+    actions.appendChild(actionButton("تفاصيل الدورة", "action-view", "◉", () => openCourseDetails(course.id)));
+    if (state.capabilities.edit) actions.appendChild(actionButton("تعديل الدورة", "action-edit", "✎", () => openCourseEditor(course)));
+    if (state.capabilities.delete) actions.appendChild(actionButton("حذف الدورة", "action-delete", "⌫", () => deleteCourse(course)));
+    row.appendChild(actions); body.appendChild(row);
+  });
+  $("addCourseBtn").hidden = !state.capabilities.create;
+  $("permissionHint").textContent = state.capabilities.create ? "يمكنك إضافة دورة جديدة حسب صلاحيات حسابك." : "صلاحية العرض فقط على حسابك.";
+  renderSummary();
+}
+function openCourseList() {
+  $("courseDetailsView").hidden = true; $("coursesListView").hidden = false; state.selectedCourse = null; state.enrollments = [];
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function renderDetailsHeader(course) {
+  $("detailTitle").textContent = course.title;
+  const image = $("detailImage"); image.src = course.image || ""; image.hidden = !course.image;
+  image.onerror = () => { image.hidden = true; };
+  const meta = $("detailMeta"); meta.replaceChildren();
+  appendBadge(meta, course.category || "بدون فئة", "role-badge");
+  appendBadge(meta, course.grade || "بدون سنة", "hidden-badge");
+  if (course.subject) appendBadge(meta, course.subject, "hidden-badge");
+  meta.appendChild(node("span", "detail-price", money(course.price, course.isFree)));
+  if (course.pinned) appendBadge(meta, "مثبت", "pinned-badge");
+  if (!course.isVisible) appendBadge(meta, "مخفي عن الطلاب", "hidden-badge");
+}
+function renderSections() {
+  const list = $("sectionsAccordion"); list.replaceChildren();
+  const sections = state.selectedCourse?.sections || [];
+  $("sectionsEmpty").hidden = sections.length > 0;
+  $("addSectionBtn").hidden = !state.capabilities.manageContent;
+  sections.forEach((section, index) => {
+    const card = node("article", "section-card");
+    const head = node("div", "section-head");
+    const toggle = node("button", "section-toggle", (state.openSectionId === section.id ? "⌄　" : "‹　") + section.title);
+    toggle.type = "button"; toggle.onclick = () => { state.openSectionId = state.openSectionId === section.id ? null : section.id; renderSections(); };
+    head.appendChild(toggle);
+    if (state.capabilities.manageContent) {
+      const controls = node("div", "section-actions");
+      const add = node("button", "", "+"); add.type = "button"; add.title = "إضافة عنصر"; add.onclick = () => openItemEditor(section, null); controls.appendChild(add);
+      if (state.capabilities.edit) { const edit = node("button", "", "✎"); edit.type = "button"; edit.title = "تعديل القسم"; edit.onclick = () => openSectionEditor(section); controls.appendChild(edit); }
+      if (state.capabilities.delete) { const del = node("button", "", "⌫"); del.type = "button"; del.title = "حذف القسم"; del.onclick = () => deleteSection(section); controls.appendChild(del); }
+      head.appendChild(controls);
+    }
+    card.appendChild(head);
+    if (state.openSectionId === section.id) {
+      const itemsBox = node("div", "section-items");
+      if (!section.items.length) itemsBox.appendChild(node("div", "empty", "لا توجد عناصر في هذا القسم."));
+      section.items.forEach(item => {
+        const row = node("div", "item-row" + (state.activeItemId === item.id ? " selected" : ""));
+        const select = node("button", "item-row" + (state.activeItemId === item.id ? " selected" : ""));
+        select.type = "button"; select.style.flex = "1"; select.onclick = () => previewItem(section, item);
+        const ico = node("span", "item-kind", item.type === "video" ? "▶" : "▤");
+        const copy = node("span", "item-copy"); copy.appendChild(node("b", "", item.name)); copy.appendChild(node("small", "", item.type === "video" ? "فيديو" : "ملف"));
+        select.append(ico, copy); row.appendChild(select);
+        if (state.capabilities.edit || state.capabilities.delete) {
+          const tools = node("span", "item-controls");
+          if (state.capabilities.edit) { const edit = node("button", "", "✎"); edit.type = "button"; edit.title = "تعديل العنصر"; edit.onclick = () => openItemEditor(section, item); tools.appendChild(edit); }
+          if (state.capabilities.delete) { const del = node("button", "", "⌫"); del.type = "button"; del.title = "حذف العنصر"; del.onclick = () => deleteItem(section, item); tools.appendChild(del); }
+          row.appendChild(tools);
+        }
+        itemsBox.appendChild(row);
+      });
+      card.appendChild(itemsBox);
+    }
+    list.appendChild(card);
+  });
+}
+function previewItem(section, item) {
+  state.activeItemId = item.id; state.openSectionId = section.id;
+  const pane = $("previewPane"); pane.replaceChildren();
+  const content = node("div", "preview-content");
+  const icon = node("div", "preview-icon", item.type === "video" ? "▶" : "▤");
+  content.appendChild(icon); content.appendChild(node("h3", "", item.name));
+  appendBadge(content, item.type === "video" ? "فيديو" : "ملف", "role-badge");
+  if (item.description) content.appendChild(node("p", "", item.description));
+  if (item.url) {
+    if (item.type === "video") {
+      const video = document.createElement("video"); video.controls = true; video.preload = "metadata"; video.src = item.url; content.appendChild(video);
+    }
+    const link = node("a", "", item.type === "video" ? "فتح رابط الفيديو في نافذة جديدة ↗" : "فتح / تحميل الملف ↗");
+    link.href = item.url; link.target = "_blank"; link.rel = "noopener noreferrer"; content.appendChild(link);
+  } else {
+    content.appendChild(node("p", "", "لم يتم إضافة رابط للمحتوى بعد. استخدم تعديل العنصر لإضافة رابط الفيديو أو الملف."));
+  }
+  pane.appendChild(content); renderSections();
+}
+function renderEnrollments() {
+  const list = $("enrollmentsList"); list.replaceChildren();
+  const q = $("enrollSearch").value.trim().toLocaleLowerCase("ar");
+  const filtered = state.enrollments.filter(item => [item.name,item.code,item.phone,item.parentPhone,item.email].join(" ").toLocaleLowerCase("ar").includes(q));
+  $("enrollmentTotal").textContent = "(" + state.enrollments.length.toLocaleString("en-US") + ")";
+  $("enrollmentAvailability").textContent = state.enrollmentsAvailable ? "بيانات الاشتراكات من قاعدة البيانات" : "مجموعة الاشتراكات غير موجودة في قاعدة البيانات";
+  $("enrollmentsEmpty").hidden = filtered.length > 0;
+  if (!filtered.length && q) $("enrollmentsEmpty").textContent = "لا توجد نتائج مطابقة للبحث.";
+  else $("enrollmentsEmpty").textContent = "لا توجد اشتراكات لهذه الدورة.";
+  filtered.forEach(item => {
+    const row = node("div", "enroll-row");
+    const name = node("div", "", item.name); if (item.code) name.appendChild(node("small", "", "الكود: " + item.code));
+    const phone = node("div", "", item.phone || item.email || "—"); phone.appendChild(node("small", "", item.parentPhone ? "ولي الأمر: " + item.parentPhone : ""));
+    row.append(name, phone, node("div", "", item.status || "غير محدد"), node("small", "", dateText(item.createdAt)));
+    list.appendChild(row);
+  });
+}
+async function apiGet(url = "/api/admin/courses") {
+  const response = await fetch(url, {credentials:"same-origin",cache:"no-store"});
+  const data = await response.json();
+  if (response.status === 401) { location.replace("login.html"); return null; }
+  if (!response.ok || !data.ok) throw new Error(data.message || "تعذر تحميل البيانات.");
+  return data;
+}
+async function apiPost(payload) {
+  const response = await fetch("/api/admin/courses", {method:"POST",credentials:"same-origin",cache:"no-store",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+  const data = await response.json();
+  if (response.status === 401) { location.replace("login.html"); return null; }
+  if (!response.ok || !data.ok) throw new Error(data.message || "تعذر تنفيذ العملية.");
+  return data;
+}
+async function loadCourses(showLoading = true) {
+  if (showLoading) { $("loadState").hidden = false; $("loadState").className = "state"; $("loadState").textContent = "جارٍ تحميل الدورات والتحقق من الصلاحيات..."; $("appContent").hidden = true; }
+  try {
+    const data = await apiGet(); if (!data) return;
+    state.courses = data.courses || []; state.academic = data.academic || {categories:[],years:[],subjects:[]};
+    state.capabilities = data.capabilities || {}; state.actor = data.actor || {}; state.generatedAt = data.generatedAt; state.truncated = Boolean(data.truncated);
+    setupAcademicFilters(); renderCourses();
+    $("greet").textContent = "مرحباً " + (state.actor.name || "مدير النظام"); $("adminAvatar").textContent = (state.actor.name || "م").trim().charAt(0);
+    if (data.site?.url) { try { $("sitePill").href = data.site.url; $("siteName").textContent = new URL(data.site.url).host; $("sitePill").hidden = false; } catch (_) {} }
+    $("academicLink").hidden = state.capabilities.academic !== true;
+    $("usersLink").hidden = state.capabilities.users !== true;
+    $("addCourseBtn").hidden = !state.capabilities.create;
+    $("updatedAt").textContent = state.generatedAt ? "آخر تحديث: " + new Date(state.generatedAt).toLocaleString("ar-EG") : "";
+    $("loadState").hidden = true; $("appContent").hidden = false;
+  } catch (error) {
+    $("loadState").className = "state error"; $("loadState").replaceChildren(document.createTextNode(error.message || "تعذر تحميل الدورات."));
+    const retry = node("button", "retry", "إعادة المحاولة"); retry.type = "button"; retry.onclick = () => loadCourses(true); $("loadState").appendChild(retry); $("loadState").hidden = false;
+  }
+}
+async function openCourseDetails(id) {
+  try {
+    const data = await apiGet("/api/admin/courses?courseId=" + encodeURIComponent(id)); if (!data) return;
+    state.selectedCourse = data.course; state.enrollments = data.enrollments || []; state.enrollmentsAvailable = data.enrollmentsAvailable === true;
+    state.academic = data.academic || state.academic; state.openSectionId = state.selectedCourse.sections?.[0]?.id || null; state.activeItemId = null;
+    $("coursesListView").hidden = true; $("courseDetailsView").hidden = false;
+    renderDetailsHeader(state.selectedCourse); renderSections(); renderEnrollments();
+    $("previewPane").replaceChildren(); const placeholder = node("div", "preview-content"); placeholder.append(node("div", "preview-icon", "▶"), node("p", "", "اختر عنصراً من القائمة لعرض محتواه هنا")); $("previewPane").appendChild(placeholder);
+    window.scrollTo({top:0,behavior:"smooth"});
+  } catch (error) { toast(error.message, true); }
+}
+function openCourseEditor(course = null) {
+  if (course && !state.capabilities.edit) return;
+  if (!course && !state.capabilities.create) return;
+  state.editorId = course?.id || null;
+  $("courseForm").reset();
+  $("editorTitle").textContent = course ? "تعديل بيانات الدورة" : "إضافة دورة جديدة";
+  $("courseTitle").value = course?.title || ""; $("courseDescription").value = course?.description || "";
+  $("courseCategory").value = course?.category || ""; updateCourseGradeOptions(course?.grade || "");
+  $("courseSubject").value = course?.subject || ""; $("courseTrack").value = course?.track || "-";
+  $("coursePrice").value = course?.price ?? 0; $("courseImageUrl").value = course?.image || "";
+  $("expiryMode").value = course?.expiryMode || "none";
+  $("accessEndsAt").value = course?.accessEndsAt ? new Date(course.accessEndsAt).toISOString().slice(0,10) : "";
+  $("accessDays").value = course?.accessDays || ""; $("courseImageFile").value = "";
+  updateExpiryFields(); $("editorBackdrop").classList.add("open"); $("courseTitle").focus();
+}
+function closeCourseEditor() { $("editorBackdrop").classList.remove("open"); state.editorId = null; }
+function updateExpiryFields() {
+  const mode = $("expiryMode").value;
+  $("expiryDateGroup").hidden = mode !== "date"; $("expiryDaysGroup").hidden = mode !== "days";
+  $("accessEndsAt").required = mode === "date"; $("accessDays").required = mode === "days";
+}
+async function compressImage(file) {
+  if (!file || !file.type.startsWith("image/")) throw new Error("اختر ملف صورة صالحاً.");
+  const dataUrl = await new Promise((resolve, reject) => {
+    const reader = new FileReader(); reader.onerror = () => reject(new Error("تعذر قراءة الصورة.")); reader.onload = () => resolve(reader.result); reader.readAsDataURL(file);
+  });
+  const image = await new Promise((resolve, reject) => {
+    const img = new Image(); img.onload = () => resolve(img); img.onerror = () => reject(new Error("الصورة غير صالحة.")); img.src = dataUrl;
+  });
+  const scale = Math.min(1, 1280 / Math.max(image.width, image.height));
+  const canvas = document.createElement("canvas"); canvas.width = Math.max(1, Math.round(image.width * scale)); canvas.height = Math.max(1, Math.round(image.height * scale));
+  const context = canvas.getContext("2d"); context.drawImage(image, 0, 0, canvas.width, canvas.height);
+  for (const quality of [0.82,0.72,0.62,0.52,0.42]) {
+    const compressed = canvas.toDataURL("image/jpeg", quality);
+    if (compressed.length <= 360000) return compressed;
+  }
+  throw new Error("حجم الصورة ما زال كبيراً بعد الضغط. اختر صورة أصغر.");
+}
+async function saveCourse(event) {
+  event.preventDefault(); if (state.saving) return;
+  const button = $("saveCourseBtn"); state.saving = true; button.disabled = true; button.textContent = "جارٍ الحفظ...";
+  try {
+    let image = $("courseImageUrl").value.trim();
+    const file = $("courseImageFile").files?.[0]; if (file) image = await compressImage(file);
+    const payload = {
+      action: state.editorId ? "updateCourse" : "createCourse", courseId: state.editorId,
+      title: $("courseTitle").value.trim(), description: $("courseDescription").value.trim(),
+      category: $("courseCategory").value, grade: $("courseGrade").value, subject: $("courseSubject").value,
+      track: $("courseTrack").value, price: Number($("coursePrice").value), image,
+      expiryMode: $("expiryMode").value, accessEndsAt: $("accessEndsAt").value, accessDays: Number($("accessDays").value)
+    };
+    const result = await apiPost(payload); if (!result) return;
+    closeCourseEditor(); toast(result.message || "تم الحفظ بنجاح."); await loadCourses(false);
+  } catch (error) { toast(error.message || "تعذر حفظ الدورة.", true); }
+  finally { state.saving = false; button.disabled = false; button.textContent = "💾 حفظ الدورة"; }
+}
+async function toggleCourse(course, action, values) {
+  try { const result = await apiPost({action,courseId:course.id,...values}); if (result) { toast(result.message); await loadCourses(false); } }
+  catch (error) { toast(error.message, true); }
+}
+async function deleteCourse(course) {
+  if (!confirm("هل تريد حذف الدورة «" + course.title + "»؟ سيتم إخفاؤها وتعطيلها مع الاحتفاظ بسجلات الاشتراكات.")) return;
+  try { const result = await apiPost({action:"deleteCourse",courseId:course.id}); if (result) { toast(result.message); openCourseList(); await loadCourses(false); } }
+  catch (error) { toast(error.message, true); }
+}
+async function moveCourse(id, direction) {
+  const index = state.courses.findIndex(item => item.id === id), target = index + direction;
+  if (target < 0 || target >= state.courses.length || !state.capabilities.edit) return;
+  [state.courses[index],state.courses[target]] = [state.courses[target],state.courses[index]]; renderCourses();
+  try { const result = await apiPost({action:"reorderCourses",courseIds:state.courses.map(item => item.id)}); if (result) toast(result.message); }
+  catch (error) { toast(error.message, true); await loadCourses(false); }
+}
+function openContentModal(mode, section = null, item = null) {
+  state.contentMode = mode; state.activeSectionId = section?.id || null; state.editingContentId = item?.id || section?.id || null;
+  $("contentForm").reset(); $("itemFields").hidden = !mode.includes("Item");
+  const isItem = mode.includes("Item");
+  const title = mode === "createSection" ? "إضافة قسم جديد" : mode === "updateSection" ? "تعديل اسم القسم" : mode === "createItem" ? "إضافة عنصر جديد" : "تعديل العنصر";
+  $("contentTitle").textContent = title; $("contentNameLabel").textContent = isItem ? "اسم العنصر" : "اسم القسم";
+  $("contentName").value = item?.name || section?.title || "";
+  $("itemType").value = item?.type || "video"; $("itemUrl").value = item?.url || ""; $("itemDescription").value = item?.description || "";
+  $("contentHelp").textContent = isItem ? "أدخل رابط فيديو أو ملف مستضاف. لا يتم رفع ملفات الفيديو الكبيرة إلى قاعدة البيانات." : "سيتم حفظ القسم داخل محتوى الدورة الحالية.";
+  $("contentBackdrop").classList.add("open"); $("contentName").focus();
+}
+function openSectionEditor(section) { openContentModal("updateSection", section); }
+function openItemEditor(section, item) { openContentModal(item ? "updateItem" : "createItem", section, item); }
+function closeContentModal() { $("contentBackdrop").classList.remove("open"); state.contentMode = null; }
+async function submitContent(event) {
+  event.preventDefault(); if (!state.selectedCourse || state.saving) return;
+  const button = $("saveContentBtn"); state.saving = true; button.disabled = true; button.textContent = "جارٍ الحفظ...";
+  try {
+    const payload = {action:state.contentMode,courseId:state.selectedCourse.id,sectionId:state.activeSectionId,title:$("contentName").value.trim(),name:$("contentName").value.trim(),itemId:state.editingContentId,itemType:$("itemType").value,url:$("itemUrl").value.trim(),description:$("itemDescription").value.trim()};
+    const result = await apiPost(payload); if (!result) return;
+    closeContentModal(); toast(result.message || "تم الحفظ."); await openCourseDetails(state.selectedCourse.id);
+  } catch (error) { toast(error.message, true); }
+  finally { state.saving = false; button.disabled = false; button.textContent = "حفظ"; }
+}
+async function contentAction(action, section, item = null) {
+  try { const result = await apiPost({action,courseId:state.selectedCourse.id,sectionId:section.id,itemId:item?.id}); if (result) { toast(result.message); await openCourseDetails(state.selectedCourse.id); } }
+  catch (error) { toast(error.message, true); }
+}
+function deleteSection(section) { if (confirm("هل تريد حذف القسم «" + section.title + "» وجميع العناصر الموجودة داخله؟")) contentAction("deleteSection",section); }
+function deleteItem(section,item) { if (confirm("هل تريد حذف العنصر «" + item.name + "»؟")) contentAction("deleteItem",section,item); }
+
+$("addCourseBtn").addEventListener("click",() => openCourseEditor());
+$("courseForm").addEventListener("submit",saveCourse); $("closeEditor").addEventListener("click",closeCourseEditor); $("cancelEditor").addEventListener("click",closeCourseEditor);
+$("editorBackdrop").addEventListener("click",event => {if(event.target === $("editorBackdrop")) closeCourseEditor();});
+$("courseCategory").addEventListener("change",() => updateCourseGradeOptions()); $("expiryMode").addEventListener("change",updateExpiryFields);
+$("filterCategory").addEventListener("change",() => {updateFilterGradeOptions();renderCourses();});
+["searchFilter","filterStatus","filterGrade","filterSubject","filterTrack"].forEach(id => $(id).addEventListener(id === "searchFilter" ? "input" : "change",renderCourses));
+$("addSectionBtn").addEventListener("click",() => openContentModal("createSection"));
+$("contentForm").addEventListener("submit",submitContent); $("closeContent").addEventListener("click",closeContentModal); $("cancelContent").addEventListener("click",closeContentModal);
+$("contentBackdrop").addEventListener("click",event => {if(event.target === $("contentBackdrop")) closeContentModal();});
+$("backToCourses").addEventListener("click",openCourseList); $("enrollSearch").addEventListener("input",renderEnrollments);
+$("themeToggle").addEventListener("click",() => {const root=document.documentElement;const next=root.dataset.theme==="dark"?"light":"dark";root.dataset.theme=next;try{localStorage.setItem("admin-theme",next);}catch(_){}});
+try {const saved=localStorage.getItem("admin-theme");if(saved)document.documentElement.dataset.theme=saved;} catch(_) {}
+const menuButton=$("adminMenuBtn"), menu=$("adminProfileMenu");
+menuButton.addEventListener("click",event=>{event.stopPropagation();menu.hidden=!menu.hidden;menuButton.setAttribute("aria-expanded",String(!menu.hidden));});
+document.addEventListener("click",event=>{if(!event.target.closest(".user-menu")){menu.hidden=true;menuButton.setAttribute("aria-expanded","false");}});
+$("logoutBtn").addEventListener("click",async()=>{try{await fetch("/api/auth/logout",{method:"POST",credentials:"same-origin"});}finally{location.replace("login.html");}});
+$("tourBtn").addEventListener("click",()=>toast("يمكنك إضافة الدورات وربطها بالفئات والسنوات والمواد، ثم إضافة الأقسام والعناصر ومراجعة الاشتراكات من تفاصيل الدورة."));
+document.addEventListener("keydown",event=>{if(event.key==="Escape"){closeCourseEditor();closeContentModal();menu.hidden=true;menuButton.setAttribute("aria-expanded","false");}});
+loadCourses(true);
+</script>
+</body>
+</html>
