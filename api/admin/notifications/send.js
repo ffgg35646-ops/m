@@ -147,7 +147,9 @@ module.exports = async function handler(req, res) {
       ok:true,
       message: pushStatus === "not_configured"
         ? "تم حفظ الإشعار في جرس حسابات المستلمين. إشعارات الهاتف لم تُفعّل بعد؛ يلزم إعداد مفاتيح Web Push وتسجيل أجهزة الطلاب."
-        : `تم حفظ الإشعار. نجاح إرسال الهاتف: ${delivered}، تعذر: ${failed}.`,
+        : pushStatus === "no_devices"
+          ? "تم حفظ الإشعار في جرس حسابات المستلمين، لكن لا توجد أجهزة هاتف مسجلة ومفعّلة لدى المستلمين المحددين."
+          : `تم حفظ الإشعار. نجاح إرسال الهاتف: ${delivered}، تعذر: ${failed}.`,
       result:{studentCount:students.length,recipientCount:recipients.size,parentCount:batch.parentCount,deviceCount,delivered,failed,pushStatus}
     });
   } catch (error) {
