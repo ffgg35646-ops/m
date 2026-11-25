@@ -35,7 +35,7 @@ module.exports = async function handler(req, res) {
     );
     if (!claimed.modifiedCount) return json(res, 409, { ok: false, message: "تم استخدام هذا الكود بالفعل. اطلب كوداً جديداً." });
 
-    const targetCollection = record.collection || USERS;
+    const targetCollection = record.collection || collectionName();
     const credentials = await hashPassword(password);
     const updated = await database.collection(targetCollection).updateOne(
       { _id: record.userId, email },
