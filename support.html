@@ -129,14 +129,40 @@
   </footer>
 
   <script>
-    const message = document.getElementById("message");
+    const messageInput = document.getElementById("message");
     const count = document.getElementById("char-count");
     const form = document.getElementById("support-form");
     const note = document.getElementById("form-note");
-    message.addEventListener("input", () => { count.textContent = message.value.length; });
-    form.addEventListener("submit", event => {
+    const submitButton = form.querySelector('button[type="submit"]');
+
+    messageInput.addEventListener("input", () => { count.textContent = messageInput.value.length; });
+
+    form.addEventListener("submit", async event => {
       event.preventDefault();
-      note.textContent = "تم التحقق من البيانات محليًا، لكن إرسال الرسائل غير مفعّل حتى ربط النموذج بخدمة الدعم.";
+      const payload = Object.fromEntries(new FormData(form).entries());
+      submitButton.disabled = true;
+      submitButton.textContent = "جارٍ إرسال الرسالة...";
+      note.textContent = "";
+      note.className = "form-note";
+      try {
+        const response = await fetch("/api/support/messages", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.ok) throw new Error(data.message || "تعذر إرسال الرسالة.");
+        form.reset();
+        count.textContent = "0";
+        note.textContent = data.message;
+        note.style.color = "#059669";
+      } catch (error) {
+        note.textContent = error.message;
+        note.style.color = "#dc2626";
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "إرسال الرسالة ✈";
+      }
     });
   </script>
 </body>
