@@ -8,7 +8,9 @@ function relationIds(user) {
     const value = user[field];
     const list = Array.isArray(value) ? value : value ? [value] : [];
     for (const item of list) {
-      const id = item && typeof item === "object" ? (item.userId || item._id || item.id) : item;
+      const id = item && typeof item === "object"
+        ? (typeof item.toHexString === "function" ? item.toHexString() : (item.userId || item._id || item.id))
+        : item;
       if (id) result.push(String(id));
     }
   }
