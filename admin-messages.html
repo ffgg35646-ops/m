@@ -170,6 +170,7 @@
     $("dropdownToggle").addEventListener("click", toggleMenu);
 
     function switchTab(tab) {
+      if (tab === "notifications") { location.href = "admin-notifications.html"; return; }
       const messages = tab === "messages";
       $("messagesSection").classList.toggle("hidden", !messages);
       $("notificationsSection").classList.toggle("hidden", messages);
