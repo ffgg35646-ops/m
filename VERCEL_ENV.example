@@ -11,6 +11,9 @@ RESEND_API_KEY=re_...
 EMAIL_FROM=منصة علي عليان الدولية <no-reply@your-verified-domain.com>
 RESET_CODE_SECRET=replace-with-a-long-random-secret-at-least-32-characters
 APP_URL=https://your-production-domain.com
+# Registration and password-recovery codes are stored hashed in MongoDB collections.
+# email_verification_codes and password_reset_codes expire automatically after 10 minutes.
+# Email delivery uses Resend; EMAIL_FROM must be a verified sender/domain in your Resend account.
 
 # Admin records in AUTH_COLLECTION must include:
 # { email, passwordHash, passwordSalt, role: "admin" }
