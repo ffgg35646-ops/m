@@ -165,7 +165,10 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const auth = await requireAdmin(req);
+    const academicPermission = req.method === "GET"
+      ? { section: "الهيكل الأكاديمي", modules: ["فئات السنوات الدراسية", "السنوات الدراسية", "المواد"], action: "عرض" }
+      : { section: "الهيكل الأكاديمي", modules: ["فئات السنوات الدراسية", "السنوات الدراسية", "المواد"], action: "تعديل" };
+    const auth = await requireAdmin(req, academicPermission);
     if (!auth.ok) return json(res, auth.status, { ok: false, message: auth.message });
 
     const collection = auth.database.collection(COLLECTION);
