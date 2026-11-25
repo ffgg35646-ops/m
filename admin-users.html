@@ -382,7 +382,7 @@ function openAdminEditor(admin=null) {
   $("adminStatus").value=admin?.status||"نشط";
   const roleSelect=$("adminRole");roleSelect.replaceChildren();
   state.roles.forEach(role=>{
-    if(role.allPermissions && state.actor.role!=="admin" && state.actor.role!=="Administrator" && !["owner","super_admin","مدير النظام"].includes(state.actor.role.toLowerCase())) return;
+    if(role.allPermissions && !["admin","administrator","owner","super_admin","مدير النظام","مدير","مسؤول"].includes(String(state.actor.role||"").trim().toLowerCase())) return;
     roleSelect.add(new Option(role.roleName,role.roleName));
   });
   roleSelect.value=admin?.role||"مشرف";
@@ -522,6 +522,9 @@ function bindHeader(data) {
   state.actor=data.actor||state.actor;
   $("greet").textContent="مرحباً "+name;
   $("adminAvatar").textContent=name.trim().charAt(0)||"م";
+  if(data.site?.url){
+    try{$("sitePill").href=data.site.url;$("siteName").textContent=new URL(data.site.url).host;$("sitePill").hidden=false;}catch(_){}
+  }
 }
 async function loadSiteInfo() {
   try {
@@ -538,6 +541,15 @@ async function loadUsers(showLoading=true) {
     if(response.status===401){location.replace("login.html");return;}
     const data=await response.json();
     if(!response.ok||!data.ok) throw new Error(data.message||"تعذر تحميل المستخدمين.");
+    if(data.capabilities?.students){
+      try{
+        const academicResponse=await fetch("/api/admin/academic-structure",{credentials:"same-origin",cache:"no-store"});
+        if(academicResponse.ok){
+          const academicData=await academicResponse.json();
+          if(academicData.ok&&academicData.structure)data.academic={categories:academicData.structure.categories||[],years:academicData.structure.years||[]};
+        }
+      }catch(_){}
+    }
     state.admins=data.admins||[];state.students=data.students||[];state.roles=data.roles||[];
     state.academic=data.academic||{categories:[],years:[]};state.capabilities=data.capabilities||{};
     state.updatedAt=data.generatedAt;state.truncatedAdmins=Boolean(data.truncated?.admins);state.truncatedStudents=Boolean(data.truncated?.students);
