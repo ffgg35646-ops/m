@@ -23,7 +23,7 @@ module.exports = async function handler(req, res) {
           audience: item.audience || "all",
           recipientCount: item.recipientCount ?? (item.recipientIds?.length || null),
           createdAt: item.createdAt || null,
-          status: item.status || "sent"
+          status: item.status || "published"
         }))
       });
     }
@@ -58,7 +58,7 @@ module.exports = async function handler(req, res) {
       title, body, audience,
       recipientIds: audience === "selected" ? recipientIds : [],
       recipientCount: audience === "selected" ? recipientIds.length : null,
-      status: "sent",
+      status: "published",
       createdAt: new Date(),
       createdBy: auth.admin._id
     };
