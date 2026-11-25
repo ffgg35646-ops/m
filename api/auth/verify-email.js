@@ -35,8 +35,12 @@ module.exports = async function handler(req, res) {
     }
 
     const users = database.collection(USERS);
-    const existing = await users.findOne({ email }, { projection: { _id: 1 } });
-    if (existing) {
+    const adminCollection = process.env.AUTH_COLLECTION || "admins";
+    const [existing, existingAdmin] = await Promise.all([
+      users.findOne({ email }, { projection: { _id: 1 } }),
+      adminCollection === USERS ? Promise.resolve(null) : database.collection(adminCollection).findOne({ email }, { projection: { _id: 1 } })
+    ]);
+    if (existing || existingAdmin) {
       await codes.deleteOne({ _id: record._id });
       return json(res, 409, { ok: false, message: "هذا البريد مرتبط بحساب بالفعل. انتقل إلى تسجيل الدخول." });
     }
