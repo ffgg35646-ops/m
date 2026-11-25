@@ -40,6 +40,80 @@ let expanded=false;function renderCourses(){const items=expanded?courses:courses
 let timerId=null,seconds=1500,running=false;function timerView(){openModal('مؤقت الدراسة (بومودورو)','<p style="text-align:center">جلسة تركيز لمدة 25 دقيقة</p><div id="timerDisplay" style="font-size:48px;font-weight:800;color:#2496de;text-align:center;direction:ltr">25:00</div><div style="display:flex;justify-content:center;gap:10px"><button class="price" id="timerStart">'+(running?'إيقاف مؤقت':'ابدأ الجلسة')+'</button><button class="price" id="timerReset" style="background:#64748b">إعادة ضبط</button></div>');$('#timerDisplay').textContent=String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');$('#timerStart').onclick=()=>{if(running){clearInterval(timerId);timerId=null;running=false;$('#timerStart').textContent='ابدأ الجلسة'}else{running=true;$('#timerStart').textContent='إيقاف مؤقت';timerId=setInterval(()=>{if(seconds>0)seconds--;else{clearInterval(timerId);timerId=null;running=false}const d=$('#timerDisplay');if(d)d.textContent=String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0')},1000)}};$('#timerReset').onclick=()=>{seconds=1500;running=false;clearInterval(timerId);timerId=null;$('#timerDisplay').textContent='25:00';$('#timerStart').textContent='ابدأ الجلسة'}};
 const tasks=['مراجعة درس النحو','حل تدريبات الكورس'];function taskView(){openModal('قائمة المهام','<form id="taskForm" style="display:flex;gap:8px"><input id="taskInput" placeholder="أضف مهمة جديدة" style="flex:1;min-width:0;padding:10px;border:1px solid #ddd;border-radius:9px"><button class="price">إضافة</button></form><ul id="taskItems">'+tasks.map(t=>'<li style="padding:7px 0">'+t+'</li>').join('')+'</ul>');$('#taskForm').onsubmit=e=>{e.preventDefault();const v=$('#taskInput').value.trim();if(v){tasks.push(v);taskView()}}}
 const advice=['ذاكر 25 دقيقة بتركيز، وبعدها كافئ نفسك باستراحة قصيرة.','ابدأ بالأصعب قبل أن يتحول إلى وحش في جدولك!','المراجعة اليومية الصغيرة أفضل من التراكم الكبير.'];function action(a){if(a==='timer')return timerView();if(a==='tasks')return taskView();if(a==='browse')return location.href='courses.html';if(a==='advice')return openModal('نصيحة الصديق المرح','<p style="text-align:center;font-weight:bold">'+advice[Math.floor(Math.random()*advice.length)]+'</p><button class="price" id="nextAdvice">نصيحة أخرى</button>')||($('#nextAdvice').onclick=()=>action('advice'));if(a==='profile')return location.href='account.html';if(a==='groups')return openModal('المجموعات والحضور','<p>لا توجد مجموعات مسجلة على الحساب حالياً.</p>')}
-document.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>action(b.dataset.action)));$('#floating').onclick=timerView;$('#notifications').onclick=()=>openModal('الإشعارات','<p>لا توجد إشعارات جديدة حالياً.</p>');const profileTop=$('#profileTop'),profileMenu=$('#profileMenu');profileTop.onclick=()=>{const opened=profileMenu.classList.toggle('open');profileTop.setAttribute('aria-expanded',String(opened))};document.addEventListener('click',e=>{if(!e.target.closest('.profile-wrap')){profileMenu.classList.remove('open');profileTop.setAttribute('aria-expanded','false')}});document.addEventListener('keydown',e=>{if(e.key==='Escape'){profileMenu.classList.remove('open');profileTop.setAttribute('aria-expanded','false')}});profileMenu.addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(!b)return;const page=b.dataset.page;profileMenu.classList.remove('open');profileTop.setAttribute('aria-expanded','false');if(page==='تسجيل الخروج'){fetch('/api/auth/logout',{method:'POST',credentials:'same-origin'}).finally(()=>location.href='login.html');return}openModal(page,'<p>قسم '+page+' — ستظهر بيانات هذا القسم عند ربطه بنظام الحسابات وقاعدة البيانات.</p>')});$('#language').onclick=()=>openModal('اللغة','<p>اللغة الحالية: العربية.</p>');$('#sideLinks').addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(!b)return;const page=b.dataset.page;if(page==='تسجيل الخروج'){location.href='login.html';return}document.querySelectorAll('#sideLinks button').forEach(x=>x.classList.toggle('active',x===b));$('#layout').classList.remove('menu-open');if(page==='لوحة التحكم'){location.href='dashboard.html';return}if(page==='كورساتي')return openModal(page,'<p>لا توجد كورسات مسجلة حالياً. يمكنك استكشاف الكورسات المتاحة.</p><a href="courses.html" style="color:#2496de;font-weight:bold">تصفح الكورسات</a>');openModal(page,'<p>قسم '+page+' — ستظهر بيانات هذا القسم عند ربطه بنظام الحسابات وقاعدة البيانات.</p>')});
+document.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>action(b.dataset.action)));$('#floating').onclick=timerView;async function enableStudentPush(){
+  try {
+    if(!('serviceWorker' in navigator)||!('PushManager' in window)||!('Notification' in window)) {
+      throw new Error('هذا المتصفح لا يدعم إشعارات الهاتف.');
+    }
+    const keyResponse=await fetch('/api/push/public-key',{credentials:'same-origin'});
+    const keyData=await keyResponse.json();
+    if(!keyData.enabled||!keyData.publicKey) throw new Error('إشعارات الهاتف لم تُجهّز بعد على الخادم.');
+    const permission=await Notification.requestPermission();
+    if(permission!=='granted') throw new Error('لم يتم السماح بإشعارات الموقع من إعدادات المتصفح.');
+    const registration=await navigator.serviceWorker.register('/sw.js');
+    const existing=await registration.pushManager.getSubscription();
+    const subscription=existing||await registration.pushManager.subscribe({
+      userVisibleOnly:true,
+      applicationServerKey:(function(value){
+        const padding='='.repeat((4-value.length%4)%4);
+        const base64=(value+padding).replace(/-/g,'+').replace(/_/g,'/');
+        const raw=atob(base64);const output=new Uint8Array(raw.length);
+        for(let i=0;i<raw.length;i++)output[i]=raw.charCodeAt(i);
+        return output;
+      })(keyData.publicKey)
+    });
+    const saved=await fetch('/api/push/subscribe',{
+      method:'POST',credentials:'same-origin',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({subscription:subscription.toJSON()})
+    });
+    const result=await saved.json();
+    if(!saved.ok||!result.ok) throw new Error(result.message||'تعذر تسجيل الجهاز.');
+    openModal('الإشعارات','<p>تم تفعيل إشعارات هذا الجهاز بنجاح.</p>');
+  } catch(error) {
+    openModal('إشعارات الهاتف','<p>'+String(error.message||error).replace(/[<>&]/g,'')+'</p>');
+  }
+}
+async function showStudentNotifications(){
+  openModal('الإشعارات','<p>جارٍ تحميل الإشعارات...</p>');
+  const pushButton=document.createElement('button');
+  pushButton.type='button';pushButton.className='price';pushButton.textContent='تفعيل إشعارات الهاتف';
+  pushButton.style.margin='8px 0';
+  pushButton.onclick=enableStudentPush;
+  try {
+    const response=await fetch('/api/notifications/my',{credentials:'same-origin',cache:'no-store'});
+    const data=await response.json();
+    if(!response.ok||!data.ok) throw new Error(data.message||'تعذر تحميل الإشعارات. سجّل الدخول أولاً.');
+    body.replaceChildren();
+    body.appendChild(pushButton);
+    if(!data.notifications.length){
+      const empty=document.createElement('p');empty.textContent='لا توجد إشعارات جديدة حالياً.';body.appendChild(empty);return;
+    }
+    for(const item of data.notifications){
+      const card=document.createElement('article');
+      card.style.cssText='border:1px solid #e5e7eb;border-radius:12px;padding:12px;margin:10px 0;text-align:right';
+      const title=document.createElement('strong');title.textContent=item.title;
+      const text=document.createElement('p');text.textContent=item.body;text.style.cssText='margin:7px 0;line-height:1.8';
+      const date=document.createElement('small');date.textContent=item.createdAt?new Date(item.createdAt).toLocaleString('ar-EG'):'';
+      card.append(title,text,date);
+      if(!item.read){
+        const read=document.createElement('button');read.type='button';read.className='price';read.textContent='تحديد كمقروء';
+        read.onclick=async()=>{
+          read.disabled=true;
+          const result=await fetch('/api/notifications/read',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:item.id})});
+          const payload=await result.json();
+          if(result.ok&&payload.ok){read.textContent='مقروء';card.style.opacity='.7';}
+          else {read.disabled=false;read.textContent='تعذر التحديث';}
+        };
+        card.appendChild(read);
+      } else {card.style.opacity='.7';}
+      body.appendChild(card);
+    }
+  } catch(error){
+    body.replaceChildren();
+    const message=document.createElement('p');message.textContent=error.message||'تعذر تحميل الإشعارات.';body.append(message,pushButton);
+  }
+}
+$('#notifications').onclick=showStudentNotifications;const profileTop=$('#profileTop'),profileMenu=$('#profileMenu');profileTop.onclick=()=>{const opened=profileMenu.classList.toggle('open');profileTop.setAttribute('aria-expanded',String(opened))};document.addEventListener('click',e=>{if(!e.target.closest('.profile-wrap')){profileMenu.classList.remove('open');profileTop.setAttribute('aria-expanded','false')}});document.addEventListener('keydown',e=>{if(e.key==='Escape'){profileMenu.classList.remove('open');profileTop.setAttribute('aria-expanded','false')}});profileMenu.addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(!b)return;const page=b.dataset.page;profileMenu.classList.remove('open');profileTop.setAttribute('aria-expanded','false');if(page==='تسجيل الخروج'){fetch('/api/auth/logout',{method:'POST',credentials:'same-origin'}).finally(()=>location.href='login.html');return}openModal(page,'<p>قسم '+page+' — ستظهر بيانات هذا القسم عند ربطه بنظام الحسابات وقاعدة البيانات.</p>')});$('#language').onclick=()=>openModal('اللغة','<p>اللغة الحالية: العربية.</p>');$('#sideLinks').addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(!b)return;const page=b.dataset.page;if(page==='تسجيل الخروج'){location.href='login.html';return}document.querySelectorAll('#sideLinks button').forEach(x=>x.classList.toggle('active',x===b));$('#layout').classList.remove('menu-open');if(page==='لوحة التحكم'){location.href='dashboard.html';return}if(page==='كورساتي')return openModal(page,'<p>لا توجد كورسات مسجلة حالياً. يمكنك استكشاف الكورسات المتاحة.</p><a href="courses.html" style="color:#2496de;font-weight:bold">تصفح الكورسات</a>');openModal(page,'<p>قسم '+page+' — ستظهر بيانات هذا القسم عند ربطه بنظام الحسابات وقاعدة البيانات.</p>')});
 $('#menuToggle').onclick=()=>$('#layout').classList.add('menu-open');$('#closeMenu').onclick=$('#backdrop').onclick=()=>$('#layout').classList.remove('menu-open');$('#today').textContent=new Intl.DateTimeFormat('ar-EG',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date());
 </script></body></html>
