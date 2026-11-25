@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f5f6fa">
+<title>لوحة الإدارة | منصة علي عليان الدولية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f6fa;--surface:#fff;--text:#1f2437;--muted:#7b8194;--line:#e8eaf2;
+  --brand:#7c3aed;--brand2:#6366f1;--green:#10b981;--red:#ef4444;--blue:#3b82f6;--amber:#f59e0b;
+  --hero1:#6d7be8;--hero2:#8b5cc4;--plan1:#6a7be0;--plan2:#7a5fcb;
+  color-scheme:light;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12141c;--surface:#1b1e2a;--text:#eceefa;--muted:#9aa1b8;--line:#2a2e3d;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12141c;--surface:#1b1e2a;--text:#eceefa;--muted:#9aa1b8;--line:#2a2e3d;color-scheme:dark}
+:root[data-theme="light"]{color-scheme:light}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Tajawal",Tahoma,Arial,sans-serif;font-size:14px}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+.topbar{background:var(--surface);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:20px;padding:12px 24px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;line-height:1.1;color:var(--brand2)}
+.logo b{display:grid;place-items:center;width:34px;height:34px;border-radius:9px;background:var(--brand2);color:#fff;font-size:18px}
+.logo small{display:block;font-size:12px;letter-spacing:.5px}
+.nav{display:flex;gap:26px;margin-inline:auto}
+.nav a{color:var(--muted)}.nav a:hover{color:var(--brand)}
+.tools{display:flex;align-items:center;gap:10px}
+.sq{min-width:36px;height:36px;padding:0 9px;border:1px solid var(--line);color:var(--muted);background:transparent;border-radius:8px;display:grid;place-items:center;font:inherit;cursor:pointer}
+.user{display:flex;align-items:center;gap:10px;font-weight:700}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--brand2);color:#fff;display:grid;place-items:center}
+.shell{display:flex;min-height:calc(100vh - 60px)}
+.side{width:210px;flex:none;background:var(--surface);border-inline-start:1px solid var(--line);padding:10px 9px}
+.side .side-title{color:var(--muted);font-size:11px;font-weight:700;padding:10px 12px 7px}
+.side a,.side button{width:100%;display:flex;align-items:center;gap:10px;padding:11px 10px;margin:2px 0;border:0;border-radius:8px;background:transparent;color:var(--muted);font-size:13px;text-align:right;cursor:pointer}
+.side a .ic,.side button .ic{width:18px;text-align:center}
+.side a .chev,.side button .chev{margin-inline-start:auto;font-size:11px;opacity:.6}
+.side a.active{background:var(--brand);color:#fff}
+.side a:not(.active):hover,.side button:hover{background:var(--bg)}
+.side button[aria-disabled="true"]{opacity:.62}
+main{flex:1;min-width:0;padding:0 0 40px}
+.wrap{padding:0 26px}
+.hero{background:linear-gradient(90deg,var(--hero2),var(--hero1));color:#fff;padding:22px 26px;display:flex;align-items:center;gap:16px}
+.hero .ico{width:56px;height:56px;border-radius:12px;background:rgba(255,255,255,.22);display:grid;place-items:center;font-size:28px}
+.hero h1{margin:0 0 4px;font-size:22px}.hero p{margin:0 0 8px;opacity:.85;font-size:13px}
+.site{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#1f2437;padding:6px 12px;border-radius:8px;font-size:12px}
+.site b{display:block;font-size:12px}.site small{display:block;color:#7b8194;font-size:10px}
+.tour{margin-inline-start:auto;background:#fff;color:#1f2437;border:0;padding:12px 18px;border-radius:8px;font:inherit;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.plan{margin:24px 0;background:linear-gradient(90deg,var(--plan2),var(--plan1));border-radius:14px;color:#fff;padding:18px 16px;display:grid;grid-template-columns:auto 1fr;gap:14px 16px}
+.plan .hd{grid-column:1/-1;display:flex;justify-content:space-between;align-items:flex-start}
+.plan h3{margin:0;font-size:15px}.plan .date{font-size:11px;opacity:.85;margin-top:6px}
+.plan-note{font-size:11px;opacity:.85}
+.meters{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.meter{background:rgba(0,0,0,.1);border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:12px;font-size:13px;min-width:0}
+.meter .bar{flex:1;min-width:30px;height:7px;border-radius:99px;background:rgba(255,255,255,.25);overflow:hidden;direction:rtl}
+.meter .bar i{display:block;height:100%;background:#34d399;border-radius:99px}
+.meter .nums{font-size:11px;direction:ltr;white-space:nowrap}
+.sec{display:flex;align-items:center;gap:8px;margin:26px 0 14px;font-weight:800;font-size:15px}
+.sec span{color:var(--brand2)}
+.grid{display:grid;gap:18px}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 16px;display:flex;align-items:center;gap:13px;min-height:96px;min-width:0}
+.tile{width:38px;height:38px;border-radius:9px;display:grid;place-items:center;font-size:17px;flex:none}
+.main{flex:1;min-width:0;text-align:start}.main .n{font-size:19px;font-weight:800}.main .l{font-size:12px;color:var(--muted)}
+.sub{font-size:11px;display:flex;flex-direction:column;gap:4px;align-items:flex-start;min-width:76px}
+.c-green{color:var(--green)}.c-red{color:var(--red)}.c-blue{color:var(--blue)}.c-amber{color:var(--amber)}.c-cyan{color:#06b6d4}.c-gray{color:var(--muted)}
+.t-blue{background:#dbeafe}.t-red{background:#fee2e2}.t-green{background:#d1fae5}.t-cyan{background:#cffafe}.t-violet{background:#ede9fe}
+:root[data-theme="dark"] .t-blue,:root[data-theme="dark"] .t-red,:root[data-theme="dark"] .t-green,:root[data-theme="dark"] .t-cyan,:root[data-theme="dark"] .t-violet{background:#30364a}
+.fab{position:fixed;inset-inline-start:24px;bottom:calc(24px + env(safe-area-inset-bottom,0px));width:46px;height:46px;border-radius:50%;background:var(--green);border:3px solid #d1fae5;box-shadow:0 4px 12px rgba(16,185,129,.4);color:#fff;font-size:19px;cursor:pointer}
+.loading,.error{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0;color:var(--muted)}
+.error{color:var(--red)}
+.retry{border:0;background:var(--brand2);color:white;padding:8px 14px;border-radius:8px;cursor:pointer;margin-inline-start:10px}
+.modal-backdrop{position:fixed;inset:0;background:rgba(10,12,25,.55);display:none;align-items:center;justify-content:center;padding:18px;z-index:20}
+.modal-backdrop.open{display:flex}
+.modal{background:var(--surface);color:var(--text);width:min(440px,100%);border-radius:16px;padding:22px;box-shadow:0 18px 60px rgba(0,0,0,.24)}
+.modal h2{font-size:18px;margin:0 0 12px}.modal p{line-height:1.9;color:var(--muted)}
+.modal button{background:var(--brand2);color:white;border:0;padding:9px 18px;border-radius:8px;cursor:pointer}
+.updated{font-size:11px;color:var(--muted);margin:18px 0 0}
+@media(max-width:1100px){.g3{grid-template-columns:repeat(2,minmax(0,1fr))}.nav{display:none}}
+@media(max-width:760px){.side{display:none}.g2,.g3,.meters{grid-template-columns:1fr}.hero{flex-wrap:wrap}.tour{margin:0}.wrap{padding:0 14px}.topbar{padding:10px 14px}.card{flex-wrap:wrap}.tools{margin-inline-start:auto}.user span{display:none}.plan{margin-top:14px}.hero{padding:18px 14px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="logo" href="index.html" aria-label="منصة علي عليان الدولية"><b>T</b><span>TEACHING<small>PORTALS</small></span></a>
+  <nav class="nav" aria-label="روابط الموقع">
+    <a href="index.html">الرئيسية</a><a href="courses.html">الكورسات</a><a href="support.html">تواصل معنا</a>
+  </nav>
+  <div class="tools">
+    <div class="user"><div class="avatar" id="adminAvatar">م</div><span id="greet">جاري التحقق...</span></div>
+    <button class="sq" id="themeToggle" type="button" title="تغيير المظهر" aria-label="تغيير المظهر">◐</button>
+    <button class="sq" id="logoutBtn" type="button" title="تسجيل الخروج" aria-label="تسجيل الخروج">↪</button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="side">
+    <div class="side-title">القائمة الرئيسية</div>
+    <a href="admin.html" class="active"><span class="ic">🏠</span>لوحة التحكم</a>
+    <div class="side-title">إدارة المنصة</div>
+    <button type="button" data-module="إعدادات المؤسسة" aria-disabled="true"><span class="ic">⚙️</span>إعدادات المؤسسة<span class="chev">‹</span></button>
+    <button type="button" data-module="الاشتراك والفواتير" aria-disabled="true"><span class="ic">👑</span>الاشتراك والفواتير<span class="chev">‹</span></button>
+    <button type="button" data-module="الرسائل والإشعارات" aria-disabled="true"><span class="ic">💬</span>الرسائل والإشعارات<span class="chev">‹</span></button>
+    <button type="button" data-module="الهيكل الأكاديمي" aria-disabled="true"><span class="ic">🎓</span>الهيكل الأكاديمي<span class="chev">‹</span></button>
+    <button type="button" data-module="إدارة المستخدمين" aria-disabled="true"><span class="ic">👥</span>إدارة المستخدمين<span class="chev">‹</span></button>
+    <button type="button" data-module="إدارة المحتوى" aria-disabled="true"><span class="ic">📂</span>إدارة المحتوى<span class="chev">‹</span></button>
+    <button type="button" data-module="المدونة" aria-disabled="true"><span class="ic">📰</span>المدونة<span class="chev">‹</span></button>
+    <button type="button" data-module="المكتبة" aria-disabled="true"><span class="ic">🗄️</span>المكتبة<span class="chev">‹</span></button>
+  </aside>
+
+  <main>
+    <section class="hero">
+      <div class="ico">🏠</div>
+      <div>
+        <h1>لوحة التحكم</h1>
+        <p>نظرة عامة مباشرة على إحصائيات المنصة من قاعدة البيانات</p>
+        <a class="site" href="#" id="siteLink" target="_blank" rel="noopener" hidden><span>🌐</span><span><small>موقعك</small><b id="siteName"></b></span></a>
+      </div>
+      <button class="tour" id="tourBtn" type="button">جولة تعريفية ❔</button>
+    </section>
+
+    <div class="wrap">
+      <section class="plan">
+        <div class="hd">
+          <div><h3 id="planName">بيانات الباقة</h3><div class="date" id="renewDate">يتم تحميل بيانات الاشتراك...</div></div>
+          <span class="plan-note" id="planStatus">بيانات مباشرة</span>
+        </div>
+        <div class="meters">
+          <div class="meter">👥 المستخدمون <div class="bar"><i id="usersBar" style="width:0%"></i></div><span class="nums" id="usersNums">—</span></div>
+          <div class="meter">🗄️ التخزين <div class="bar"><i id="storBar" style="width:0%"></i></div><span class="nums" id="storNums">—</span></div>
+        </div>
+      </section>
+
+      <div id="loadState" class="loading">جارٍ تحميل الإحصائيات والتحقق من صلاحيات الحساب...</div>
+      <div id="stats" hidden>
+        <div class="sec"><span>👥</span>إحصائيات الأشخاص</div>
+        <div class="grid g2" id="people"></div>
+        <div class="sec"><span>📈</span>إحصائيات الأعمال</div>
+        <div class="grid g3" id="business"></div>
+        <div class="sec"><span>🎁</span>إحصائيات العروض الترويجية</div>
+        <div class="grid g2" id="promo"></div>
+        <p class="updated" id="updatedAt"></p>
+      </div>
+    </div>
+  </main>
+</div>
+<button class="fab" id="helpBtn" type="button" aria-label="المساعدة">؟</button>
+
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <h2 id="modalTitle"></h2>
+    <p id="modalText"></p>
+    <button type="button" id="modalClose">إغلاق</button>
+  </div>
+</div>
+
+<script>
+const fmt = value => Number(value || 0).toLocaleString("en-US");
+const $ = id => document.getElementById(id);
+function showModal(title, text) {
+  $("modalTitle").textContent = title;
+  $("modalText").textContent = text;
+  $("modalBackdrop").classList.add("open");
+}
+function card({value,label,icon,tile,subs=[]}) {
+  const el = document.createElement("article");
+  el.className = "card";
+  const tileEl = document.createElement("div");
+  tileEl.className = "tile " + tile;
+  tileEl.textContent = icon;
+  const main = document.createElement("div");
+  main.className = "main";
+  const number = document.createElement("div");
+  number.className = "n";
+  number.textContent = fmt(value);
+  const caption = document.createElement("div");
+  caption.className = "l";
+  caption.textContent = label;
+  main.append(number, caption);
+  const sub = document.createElement("div");
+  sub.className = "sub";
+  for (const item of subs) {
+    const line = document.createElement("span");
+    line.className = item.color;
+    line.textContent = "(" + fmt(item.value) + ") " + item.label;
+    sub.appendChild(line);
+  }
+  el.append(tileEl, main, sub);
+  return el;
+}
+function renderCards(target, items) {
+  const parent = $(target);
+  parent.replaceChildren(...items.map(card));
+}
+function setMeter(barId, numsId, used, limit, unit) {
+  if (limit === null || limit === undefined || limit <= 0) {
+    $(numsId).textContent = "غير محدد";
+    $(barId).style.width = "0%";
+    return;
+  }
+  const safeUsed = Number(used || 0);
+  $(numsId).textContent = fmt(safeUsed) + " / " + fmt(limit) + (unit ? " " + unit : "");
+  $(barId).style.width = Math.min(100, Math.max(0, safeUsed / limit * 100)) + "%";
+}
+async function loadDashboard() {
+  $("loadState").className = "loading";
+  $("loadState").textContent = "جارٍ تحميل الإحصائيات...";
+  $("stats").hidden = true;
+  try {
+    const response = await fetch("/api/admin/dashboard", { credentials:"same-origin", cache:"no-store" });
+    if (response.status === 401 || response.status === 403) {
+      location.replace("login.html");
+      return;
+    }
+    const data = await response.json();
+    if (!response.ok || !data.ok) throw new Error(data.message || "تعذر تحميل الإحصائيات.");
+    $("greet").textContent = "مرحباً " + (data.admin.name || "مدير النظام");
+    $("adminAvatar").textContent = (data.admin.name || "م").trim().charAt(0);
+    if (data.site.url) {
+      $("siteLink").href = data.site.url;
+      $("siteName").textContent = data.site.name || data.site.url;
+      $("siteLink").hidden = false;
+    }
+    $("planName").textContent = data.plan.name ? "👑 " + data.plan.name : "👑 الباقة غير محددة";
+    $("renewDate").textContent = data.plan.renewDate ? "📅 تاريخ التجديد: " + data.plan.renewDate : "لم يتم ضبط بيانات التجديد في إعدادات البيئة";
+    $("planStatus").textContent = data.plan.name ? "الباقة مسجلة" : "بانتظار إعداد الباقة";
+    setMeter("usersBar","usersNums",data.plan.users.used,data.plan.users.limit,"");
+    setMeter("storBar","storNums",data.plan.storage.used,data.plan.storage.limit,"GB");
+
+    renderCards("people",[
+      {value:data.people.users.total,label:"إجمالي المستخدمين",icon:"👥",tile:"t-blue",subs:[{label:"نشط",value:data.people.users.active,color:"c-green"},{label:"جلسات سارية",value:data.people.users.sessions,color:"c-cyan"}]},
+      {value:data.people.admins.total,label:"إجمالي المسؤولين",icon:"🛡️",tile:"t-red",subs:[{label:"حسابات المسؤولين",value:data.people.admins.total,color:"c-green"}]}
+    ]);
+    renderCards("business",[
+      {value:data.business.courses.total,label:"إجمالي الكورسات",icon:"📘",tile:"t-violet",subs:[{label:"مجاني",value:data.business.courses.free,color:"c-green"},{label:"مدفوع",value:data.business.courses.paid,color:"c-blue"}]},
+      {value:data.business.enrollments.total,label:"إجمالي التسجيلات",icon:"🎓",tile:"t-cyan",subs:[{label:"نشط",value:data.business.enrollments.active,color:"c-green"},{label:"منتهي",value:data.business.enrollments.ended,color:"c-amber"}]},
+      {value:data.business.orders.total,label:"إجمالي الطلبات",icon:"🛒",tile:"t-green",subs:[{label:"مجاني",value:data.business.orders.statuses.free,color:"c-cyan"},{label:"مدفوع",value:data.business.orders.statuses.paid,color:"c-green"},{label:"معلق",value:data.business.orders.statuses.pending,color:"c-amber"},{label:"فاشل",value:data.business.orders.statuses.failed,color:"c-red"},{label:"ملغي",value:data.business.orders.statuses.cancelled,color:"c-gray"}]}
+    ]);
+    renderCards("promo",[
+      {value:data.promo.coupons.total,label:"إجمالي الكوبونات",icon:"🏷️",tile:"t-violet",subs:[{label:"نشط",value:data.promo.coupons.active,color:"c-green"}]},
+      {value:data.promo.codes.total,label:"إجمالي أكواد الاشتراك",icon:"🎟️",tile:"t-cyan",subs:[{label:"مستخدم",value:data.promo.codes.used,color:"c-green"}]}
+    ]);
+    $("updatedAt").textContent = "آخر تحديث: " + new Date(data.generatedAt).toLocaleString("ar-EG");
+    $("loadState").hidden = true;
+    $("stats").hidden = false;
+  } catch (error) {
+    $("loadState").className = "error";
+    $("loadState").textContent = error.message + " ";
+    const retry = document.createElement("button");
+    retry.type = "button"; retry.className = "retry"; retry.textContent = "إعادة المحاولة";
+    retry.addEventListener("click", loadDashboard);
+    $("loadState").appendChild(retry);
+    $("loadState").hidden = false;
+  }
+}
+$("themeToggle").addEventListener("click", () => {
+  const root = document.documentElement;
+  const next = root.dataset.theme === "dark" ? "light" : "dark";
+  root.dataset.theme = next;
+  try { localStorage.setItem("admin-theme", next); } catch (_) {}
+});
+try {
+  const savedTheme = localStorage.getItem("admin-theme");
+  if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+} catch (_) {}
+$("logoutBtn").addEventListener("click", async () => {
+  $("logoutBtn").disabled = true;
+  try { await fetch("/api/auth/logout", { method:"POST", credentials:"same-origin" }); }
+  finally { location.replace("login.html"); }
+});
+$("tourBtn").addEventListener("click", () => showModal("جولة لوحة التحكم", "تعرض هذه الصفحة أعداد المستخدمين والمسؤولين والكورسات والتسجيلات والطلبات والكوبونات وأكواد الاشتراك من MongoDB. لا تُعرض أرقام تجريبية. حدود الباقة والتخزين تظهر فقط بعد ضبط متغيراتها في Vercel."));
+$("helpBtn").addEventListener("click", () => location.href = "support.html");
+$("modalClose").addEventListener("click", () => $("modalBackdrop").classList.remove("open"));
+$("modalBackdrop").addEventListener("click", event => { if (event.target === $("modalBackdrop")) $("modalBackdrop").classList.remove("open"); });
+document.addEventListener("keydown", event => { if (event.key === "Escape") $("modalBackdrop").classList.remove("open"); });
+document.querySelectorAll("[data-module]").forEach(button => button.addEventListener("click", () => showModal(button.dataset.module, "هذه الصفحة الإدارية لم يتم تنفيذها وربطها بعد. لن نعرض بيانات أو إجراءات شكلية قبل توصيلها بقاعدة البيانات والصلاحيات.")));
+loadDashboard();
+</script>
+</body>
+</html>
