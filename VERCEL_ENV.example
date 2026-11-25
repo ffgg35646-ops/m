@@ -2,6 +2,11 @@
 MONGODB_URI=mongodb+srv://...
 MONGODB_DB=your_database_name
 AUTH_COLLECTION=admins
+# Optional: identify the protected platform-owner admin record
+# OWNER_EMAIL=owner@example.com
+# OWNER_ADMIN_ID=MongoDB_object_id_of_owner_admin
+# PLATFORM_ROLES_COLLECTION=platform_roles
+
 RESEND_API_KEY=re_...
 EMAIL_FROM=منصة علي عليان الدولية <no-reply@your-verified-domain.com>
 RESET_CODE_SECRET=replace-with-a-long-random-secret-at-least-32-characters
