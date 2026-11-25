@@ -152,17 +152,21 @@ function isOwnerRecord(record, reqEmail = "") {
     Boolean(ownerId && String(record?._id || "") === ownerId);
 }
 
+function hasElevatedAdminRole(record) {
+  return ["admin", "owner", "super_admin", "administrator", "مدير النظام", "مدير", "مسؤول"].includes(normalizeRole(record?.role));
+}
+
 function asDate(value) {
   if (!value) return null;
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? null : date;
 }
 
-function publicAdmin(record, actorId) {
+function publicAdmin(record, actorId, actorIsCoreAdmin) {
   const firstName = text(record.firstName || "");
   const lastName = text(record.lastName || "");
   const fullName = text(record.fullName || record.name || [firstName, lastName].filter(Boolean).join(" "));
-  const owner = isOwnerRecord(record) || String(record._id) === String(actorId);
+  const owner = isOwnerRecord(record) || String(record._id) === String(actorId) || (!actorIsCoreAdmin && hasElevatedAdminRole(record));
   const statusActive = record.isActive !== false && record.active !== false &&
     !["blocked", "disabled", "inactive", "deleted", "محظور", "غير نشط", "غير فعال", "محذوف"].includes(normalizeRole(record.status));
   return {
@@ -498,8 +502,8 @@ async function writeAdmin(database, auth, action, payload) {
   const parsedId = parseMongoId(adminId);
   const target = await admins.findOne({ $or: [{ _id: parsedId }, { _id: adminId }] });
   if (!target) throw new Error("لم يتم العثور على المشرف.");
-  if (isOwnerRecord(target) || String(target._id) === String(auth.session.userId) && isOwnerRecord(target)) {
-    throw new Error("هذا حساب مالك المنصة ولا يمكن تعديله من هذه الصفحة.");
+  if (isOwnerRecord(target) || (!auth.builtInAdmin && hasElevatedAdminRole(target))) {
+    throw new Error("هذا حساب مدير بصلاحيات مرتفعة ولا يمكن للمشرف تعديله.");
   }
 
   if (action === "updateAdmin") {
@@ -596,7 +600,7 @@ async function loadData(auth, capabilities) {
     actor: { name: actorName, role: auth.roleName },
     site: { url: process.env.APP_URL || "" },
     capabilities,
-    admins: adminDocs.map(item => publicAdmin(item, auth.session.userId)),
+    admins: adminDocs.map(item => publicAdmin(item, auth.session.userId, auth.builtInAdmin)),
     students: studentDocs.map(item => publicStudent(item, enrollmentIds)),
     roles: roles.map(item => ({
       id: String(item._id),
