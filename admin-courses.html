@@ -52,6 +52,7 @@ main{flex:1;min-width:0;padding:0 0 42px}.hero{background:linear-gradient(100deg
     <a href="academic-structure.html" id="academicLink">🎓 الهيكل الأكاديمي</a>
     <a href="admin-users.html" id="usersLink">👥 إدارة المستخدمين</a>
     <a href="admin-courses.html" class="active">📚 إدارة الدورات</a>
+    <a href="admin-blog-library.html" id="blogLibraryLink" hidden>📰 المدونة والمكتبة</a>
   </aside>
   <main>
     <section class="hero">
@@ -397,6 +398,7 @@ async function loadCourses(showLoading = true) {
     if (data.site?.url) { try { $("sitePill").href = data.site.url; $("siteName").textContent = new URL(data.site.url).host; $("sitePill").hidden = false; } catch (_) {} }
     $("academicLink").hidden = state.capabilities.academic !== true;
     $("usersLink").hidden = state.capabilities.users !== true;
+    $("blogLibraryLink").hidden = state.capabilities.blogLibrary !== true;
     $("addCourseBtn").hidden = !state.capabilities.create;
     $("updatedAt").textContent = state.generatedAt ? "آخر تحديث: " + new Date(state.generatedAt).toLocaleString("ar-EG") : "";
     $("loadState").hidden = true; $("appContent").hidden = false;
