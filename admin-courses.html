@@ -425,7 +425,7 @@ function openCourseEditor(course = null) {
   $("courseTitle").value = course?.title || ""; $("courseDescription").value = course?.description || "";
   $("courseCategory").value = course?.category || ""; updateCourseGradeOptions(course?.grade || "");
   $("courseSubject").value = course?.subject || ""; $("courseTrack").value = course?.track || "-";
-  $("coursePrice").value = course?.price ?? 0; $("courseImageUrl").value = course?.image || "";
+  $("coursePrice").value = course?.price ?? 0; $("courseImageUrl").value = course?.image && !/^data:image\//i.test(course.image) ? course.image : "";
   $("expiryMode").value = course?.expiryMode || "none";
   $("accessEndsAt").value = course?.accessEndsAt ? new Date(course.accessEndsAt).toISOString().slice(0,10) : "";
   $("accessDays").value = course?.accessDays || ""; $("courseImageFile").value = "";
@@ -464,7 +464,7 @@ async function saveCourse(event) {
       action: state.editorId ? "updateCourse" : "createCourse", courseId: state.editorId,
       title: $("courseTitle").value.trim(), description: $("courseDescription").value.trim(),
       category: $("courseCategory").value, grade: $("courseGrade").value, subject: $("courseSubject").value,
-      track: $("courseTrack").value, price: Number($("coursePrice").value), image,
+      track: $("courseTrack").value, price: Number($("coursePrice").value), image: image || (state.editorId ? undefined : ""),
       expiryMode: $("expiryMode").value, accessEndsAt: $("accessEndsAt").value, accessDays: Number($("accessDays").value)
     };
     const result = await apiPost(payload); if (!result) return;
