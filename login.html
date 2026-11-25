@@ -126,6 +126,7 @@
     const statusBox = document.getElementById('statusBox');
     const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
     const passkeyBtn = document.getElementById('passkeyBtn');
+
     function showMessage(text, type = 'info') {
       statusBox.textContent = text;
       statusBox.classList.remove('hidden','bg-emerald-50','text-emerald-700','border-emerald-200','bg-sky-50','text-sky-700','border-sky-200','bg-rose-50','text-rose-700','border-rose-200');
@@ -133,29 +134,76 @@
       else if (type === 'error') statusBox.classList.add('bg-rose-50','text-rose-700','border-rose-200');
       else statusBox.classList.add('bg-sky-50','text-sky-700','border-sky-200');
     }
+
+    async function postAuth(path, payload) {
+      const response = await fetch(path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data.ok) throw new Error(data.message || 'حدث خطأ غير متوقع.');
+      return data;
+    }
+
     togglePasswordBtn.addEventListener('click', () => {
       const isPassword = passwordInput.type === 'password';
       passwordInput.type = isPassword ? 'text' : 'password';
       passwordInput.classList.toggle('tracking-widest', !isPassword);
     });
-    loginForm.addEventListener('submit', (e) => {
+
+    loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const identity = identityInput.value.trim();
-      const password = passwordInput.value.trim();
+      const password = passwordInput.value;
       if (!identity || !password) { showMessage('يرجى إدخال البريد الإلكتروني أو رقم الهاتف وكلمة المرور.','error'); return; }
       submitLoginBtn.disabled = true;
-      submitLoginBtn.textContent = 'جاري تسجيل الدخول...';
-      setTimeout(() => {
+      submitLoginBtn.textContent = 'جاري التحقق...';
+      try {
+        const data = await postAuth('/api/auth/login', { identity, password });
+        showMessage('تم تسجيل الدخول بنجاح. جاري فتح لوحة التحكم...','success');
+        window.location.href = data.redirect || 'dashboard.html';
+      } catch (error) {
+        showMessage(error.message, 'error');
+      } finally {
         submitLoginBtn.disabled = false;
         submitLoginBtn.textContent = 'تسجيل الدخول';
-        showMessage(`تم التحقق من بيانات الحساب (${identity}) بنجاح. جاري فتح لوحة الطالب...`,'success');\n        setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
-      }, 650);
+      }
     });
-    forgotPasswordBtn.addEventListener('click', () => {
-      const identity = identityInput.value.trim() || 'حسابك';
-      showMessage(`تم إرسال رابط استعادة كلمة المرور إلى ${identity}.`,'info');
+
+    forgotPasswordBtn.addEventListener('click', async () => {
+      const current = identityInput.value.trim();
+      const email = window.prompt('أدخل البريد الإلكتروني المسجل لاستلام كود استعادة كلمة المرور:', current.includes('@') ? current : '');
+      if (!email) return;
+      forgotPasswordBtn.disabled = true;
+      try {
+        const data = await postAuth('/api/auth/forgot-password', { email: email.trim() });
+        showMessage(data.message, 'success');
+        const code = window.prompt('أدخل كود التحقق المكوّن من 6 أرقام الذي وصلك على البريد الإلكتروني:');
+        if (!code) return;
+        const newPassword = window.prompt('أدخل كلمة المرور الجديدة (8 أحرف على الأقل):');
+        if (!newPassword) return;
+        const confirmPassword = window.prompt('أعد كتابة كلمة المرور الجديدة للتأكيد:');
+        if (newPassword !== confirmPassword) {
+          showMessage('كلمتا المرور غير متطابقتين.', 'error');
+          return;
+        }
+        const result = await postAuth('/api/auth/reset-password', {
+          email: email.trim(), code: code.trim(), password: newPassword
+        });
+        showMessage(result.message, 'success');
+        identityInput.value = email.trim();
+        passwordInput.value = '';
+        passwordInput.focus();
+      } catch (error) {
+        showMessage(error.message, 'error');
+      } finally {
+        forgotPasswordBtn.disabled = false;
+      }
     });
-    passkeyBtn.addEventListener('click', () => showMessage('جاري تهيئة تسجيل الدخول عبر مفتاح المرور (Passkey)...','info'));
+
+    passkeyBtn.addEventListener('click', () => showMessage('تسجيل الدخول بمفتاح المرور غير مفعّل بعد.','info'));
   </script>
 </body>
 </html>
