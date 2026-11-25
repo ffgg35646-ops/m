@@ -52,7 +52,7 @@ async function requireAdmin(req, permission = null) {
   const adminCollection = session.authCollection || collectionName();
   const admin = await database.collection(adminCollection).findOne(
     { _id: session.userId },
-    { projection: { name: 1, fullName: 1, firstName: 1, lastName: 1, email: 1, role: 1, isOwner: 1, status: 1, isActive: 1 } }
+    { projection: { name: 1, fullName: 1, firstName: 1, lastName: 1, email: 1, role: 1, isOwner: 1, status: 1, isActive: 1, active: 1 } }
   );
   if (!admin) return { ok: false, status: 401, message: "حساب المسؤول غير موجود." };
 
