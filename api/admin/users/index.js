@@ -245,7 +245,7 @@ async function roleCapabilities(database, roleName, builtInAdmin) {
     admins: true, students: true, roles: true,
     adminCreate: true, adminEdit: true,
     studentCreate: true, studentEdit: true, studentDelete: true,
-    academic: true
+    academic: true, courses: true, courseCreate: true, courseEdit: true, courseDelete: true
   };
   const roles = await ensureDefaultRoles(database);
   const role = roles.find(item => normalizeRole(item.roleName) === normalizeRole(roleName));
@@ -261,7 +261,11 @@ async function roleCapabilities(database, roleName, builtInAdmin) {
     studentCreate: allowed("الطلاب", "إنشاء"),
     studentEdit: allowed("الطلاب", "تعديل"),
     studentDelete: allowed("الطلاب", "حذف"),
-    academic: roleAllows(role, { section: "الهيكل الأكاديمي", modules: ["فئات السنوات الدراسية", "السنوات الدراسية", "المواد"], action: "عرض" })
+    academic: roleAllows(role, { section: "الهيكل الأكاديمي", modules: ["فئات السنوات الدراسية", "السنوات الدراسية", "المواد"], action: "عرض" }),
+    courses: roleAllows(role, { section: "إدارة المحتوى", module: "الكورسات ومحتواها", action: "عرض" }),
+    courseCreate: roleAllows(role, { section: "إدارة المحتوى", module: "الكورسات ومحتواها", action: "إنشاء" }),
+    courseEdit: roleAllows(role, { section: "إدارة المحتوى", module: "الكورسات ومحتواها", action: "تعديل" }),
+    courseDelete: roleAllows(role, { section: "إدارة المحتوى", module: "الكورسات ومحتواها", action: "حذف" })
   };
 }
 
@@ -631,7 +635,8 @@ module.exports = async function handler(req, res) {
         { section: "صلاحيات المستخدمين", module: "المشرفون", action: "عرض" },
         { section: "صلاحيات المستخدمين", module: "الطلاب", action: "عرض" },
         { section: "صلاحيات المستخدمين", module: "الأدوار والصلاحيات", action: "عرض" },
-        { section: "صلاحيات المستخدمين", module: "الملف الشخصي", action: "عرض" }
+        { section: "صلاحيات المستخدمين", module: "الملف الشخصي", action: "عرض" },
+        { section: "إدارة المحتوى", module: "الكورسات ومحتواها", action: "عرض" }
       ];
       let authorized = null;
       let lastFailure = { status: 403, message: "ليس لديك صلاحية عرض إدارة المستخدمين." };
@@ -639,7 +644,7 @@ module.exports = async function handler(req, res) {
         const candidate = await requireAdmin(req, permission);
         if (!candidate.ok) { lastFailure = candidate; continue; }
         const candidateCapabilities = await roleCapabilities(database, candidate.roleName, candidate.builtInAdmin);
-        if (candidateCapabilities.admins || candidateCapabilities.students || candidateCapabilities.roles) {
+        if (candidateCapabilities.admins || candidateCapabilities.students || candidateCapabilities.roles || candidateCapabilities.courses) {
           authorized = { auth: candidate, capabilities: candidateCapabilities };
           break;
         }
