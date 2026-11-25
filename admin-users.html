@@ -561,6 +561,9 @@ async function loadUsers(showLoading=true) {
     state.admins=data.admins||[];state.students=data.students||[];state.roles=data.roles||[];
     state.academic=data.academic||{categories:[],years:[]};state.capabilities=data.capabilities||{};
     state.updatedAt=data.generatedAt;state.truncatedAdmins=Boolean(data.truncated?.admins);state.truncatedStudents=Boolean(data.truncated?.students);
+    if(!state.capabilities.admins&&!state.capabilities.students&&!state.capabilities.roles&&state.capabilities.courses){
+      location.replace("admin-courses.html");return;
+    }
     bindHeader(data);
     if(!state.capabilities[state.activeTab]) {
       state.activeTab=state.capabilities.admins?"admins":state.capabilities.students?"students":state.capabilities.roles?"roles":"admins";
