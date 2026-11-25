@@ -49,11 +49,12 @@ body{font-family:'Cairo','Tajawal',sans-serif;background:#f3f5f8;color:#1e293b;o
 <div><label for="firstName" class="block text-xs sm:text-sm font-bold text-slate-700 mb-1.5">الاسم الأول</label><input type="text" id="firstName" placeholder="........" required class="w-full bg-slate-100/90 border border-slate-200 rounded-xl py-2.5 px-4 text-sm outline-none focus:border-[#0c8ea6]" /></div>
 <div><label for="lastName" class="block text-xs sm:text-sm font-bold text-slate-700 mb-1.5">الاسم الأخير</label><input type="text" id="lastName" placeholder="........" required class="w-full bg-slate-100/90 border border-slate-200 rounded-xl py-2.5 px-4 text-sm outline-none focus:border-[#0c8ea6]" /></div>
 </div>
-<div><label for="contactInput" class="block text-xs sm:text-sm font-bold text-slate-700 mb-1.5">رقم الهاتف أو البريد الإلكتروني</label><input type="text" id="contactInput" placeholder="example@gmail.com" required dir="ltr" class="w-full bg-slate-100/90 border border-slate-200 rounded-xl py-2.5 px-4 text-sm outline-none focus:border-[#0c8ea6]" /></div>
-<div><label for="gradeCategory" class="block text-xs sm:text-sm font-bold text-slate-700 mb-1.5">فئة السنة الدراسية <span class="text-rose-500">*</span></label><select id="gradeCategory" required class="w-full bg-slate-100/90 border border-slate-200 rounded-xl py-2.5 px-4 text-sm outline-none"><option value="">اختر فئة السنة الدراسية</option><option value="primary">المرحلة الابتدائية</option><option value="preparatory">المرحلة الإعدادية</option><option value="secondary">المرحلة الثانوية</option><option value="university">المرحلة الجامعية والدراسات العليا</option></select></div>
+<div><label for="emailInput" class="block text-xs sm:text-sm font-bold text-slate-700 mb-1.5">البريد الإلكتروني <span class="text-rose-500">*</span></label><input type="email" id="emailInput" placeholder="example@gmail.com" autocomplete="email" required dir="ltr" class="w-full bg-slate-100/90 border border-slate-200 rounded-xl py-2.5 px-4 text-sm outline-none focus:border-[#0c8ea6]" /><p class="text-[11px] text-slate-400 mt-1">سنرسل كود تأكيد إلى هذا البريد قبل إنشاء الحساب.</p></div>
+<div><label for="phoneInput" class="block text-xs sm:text-sm font-bold text-slate-700 mb-1.5">رقم الهاتف (اختياري)</label><input type="tel" id="phoneInput" placeholder="01xxxxxxxxx" autocomplete="tel" dir="ltr" class="w-full bg-slate-100/90 border border-slate-200 rounded-xl py-2.5 px-4 text-sm outline-none focus:border-[#0c8ea6]" /></div>
+<div><label for="gradeCategory" class="block text-xs sm:text-sm font-bold text-slate-700 mb-1.5">فئة السنة الدراسية <span class="text-rose-500">*</span></label><select id="gradeCategory" required disabled class="w-full bg-slate-100/90 border border-slate-200 rounded-xl py-2.5 px-4 text-sm outline-none"><option value="">جارٍ تحميل الفئات...</option></select></div>
 <div><label for="schoolYear" class="block text-xs sm:text-sm font-bold text-slate-700 mb-1.5">السنة الدراسية <span class="text-rose-500">*</span></label><select id="schoolYear" required disabled class="w-full bg-slate-100/90 border border-slate-200 rounded-xl py-2.5 px-4 text-sm outline-none"><option value="">اختر فئة السنة أولاً</option></select></div>
-<div><label for="regPassword" class="block text-xs sm:text-sm font-bold text-slate-700 mb-1.5">كلمة المرور</label><div class="relative"><input type="password" id="regPassword" required placeholder="••••••••" dir="ltr" class="w-full bg-slate-100/90 border border-slate-200 rounded-xl py-2.5 px-4 text-sm outline-none focus:border-[#0c8ea6]"><button type="button" data-target="regPassword" class="toggle-eye absolute left-3 top-3 text-slate-400">إظهار</button></div></div>
-<div><label for="confirmPassword" class="block text-xs sm:text-sm font-bold text-slate-700 mb-1.5">تأكيد كلمة المرور</label><div class="relative"><input type="password" id="confirmPassword" required placeholder="••••••••" dir="ltr" class="w-full bg-slate-100/90 border border-slate-200 rounded-xl py-2.5 px-4 text-sm outline-none focus:border-[#0c8ea6]"><button type="button" data-target="confirmPassword" class="toggle-eye absolute left-3 top-3 text-slate-400">إظهار</button></div></div>
+<div><label for="regPassword" class="block text-xs sm:text-sm font-bold text-slate-700 mb-1.5">كلمة المرور</label><div class="relative"><input type="password" id="regPassword" required minlength="8" autocomplete="new-password" placeholder="••••••••" dir="ltr" class="w-full bg-slate-100/90 border border-slate-200 rounded-xl py-2.5 px-4 text-sm outline-none focus:border-[#0c8ea6]"><button type="button" data-target="regPassword" class="toggle-eye absolute left-3 top-3 text-slate-400">إظهار</button></div></div>
+<div><label for="confirmPassword" class="block text-xs sm:text-sm font-bold text-slate-700 mb-1.5">تأكيد كلمة المرور</label><div class="relative"><input type="password" id="confirmPassword" required minlength="8" autocomplete="new-password" placeholder="••••••••" dir="ltr" class="w-full bg-slate-100/90 border border-slate-200 rounded-xl py-2.5 px-4 text-sm outline-none focus:border-[#0c8ea6]"><button type="button" data-target="confirmPassword" class="toggle-eye absolute left-3 top-3 text-slate-400">إظهار</button></div></div>
 <div class="bg-[#eef3fb] border border-[#dce6f7] text-[#3b66b8] rounded-xl px-4 py-3 text-xs font-semibold text-center">يمكنك إكمال بيانات ملفك الشخصي لاحقاً من صفحة الملف الشخصي</div>
 <div id="formFeedback" class="hidden rounded-xl px-4 py-3 text-xs sm:text-sm font-semibold border" role="status"></div>
 <button type="submit" id="submitRegisterBtn" class="teal-btn w-full py-3.5 rounded-xl text-white font-bold text-sm sm:text-base shadow-md">إنشاء الحساب</button>
@@ -62,16 +63,81 @@ body{font-family:'Cairo','Tajawal',sans-serif;background:#f3f5f8;color:#1e293b;o
 </div></section></div></main>
 <footer class="bg-[#0e1726] text-slate-300 py-8 px-4 text-center text-sm"><p>© 2026 منصة علي عليان الدولية جميع الحقوق محفوظة</p><p class="mt-2"><a href="support.html" class="text-sky-300">تواصل معنا</a></p></footer>
 <script>
-const yearsByCategory={primary:['الصف الأول الابتدائي','الصف الثاني الابتدائي','الصف الثالث الابتدائي','الصف الرابع الابتدائي','الصف الخامس الابتدائي','الصف السادس الابتدائي'],preparatory:['الصف الأول الإعدادي','الصف الثاني الإعدادي','الصف الثالث الإعدادي'],secondary:['الصف الأول الثانوي','الصف الثاني الثانوي','الصف الثالث الثانوي'],university:['الفرقة الأولى','الفرقة الثانية','الفرقة الثالثة','الفرقة الرابعة','الدراسات العليا']};
-const category=document.getElementById('gradeCategory'),year=document.getElementById('schoolYear'),form=document.getElementById('registerForm'),feedback=document.getElementById('formFeedback'),submit=document.getElementById('submitRegisterBtn');
-category.addEventListener('change',()=>{year.replaceChildren(new Option('اختر السنة الدراسية',''));(yearsByCategory[category.value]||[]).forEach(v=>year.add(new Option(v,v)));year.disabled=!category.value;});
-document.querySelectorAll('.toggle-eye').forEach(btn=>btn.addEventListener('click',()=>{const input=document.getElementById(btn.dataset.target);input.type=input.type==='password'?'text':'password';btn.textContent=input.type==='password'?'إظهار':'إخفاء';}));
-function message(text,type){feedback.textContent=text;feedback.className='rounded-xl px-4 py-3 text-xs sm:text-sm font-semibold border '+(type==='error'?'bg-rose-50 text-rose-700 border-rose-200':'bg-emerald-50 text-emerald-700 border-emerald-200');}
-form.addEventListener('submit',e=>{e.preventDefault();const first=document.getElementById('firstName').value.trim(),last=document.getElementById('lastName').value.trim(),contact=document.getElementById('contactInput').value.trim(),password=document.getElementById('regPassword').value,confirm=document.getElementById('confirmPassword').value;
-if(!first||!last||!contact||!category.value||!year.value){message('يرجى استكمال جميع البيانات المطلوبة.','error');return;}
-if(password.length<6){message('يجب أن تتكون كلمة المرور من 6 أحرف على الأقل.','error');return;}
-if(password!==confirm){message('كلمة المرور وتأكيد كلمة المرور غير متطابقين.','error');return;}
-message('تم التحقق من البيانات محلياً. إنشاء الحساب الفعلي يحتاج إلى ربط النظام بالخادم وقاعدة البيانات.','success');
+const category=document.getElementById('gradeCategory');
+const year=document.getElementById('schoolYear');
+const form=document.getElementById('registerForm');
+const feedback=document.getElementById('formFeedback');
+const submit=document.getElementById('submitRegisterBtn');
+const emailInput=document.getElementById('emailInput');
+let academic={categories:[],years:[]};
+
+function message(text,type){
+  feedback.textContent=text;
+  feedback.className='rounded-xl px-4 py-3 text-xs sm:text-sm font-semibold border '+(type==='error'?'bg-rose-50 text-rose-700 border-rose-200':'bg-emerald-50 text-emerald-700 border-emerald-200');
+}
+function fillCategories(){
+  category.replaceChildren(new Option('اختر فئة السنة الدراسية',''));
+  academic.categories.forEach(item=>category.add(new Option(item.name,item.name)));
+  category.disabled=academic.categories.length===0;
+  year.replaceChildren(new Option(academic.categories.length?'اختر فئة السنة أولاً':'لا توجد سنوات متاحة حالياً',''));
+  year.disabled=true;
+}
+function fillYears(){
+  const selected=category.value;
+  const years=academic.years.filter(item=>item.category===selected);
+  year.replaceChildren(new Option('اختر السنة الدراسية',''));
+  years.forEach(item=>year.add(new Option(item.name,item.name)));
+  year.disabled=years.length===0;
+  if(!years.length&&selected)message('لا توجد سنوات دراسية مرتبطة بهذه الفئة حالياً. تواصل مع إدارة المنصة.','error');
+  else feedback.classList.add('hidden');
+}
+async function loadAcademic(){
+  try{
+    const response=await fetch('/api/auth/register',{credentials:'same-origin',cache:'no-store'});
+    const data=await response.json();
+    if(!response.ok||!data.ok)throw new Error(data.message||'تعذر تحميل الفئات الدراسية.');
+    academic=data.structure||{categories:[],years:[]};
+    fillCategories();
+  }catch(error){
+    category.replaceChildren(new Option('تعذر تحميل الفئات الدراسية',''));
+    category.disabled=true;year.disabled=true;
+    message(error.message||'تعذر تحميل الفئات الدراسية. حاول تحديث الصفحة.','error');
+  }
+}
+category.addEventListener('change',fillYears);
+document.querySelectorAll('.toggle-eye').forEach(btn=>btn.addEventListener('click',()=>{
+  const input=document.getElementById(btn.dataset.target);
+  input.type=input.type==='password'?'text':'password';
+  btn.textContent=input.type==='password'?'إظهار':'إخفاء';
+}));
+form.addEventListener('submit',async event=>{
+  event.preventDefault();
+  const firstName=document.getElementById('firstName').value.trim();
+  const lastName=document.getElementById('lastName').value.trim();
+  const email=emailInput.value.trim().toLowerCase();
+  const phone=document.getElementById('phoneInput').value.trim();
+  const password=document.getElementById('regPassword').value;
+  const confirm=document.getElementById('confirmPassword').value;
+  if(!firstName||!lastName||!email||!category.value||!year.value){message('يرجى استكمال جميع البيانات المطلوبة.','error');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){message('أدخل بريداً إلكترونياً صحيحاً.','error');return;}
+  if(password.length<8){message('يجب أن تتكون كلمة المرور من 8 أحرف على الأقل.','error');return;}
+  if(password!==confirm){message('كلمة المرور وتأكيد كلمة المرور غير متطابقين.','error');return;}
+  submit.disabled=true;submit.textContent='جارٍ إرسال كود التأكيد...';
+  try{
+    const response=await fetch('/api/auth/register',{
+      method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({firstName,lastName,email,phone,password,category:category.value,year:year.value})
+    });
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok||!data.ok)throw new Error(data.message||'تعذر بدء التسجيل.');
+    message(data.message,'success');
+    window.location.href='verify-code.html?mode=register&email='+encodeURIComponent(email);
+  }catch(error){
+    message(error.message||'تعذر إرسال كود التأكيد. حاول مرة أخرى.','error');
+  }finally{
+    submit.disabled=false;submit.textContent='إنشاء الحساب وإرسال كود التأكيد';
+  }
 });
+loadAcademic();
 </script>
 </body></html>
