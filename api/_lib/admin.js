@@ -60,8 +60,8 @@ async function requireAdmin(req, permission = null) {
   const normalizedRole = normalizeRole(roleName);
   const builtInAdmin = ADMIN_ROLES.has(normalizedRole);
   const isActive = admin.isActive !== false && admin.active !== false &&
-    !["blocked", "disabled", "deleted", "محظور", "غير نشط", "محذوف"].includes(normalizedRole) &&
-    !["blocked", "disabled", "deleted", "محظور", "غير نشط", "محذوف"].includes(normalizeRole(admin.status));
+    !["blocked", "disabled", "inactive", "deleted", "محظور", "غير نشط", "غير فعال", "محذوف"].includes(normalizedRole) &&
+    !["blocked", "disabled", "inactive", "deleted", "محظور", "غير نشط", "غير فعال", "محذوف"].includes(normalizeRole(admin.status));
 
   if (!isActive) return { ok: false, status: 403, message: "هذا الحساب غير نشط." };
   if (!builtInAdmin) {
