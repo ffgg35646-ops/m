@@ -52,6 +52,13 @@ button{font:inherit}
 .side a.active{background:var(--brand);color:#fff}
 .side a:not(.active):hover,.side button:hover{background:var(--bg)}
 .side button[aria-disabled="true"]{opacity:.62}
+.side-submenu{padding:4px 14px 6px 0;border-right:2px solid #c7d2fe;margin:2px 14px 6px 0;max-height:min(62vh,620px);overflow:auto}
+.side-submenu[hidden]{display:none}
+.side-submenu a{font-size:12px;padding:9px 8px;gap:8px;margin:1px 0;border-radius:7px}
+.side-submenu a .ic{width:18px;flex:none;text-align:center}
+.side-submenu a.active{background:rgba(124,58,237,.12);color:var(--brand)}
+.side-submenu-toggle .chev{transition:transform .2s}
+.side-submenu-toggle[aria-expanded="true"] .chev{transform:rotate(-90deg)}
 main{flex:1;min-width:0;padding:0 0 40px}
 .wrap{padding:0 26px}
 .hero{background:linear-gradient(90deg,var(--hero2),var(--hero1));color:#fff;padding:22px 26px;display:flex;align-items:center;gap:16px}
@@ -119,7 +126,8 @@ main{flex:1;min-width:0;padding:0 0 40px}
     <div class="side-title">القائمة الرئيسية</div>
     <a href="admin.html" class="active"><span class="ic">🏠</span>لوحة التحكم</a>
     <div class="side-title">إدارة المنصة</div>
-    <button type="button" data-module="إعدادات المؤسسة" aria-disabled="true"><span class="ic">⚙️</span>إعدادات المؤسسة<span class="chev">‹</span></button>
+    <button type="button" id="orgSettingsToggle" class="side-submenu-toggle" aria-expanded="false" aria-controls="orgSettingsSubmenu"><span class="ic">⚙️</span>إعدادات المؤسسة<span class="chev">⌄</span></button>
+    <div class="side-submenu" id="orgSettingsSubmenu" hidden></div>
     <button type="button" data-module="الاشتراك والفواتير" aria-disabled="true"><span class="ic">👑</span>الاشتراك والفواتير<span class="chev">‹</span></button>
     <div class="side-messaging">
       <button type="button" id="adminMessagesToggle" class="side-link" style="justify-content:space-between">
@@ -329,6 +337,53 @@ $("modalClose").addEventListener("click", () => $("modalBackdrop").classList.rem
 $("modalBackdrop").addEventListener("click", event => { if (event.target === $("modalBackdrop")) $("modalBackdrop").classList.remove("open"); });
 document.addEventListener("keydown", event => { if (event.key === "Escape") $("modalBackdrop").classList.remove("open"); });
 document.querySelectorAll("[data-module]").forEach(button => button.addEventListener("click", () => showModal(button.dataset.module, "هذه الصفحة الإدارية لم يتم تنفيذها وربطها بعد. لن نعرض بيانات أو إجراءات شكلية قبل توصيلها بقاعدة البيانات والصلاحيات.")));
+
+const organizationSettingsMenu = [
+  { id: 'org-info', title: 'معلومات المؤسسة', icon: 'building', path: '/settings/info' },
+  { id: 'branding', title: 'الهوية البصرية', icon: 'palette', path: '/settings/branding' },
+  { id: 'contact-info', title: 'معلومات التواصل', icon: 'phone', path: '/settings/contact' },
+  { id: 'sections', title: 'أقسام المنصة', icon: 'grid', path: '/settings/sections' },
+  { id: 'homepage', title: 'الصفحة الرئيسية', icon: 'home', path: '/settings/homepage' },
+  { id: 'language', title: 'إعدادات اللغة', icon: 'globe', path: '/settings/language' },
+  { id: 'apps', title: 'تطبيقات Teaching Portals', icon: 'smartphone', path: '/settings/apps' },
+  { id: 'currency', title: 'إعدادات العملة', icon: 'dollar-sign', path: '/settings/currency' },
+  { id: 'registration', title: 'إعدادات التسجيل', icon: 'user-plus', path: '/settings/registration' },
+  { id: 'seo', title: 'إعدادات محركات البحث', icon: 'search', path: '/settings/seo' },
+  { id: 'welcome-msg', title: 'رسائل الترحيب', icon: 'mail', path: '/settings/welcome' },
+  { id: 'integrations', title: 'إعدادات الدمج', icon: 'link', path: '/settings/integrations' },
+  { id: 'privacy-policy', title: 'سياسة الخصوصية', icon: 'shield', path: '/settings/privacy' }
+];
+const organizationSettingIcons = {
+  building: "🏢", palette: "🎨", phone: "📞", grid: "▦", home: "🏠",
+  globe: "🌐", smartphone: "📱", "dollar-sign": "💲", "user-plus": "👤",
+  search: "🔎", mail: "✉️", link: "🔗", shield: "🛡️"
+};
+const orgSettingsToggle = $("orgSettingsToggle");
+const orgSettingsSubmenu = $("orgSettingsSubmenu");
+for (const item of organizationSettingsMenu) {
+  const link = document.createElement("a");
+  link.href = item.path;
+  link.className = "side-link org-settings-item";
+  link.dataset.settingsId = item.id;
+  const icon = document.createElement("span");
+  icon.className = "ic";
+  icon.setAttribute("aria-hidden", "true");
+  icon.textContent = organizationSettingIcons[item.icon] || "⚙️";
+  const label = document.createElement("span");
+  label.textContent = item.title;
+  link.append(icon, label);
+  if (location.pathname.replace(/\\/+$/, "") === item.path) {
+    link.classList.add("active");
+    orgSettingsSubmenu.hidden = false;
+    orgSettingsToggle.setAttribute("aria-expanded", "true");
+  }
+  orgSettingsSubmenu.appendChild(link);
+}
+orgSettingsToggle.addEventListener("click", () => {
+  const opening = orgSettingsSubmenu.hidden;
+  orgSettingsSubmenu.hidden = !opening;
+  orgSettingsToggle.setAttribute("aria-expanded", String(opening));
+});
 const adminMessagesToggle=$("adminMessagesToggle"),adminMessagesSubmenu=$("adminMessagesSubmenu");
 if(adminMessagesToggle&&adminMessagesSubmenu)adminMessagesToggle.addEventListener("click",()=>adminMessagesSubmenu.hidden=!adminMessagesSubmenu.hidden);
 loadDashboard();
