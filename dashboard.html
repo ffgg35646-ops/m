@@ -33,12 +33,6 @@
 <button class="floating" id="floating" aria-label="مؤقت الدراسة">＋</button>
 <div class="modal" id="modal"><section class="modal-box"><header class="modal-head"><h3 id="modalTitle">أداة سريعة</h3><button class="close" id="closeModal">✕</button></header><div class="modal-body" id="modalBody"></div></section></div>
 <script>
-(async function enforceAdminSession(){
-  try {
-    const response = await fetch('/api/auth/me', { credentials:'same-origin', cache:'no-store' });
-    if (!response.ok) { location.replace('login.html'); return; }
-  } catch (_) { location.replace('login.html'); }
-})();
 
 const $=s=>document.querySelector(s),modal=$('#modal'),body=$('#modalBody');function openModal(title,html){$('#modalTitle').textContent=title;body.innerHTML=html;modal.classList.add('open')}function closeModal(){modal.classList.remove('open');if(timerId)clearInterval(timerId);timerId=null;running=false}$('#closeModal').onclick=closeModal;modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
 const courses=[['Cambridge Arabic 0508 Course','هذا الكورس مصمم لإتقان اللغة العربية وفق معايير كامبريدج.','700.00 EGP','Cambridge'],['كورس النحو - G 9','تدريبات ومتابعة في قواعد اللغة العربية.','800.00 EGP','Grade 9'],['كورس النحو - G 8','شرح مبسط وتدريبات عملية.','700.00 EGP','Grade 8'],['كورس البلاغة والتعبير - G 10','تدريب على الصور البيانية والكتابة.','750.00 EGP','Grade 10'],['تأسيس اللغة العربية والإملاء الشامل','برنامج متكامل لإتقان قواعد الإملاء.','600.00 EGP','Arabic']];
