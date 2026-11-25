@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>إدارة الرسائل والإشعارات - لوحة التحكم</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:'Tajawal',sans-serif;background:#f4f6f9}
+    .modal-backdrop{background:rgba(15,23,42,.55);backdrop-filter:blur(2px)}
+    .soft-scroll::-webkit-scrollbar{height:7px;width:7px}
+    .soft-scroll::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:20px}
+    .side-link{display:flex;align-items:center;gap:12px;width:100%;padding:11px 13px;border-radius:9px;color:#475569;text-align:right}
+    .side-link:hover{background:#f8fafc}
+    .side-link.active{background:#eef2ff;color:#4338ca;font-weight:700}
+    .tab-btn{display:flex;align-items:center;gap:9px;padding:10px 13px;border-radius:9px;font-size:14px;color:#475569;width:100%;text-align:right}
+    .tab-btn.active{background:#4f46e5;color:#fff;font-weight:700;box-shadow:0 3px 8px #4f46e533}
+    .table-action{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border:1px solid;border-radius:8px;transition:.15s}
+    .modal-backdrop{display:none}
+    .modal-backdrop.open{display:flex}
+    @media(max-width:800px){.admin-layout{display:block!important}.sidebar{width:100%!important;border-left:0!important;border-bottom:1px solid #e2e8f0}.sidebar nav{display:flex;gap:5px;overflow:auto}.sidebar .brand{display:none}.side-link{white-space:nowrap;width:auto}.sidebar .dropdown{min-width:230px}.main-content{padding:16px!important}}
+  </style>
+</head>
+<body class="text-slate-700 antialiased">
+  <div class="admin-layout flex min-h-screen">
+    <aside class="sidebar w-64 bg-white border-l border-slate-200 shadow-sm flex-shrink-0">
+      <div class="brand p-5 border-b border-slate-100 flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-lg">TP</div>
+        <span class="font-bold text-slate-800 text-lg">لوحة الإدارة</span>
+      </div>
+      <nav class="p-3 space-y-1">
+        <a href="admin.html" class="side-link"><i class="fa-solid fa-house w-5 text-slate-400"></i><span>لوحة التحكم</span></a>
+        <div class="dropdown">
+          <button id="dropdownToggle" type="button" class="w-full flex items-center justify-between px-4 py-2.5 text-indigo-700 bg-indigo-50/70 font-bold rounded-lg">
+            <span class="flex items-center gap-3"><i class="fa-solid fa-envelope-open-text w-5 text-indigo-600"></i><span>الرسائل والإشعارات</span></span>
+            <i id="dropdownArrow" class="fa-solid fa-chevron-up text-xs transition-transform"></i>
+          </button>
+          <div id="dropdownMenu" class="mt-1 mr-4 pr-3 border-r-2 border-indigo-200 space-y-1">
+            <button type="button" onclick="switchTab('messages')" id="tab-messages" class="tab-btn active"><i class="fa-solid fa-envelope text-xs"></i><span>رسائل التواصل</span></button>
+            <button type="button" onclick="switchTab('notifications')" id="tab-notifications" class="tab-btn"><i class="fa-solid fa-bell text-xs"></i><span>الإشعارات</span></button>
+          </div>
+        </div>
+        <a href="admin.html" class="side-link"><i class="fa-solid fa-users w-5 text-slate-400"></i><span>إدارة المنصة</span></a>
+        <a href="dashboard.html" class="side-link"><i class="fa-solid fa-graduation-cap w-5 text-slate-400"></i><span>لوحة الطالب</span></a>
+        <button id="logoutBtn" type="button" class="side-link"><i class="fa-solid fa-arrow-right-from-bracket w-5 text-slate-400"></i><span>تسجيل الخروج</span></button>
+      </nav>
+    </aside>
+
+    <main class="main-content flex-1 min-w-0 p-6">
+      <div class="bg-gradient-to-l from-indigo-700 to-purple-700 rounded-xl p-6 text-white shadow-md mb-6 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 id="pageTitle" class="text-2xl font-bold flex items-center gap-2"><i class="fa-solid fa-envelope"></i><span>رسائل التواصل</span></h1>
+          <p id="pageSubtitle" class="text-indigo-100 text-sm mt-1">إدارة رسائل التواصل وطلبات إعادة تعيين كلمة المرور من المستخدمين</p>
+        </div>
+        <div class="bg-white/15 px-4 py-2 rounded-lg text-sm backdrop-blur-sm border border-white/20">
+          <span id="countLabel">إجمالي الرسائل:</span> <span id="totalCount" class="font-bold text-lg mr-1">—</span>
+        </div>
+      </div>
+
+      <section id="messagesSection" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="p-4 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3">
+          <div><h2 class="font-bold text-slate-800">صندوق الوارد</h2><p class="text-xs text-slate-400 mt-1">رسائل نموذج التواصل وطلبات استعادة كلمة مرور الطلاب</p></div>
+          <button id="refreshMessages" type="button" class="px-3 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm"><i class="fa-solid fa-rotate ml-1"></i>تحديث</button>
+        </div>
+        <div id="messagesNotice" class="hidden px-4 py-3 text-sm border-b"></div>
+        <div class="overflow-x-auto soft-scroll">
+          <table class="w-full text-right border-collapse min-w-[880px]">
+            <thead><tr class="bg-slate-50 border-b border-slate-200 text-slate-600 text-sm">
+              <th class="py-3.5 px-4 font-bold">الاسم</th><th class="py-3.5 px-4 font-bold">البريد الإلكتروني</th><th class="py-3.5 px-4 font-bold">رقم الهاتف</th><th class="py-3.5 px-4 font-bold">النوع</th><th class="py-3.5 px-4 font-bold">تاريخ الإرسال</th><th class="py-3.5 px-4 font-bold text-center">الإجراءات</th>
+            </tr></thead>
+            <tbody id="tableBody" class="divide-y divide-slate-100 text-sm"><tr><td colspan="6" class="py-8 text-center text-slate-400">جارٍ تحميل الرسائل...</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="notificationsSection" class="hidden space-y-5">
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-11 h-11 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-xl"><i class="fa-solid fa-paper-plane"></i></div>
+            <div><h2 class="text-lg font-bold text-slate-800">إنشاء إشعار جديد</h2><p class="text-slate-500 text-sm">احفظ إشعاراً عاماً أو موجهاً لمستخدمين محددين في سجل إشعارات المنصة.</p></div>
+          </div>
+          <form id="notificationForm" class="space-y-4">
+            <div><label for="notificationTitle" class="block text-sm font-bold mb-1.5">عنوان الإشعار</label><input id="notificationTitle" required maxlength="140" class="w-full border border-slate-300 rounded-lg px-3.5 py-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100" placeholder="مثال: بدء التسجيل في الكورس الجديد"></div>
+            <div><label for="notificationBody" class="block text-sm font-bold mb-1.5">نص الإشعار</label><textarea id="notificationBody" required maxlength="3000" rows="4" class="w-full border border-slate-300 rounded-lg px-3.5 py-3 outline-none resize-y focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100" placeholder="اكتب تفاصيل الإشعار..."></textarea></div>
+            <div><label for="notificationAudience" class="block text-sm font-bold mb-1.5">المستلمون</label><select id="notificationAudience" class="w-full border border-slate-300 rounded-lg px-3.5 py-3 bg-white outline-none focus:border-indigo-500"><option value="all">جميع المستخدمين</option><option value="selected">مستخدمون محددون بواسطة معرف الحساب</option></select></div>
+            <div id="recipientIdsWrap" class="hidden"><label for="recipientIds" class="block text-sm font-bold mb-1.5">معرفات المستخدمين</label><textarea id="recipientIds" rows="2" class="w-full border border-slate-300 rounded-lg px-3.5 py-3 outline-none focus:border-indigo-500" placeholder="ضع معرف كل مستخدم في سطر منفصل"></textarea><p class="text-xs text-slate-400 mt-1">يتم التحقق من المعرفات في قاعدة بيانات الطلاب قبل الحفظ.</p></div>
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+              <p id="notificationFeedback" class="text-sm text-slate-500" role="status">الإشعار سيُحفظ في قاعدة البيانات. ظهوره للطلاب يتطلب ربط واجهة إشعارات حساب الطالب.</p>
+              <button id="sendNotificationBtn" type="submit" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg shadow-sm transition"><i class="fa-solid fa-paper-plane ml-2"></i>حفظ الإشعار</button>
+            </div>
+          </form>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+          <div class="p-4 border-b border-slate-100 flex items-center justify-between gap-3"><div><h2 class="font-bold text-slate-800">سجل الإشعارات</h2><p class="text-xs text-slate-400 mt-1">آخر الإشعارات المحفوظة</p></div><button id="refreshNotifications" class="px-3 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm" type="button"><i class="fa-solid fa-rotate ml-1"></i>تحديث</button></div>
+          <div class="overflow-x-auto soft-scroll">
+            <table class="w-full min-w-[700px] text-right">
+              <thead><tr class="bg-slate-50 border-b text-slate-600 text-sm"><th class="py-3 px-4">العنوان</th><th class="py-3 px-4">المستلمون</th><th class="py-3 px-4">عدد المستلمين</th><th class="py-3 px-4">التاريخ</th><th class="py-3 px-4 text-center">إجراء</th></tr></thead>
+              <tbody id="notificationsBody" class="divide-y divide-slate-100 text-sm"><tr><td colspan="5" class="py-8 text-center text-slate-400">جارٍ تحميل سجل الإشعارات...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="detailsModal" class="modal-backdrop fixed inset-0 z-50 items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden">
+      <div class="bg-blue-600 text-white px-6 py-4 flex items-center justify-between"><h3 class="font-bold text-lg flex items-center gap-2"><i class="fa-solid fa-envelope-open-text"></i><span>تفاصيل الرسالة</span></h3><button type="button" data-close="detailsModal" class="text-white/80 hover:text-white text-xl">×</button></div>
+      <div class="p-6 space-y-3 text-sm max-h-[75vh] overflow-y-auto" id="detailsContent"></div>
+      <div class="bg-slate-50 px-6 py-3 border-t border-slate-200 flex justify-end"><button type="button" data-close="detailsModal" class="px-5 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium rounded-lg">إغلاق</button></div>
+    </div>
+  </div>
+
+  <div id="passwordModal" class="modal-backdrop fixed inset-0 z-50 items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden">
+      <div class="bg-blue-600 text-white px-6 py-4 flex items-center justify-between"><h3 class="font-bold text-lg">تغيير كلمة مرور المستخدم</h3><button type="button" data-close="passwordModal" class="text-white/80 hover:text-white text-xl">×</button></div>
+      <form id="passwordForm" class="p-6 space-y-4">
+        <input type="hidden" id="targetUserId"><input type="hidden" id="targetRequestId">
+        <div class="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-lg text-sm flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-amber-500"></i><span>سيتم تغيير كلمة مرور المستخدم: <strong id="targetUserName"></strong></span></div>
+        <div><label for="newPasswordInput" class="block text-sm font-bold text-slate-700 mb-1.5">كلمة المرور الجديدة</label><div class="flex items-center gap-2"><div class="relative flex-1"><input type="password" id="newPasswordInput" required minlength="6" maxlength="200" autocomplete="new-password" placeholder="أدخل كلمة المرور..." class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-left focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"><button type="button" id="togglePasswordBtn" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><i id="eyePassIcon" class="fa-solid fa-eye"></i></button></div><button type="button" id="generatePasswordBtn" title="توليد كلمة مرور عشوائية" class="px-3.5 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-100 text-slate-600"><i class="fa-solid fa-shuffle"></i></button></div><p class="text-xs text-slate-400 mt-1.5">6 أحرف على الأقل. سيتم حفظها مشفرة ولن تظهر مرة أخرى بعد إغلاق النافذة.</p></div>
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2"><button type="button" data-close="passwordModal" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm">إلغاء</button><button type="submit" id="savePasswordBtn" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-floppy-disk"></i><span>تغيير كلمة المرور</span></button></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="fixed bottom-5 left-5 z-[60] hidden bg-slate-800 text-white px-5 py-3 rounded-lg shadow-lg text-sm items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i><span id="toastMessage"></span></div>
+
+  <script>
+    let messagesData = [];
+    let notificationsData = [];
+    const $ = id => document.getElementById(id);
+    const text = value => value === null || value === undefined || value === "" ? "—" : String(value);
+    const formatDate = value => {
+      if (!value) return "—";
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? "—" : date.toLocaleString("ar-EG", { dateStyle:"medium", timeStyle:"short" });
+    };
+    async function api(url, options = {}) {
+      const response = await fetch(url, {
+        credentials:"same-origin",
+        ...options,
+        headers:{ "Content-Type":"application/json", ...(options.headers || {}) }
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (response.status === 401 || response.status === 403) { location.replace("login.html"); throw new Error(payload.message || "انتهت الجلسة أو لا تملك صلاحية الدخول."); }
+      if (!response.ok || !payload.ok) throw new Error(payload.message || "تعذر تنفيذ العملية.");
+      return payload;
+    }
+    function showToast(message, kind = "success") {
+      $("toastMessage").textContent = message;
+      const icon = $("toast").querySelector("i");
+      icon.className = kind === "error" ? "fa-solid fa-circle-exclamation text-rose-400" : "fa-solid fa-circle-check text-emerald-400";
+      $("toast").classList.remove("hidden"); $("toast").classList.add("flex");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => { $("toast").classList.add("hidden"); $("toast").classList.remove("flex"); }, 3200);
+    }
+    function openModal(id) { $(id).classList.add("open"); }
+    function closeModal(id) { $(id).classList.remove("open"); }
+    document.querySelectorAll("[data-close]").forEach(button => button.addEventListener("click", () => closeModal(button.dataset.close)));
+    document.querySelectorAll(".modal-backdrop").forEach(modal => modal.addEventListener("click", event => { if (event.target === modal) closeModal(modal.id); }));
+    document.addEventListener("keydown", event => { if (event.key === "Escape") document.querySelectorAll(".modal-backdrop.open").forEach(modal => closeModal(modal.id)); });
+
+    function toggleMenu() {
+      const menu = $("dropdownMenu");
+      const hidden = menu.classList.toggle("hidden");
+      $("dropdownArrow").classList.toggle("rotate-180", hidden);
+    }
+    $("dropdownToggle").addEventListener("click", toggleMenu);
+
+    function switchTab(tab) {
+      const messages = tab === "messages";
+      $("messagesSection").classList.toggle("hidden", !messages);
+      $("notificationsSection").classList.toggle("hidden", messages);
+      $("tab-messages").classList.toggle("active", messages);
+      $("tab-notifications").classList.toggle("active", !messages);
+      $("pageTitle").replaceChildren();
+      const icon = document.createElement("i");
+      icon.className = messages ? "fa-solid fa-envelope" : "fa-solid fa-bell";
+      const title = document.createElement("span");
+      title.textContent = messages ? "رسائل التواصل" : "الإشعارات";
+      $("pageTitle").append(icon, title);
+      $("pageSubtitle").textContent = messages
+        ? "إدارة رسائل التواصل وطلبات إعادة تعيين كلمة المرور من المستخدمين"
+        : "إنشاء الإشعارات العامة أو الموجهة ومراجعة سجلها";
+      $("countLabel").textContent = messages ? "إجمالي الرسائل:" : "إجمالي الإشعارات:";
+      $("totalCount").textContent = messages ? messagesData.length : notificationsData.length;
+      if (!messages && notificationsData.length === 0) loadNotifications();
+    }
+    window.switchTab = switchTab;
+
+    function td(value, className = "py-3.5 px-4") {
+      const cell = document.createElement("td");
+      cell.className = className;
+      cell.textContent = text(value);
+      return cell;
+    }
+    function actionButton(icon, title, colors, callback, disabled = false) {
+      const button = document.createElement("button");
+      button.type = "button"; button.title = title; button.className = "table-action " + colors;
+      button.innerHTML = '<i class="' + icon + ' text-xs"></i>';
+      button.disabled = disabled;
+      if (disabled) button.classList.add("opacity-40", "cursor-not-allowed");
+      else button.addEventListener("click", callback);
+      return button;
+    }
+    function renderMessages() {
+      const body = $("tableBody");
+      body.replaceChildren();
+      $("totalCount").textContent = messagesData.length;
+      if (!messagesData.length) {
+        const row = document.createElement("tr");
+        const cell = td("لا توجد رسائل أو طلبات مسجلة حالياً", "py-10 text-center text-slate-400");
+        cell.colSpan = 6; row.appendChild(cell); body.appendChild(row); return;
+      }
+      for (const item of messagesData) {
+        const row = document.createElement("tr");
+        row.className = "hover:bg-slate-50/80 transition";
+        row.append(td(item.name, "py-3.5 px-4 font-bold text-slate-800"));
+        row.append(td(item.email, "py-3.5 px-4 text-slate-500"));
+        row.append(td(item.phone, "py-3.5 px-4 font-mono text-slate-600"));
+        const typeCell = document.createElement("td"); typeCell.className = "py-3.5 px-4";
+        const badge = document.createElement("span");
+        badge.className = "inline-block " + (item.type === "password_reset" ? "bg-amber-100 text-amber-800" : "bg-indigo-50 text-indigo-700") + " text-xs font-bold px-3 py-1 rounded-md";
+        badge.textContent = item.type === "password_reset" ? "إعادة تعيين كلمة مرور الطالب" : "رسالة تواصل";
+        typeCell.appendChild(badge); row.appendChild(typeCell);
+        row.append(td(formatDate(item.createdAt), "py-3.5 px-4 text-slate-500 text-xs"));
+        const actions = document.createElement("td"); actions.className = "py-3.5 px-4";
+        const group = document.createElement("div"); group.className = "flex items-center justify-center gap-2";
+        group.append(actionButton("fa-solid fa-eye", "عرض التفاصيل", "border-cyan-200 bg-cyan-50 text-cyan-600 hover:bg-cyan-600 hover:text-white", () => openDetailsModal(item.id)));
+        if (item.type === "password_reset") {
+          group.append(actionButton("fa-solid fa-key", "تغيير كلمة المرور", "border-amber-200 bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-white", () => openPasswordModal(item.id), !item.userId));
+        }
+        group.append(actionButton("fa-solid fa-trash-can", "حذف السجل", "border-rose-200 bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white", () => deleteRecord(item.id, item.type)));
+        actions.appendChild(group); row.appendChild(actions); body.appendChild(row);
+      }
+    }
+    async function loadMessages() {
+      $("tableBody").innerHTML = '<tr><td colspan="6" class="py-8 text-center text-slate-400">جارٍ تحميل الرسائل...</td></tr>';
+      $("messagesNotice").classList.add("hidden");
+      try {
+        const data = await api("/api/admin/messages");
+        messagesData = data.messages || [];
+        renderMessages();
+        if (!data.collections.contact || !data.collections.passwordReset) {
+          const missing = [];
+          if (!data.collections.contact) missing.push("contact_messages");
+          if (!data.collections.passwordReset) missing.push("password_reset_requests");
+          $("messagesNotice").textContent = "تنبيه: لم تُنشأ بعد مجموعات MongoDB التالية: " + missing.join("، ") + ". ستُنشأ تلقائياً عند وصول أول رسالة أو طلب.";
+          $("messagesNotice").className = "px-4 py-3 text-sm border-b bg-amber-50 text-amber-800 border-amber-200";
+        }
+      } catch (error) {
+        $("tableBody").innerHTML = '<tr><td colspan="6" class="py-8 text-center text-rose-600"></td></tr>';
+        $("tableBody").querySelector("td").textContent = error.message;
+      }
+    }
+    function openDetailsModal(id) {
+      const item = messagesData.find(record => record.id === id);
+      if (!item) return;
+      const fields = [
+        ["النوع", item.type === "password_reset" ? "إعادة تعيين كلمة مرور الطالب" : "رسالة تواصل"],
+        ["الاسم", item.name], ["البريد الإلكتروني", item.email], ["رقم الهاتف", item.phone],
+        ["الكود التعريفي", item.code], ["فئة السنة الدراسية", item.category],
+        ["السنة الدراسية", item.grade], ["الحالة", item.status],
+        ["الرسالة", item.message], ["تاريخ الإرسال", formatDate(item.createdAt)]
+      ];
+      const container = $("detailsContent"); container.replaceChildren();
+      for (const [label, value] of fields) {
+        const row = document.createElement("div");
+        row.className = "flex flex-col sm:flex-row sm:items-center justify-between border border-slate-200 rounded-lg px-4 py-2.5 bg-slate-50/50 gap-2";
+        const key = document.createElement("div"); key.className = "text-slate-500 font-bold min-w-[160px]"; key.textContent = label;
+        const val = document.createElement("div"); val.className = "text-slate-800 font-medium flex-1 text-right sm:text-left whitespace-pre-wrap break-words"; val.textContent = text(value);
+        row.append(key, val); container.appendChild(row);
+      }
+      openModal("detailsModal");
+    }
+    function openPasswordModal(id) {
+      const item = messagesData.find(record => record.id === id);
+      if (!item || !item.userId) return showToast("لا يوجد معرف حساب مرتبط بهذا الطلب.", "error");
+      $("targetUserId").value = item.userId;
+      $("targetRequestId").value = item.id;
+      $("targetUserName").textContent = item.name;
+      $("newPasswordInput").value = "";
+      $("newPasswordInput").type = "password";
+      $("eyePassIcon").className = "fa-solid fa-eye";
+      openModal("passwordModal");
+    }
+    function generateRandomPassword() {
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789@#$";
+      const bytes = new Uint8Array(12);
+      crypto.getRandomValues(bytes);
+      $("newPasswordInput").value = Array.from(bytes, byte => chars[byte % chars.length]).join("");
+      $("newPasswordInput").type = "text";
+      $("eyePassIcon").className = "fa-solid fa-eye-slash";
+    }
+    $("generatePasswordBtn").addEventListener("click", generateRandomPassword);
+    $("togglePasswordBtn").addEventListener("click", () => {
+      const input = $("newPasswordInput");
+      input.type = input.type === "password" ? "text" : "password";
+      $("eyePassIcon").className = input.type === "password" ? "fa-solid fa-eye" : "fa-solid fa-eye-slash";
+    });
+    $("passwordForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      const button = $("savePasswordBtn");
+      button.disabled = true;
+      try {
+        const result = await api("/api/admin/users/reset-password", {
+          method:"POST",
+          body:JSON.stringify({
+            userId:$("targetUserId").value,
+            requestId:$("targetRequestId").value,
+            password:$("newPasswordInput").value
+          })
+        });
+        closeModal("passwordModal");
+        $("passwordForm").reset();
+        showToast(result.message);
+        await loadMessages();
+      } catch (error) { showToast(error.message, "error"); }
+      finally { button.disabled = false; }
+    });
+    async function deleteRecord(id, type) {
+      if (!confirm("هل أنت متأكد من حذف هذا السجل نهائياً؟")) return;
+      try {
+        const result = await api("/api/admin/messages/delete", { method:"POST", body:JSON.stringify({ id, kind:type === "password_reset" ? "password_reset" : "contact" }) });
+        showToast(result.message); await loadMessages();
+      } catch (error) { showToast(error.message, "error"); }
+    }
+    $("refreshMessages").addEventListener("click", loadMessages);
+
+    $("notificationAudience").addEventListener("change", () => {
+      $("recipientIdsWrap").classList.toggle("hidden", $("notificationAudience").value !== "selected");
+    });
+    $("notificationForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      const button = $("sendNotificationBtn");
+      const audience = $("notificationAudience").value;
+      const recipientIds = $("recipientIds").value.split(/[\n,،]+/).map(value => value.trim()).filter(Boolean);
+      button.disabled = true;
+      $("notificationFeedback").textContent = "جارٍ حفظ الإشعار...";
+      try {
+        const result = await api("/api/admin/notifications", {
+          method:"POST",
+          body:JSON.stringify({
+            title:$("notificationTitle").value.trim(),
+            body:$("notificationBody").value.trim(),
+            audience, recipientIds
+          })
+        });
+        $("notificationForm").reset();
+        $("recipientIdsWrap").classList.add("hidden");
+        $("notificationFeedback").textContent = result.message;
+        showToast(result.message);
+        await loadNotifications();
+      } catch (error) {
+        $("notificationFeedback").textContent = error.message;
+        showToast(error.message, "error");
+      } finally { button.disabled = false; }
+    });
+    function renderNotifications() {
+      const body = $("notificationsBody"); body.replaceChildren();
+      $("totalCount").textContent = notificationsData.length;
+      if (!notificationsData.length) {
+        const row = document.createElement("tr"); const cell = td("لا توجد إشعارات محفوظة حتى الآن", "py-8 text-center text-slate-400");
+        cell.colSpan = 5; row.appendChild(cell); body.appendChild(row); return;
+      }
+      for (const item of notificationsData) {
+        const row = document.createElement("tr"); row.className = "hover:bg-slate-50/70";
+        row.append(td(item.title, "py-3 px-4 font-bold text-slate-800"));
+        row.append(td(item.audience === "all" ? "جميع المستخدمين" : "مستخدمون محددون"));
+        row.append(td(item.recipientCount ?? (item.audience === "all" ? "جميع المستخدمين" : "—")));
+        row.append(td(formatDate(item.createdAt), "py-3 px-4 text-xs text-slate-500"));
+        const cell = document.createElement("td"); cell.className = "py-3 px-4 text-center";
+        cell.appendChild(actionButton("fa-solid fa-trash-can", "حذف الإشعار", "border-rose-200 bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white", () => deleteNotification(item.id)));
+        row.appendChild(cell); body.appendChild(row);
+      }
+    }
+    async function loadNotifications() {
+      $("notificationsBody").innerHTML = '<tr><td colspan="5" class="py-8 text-center text-slate-400">جارٍ تحميل سجل الإشعارات...</td></tr>';
+      try {
+        const data = await api("/api/admin/notifications");
+        notificationsData = data.notifications || [];
+        renderNotifications();
+      } catch (error) {
+        $("notificationsBody").innerHTML = '<tr><td colspan="5" class="py-8 text-center text-rose-600"></td></tr>';
+        $("notificationsBody").querySelector("td").textContent = error.message;
+      }
+    }
+    async function deleteNotification(id) {
+      if (!confirm("هل تريد حذف هذا الإشعار من السجل؟")) return;
+      try {
+        const result = await api("/api/admin/notifications/delete", { method:"POST", body:JSON.stringify({id}) });
+        showToast(result.message); await loadNotifications();
+      } catch (error) { showToast(error.message, "error"); }
+    }
+    $("refreshNotifications").addEventListener("click", loadNotifications);
+    $("logoutBtn").addEventListener("click", async () => {
+      try { await fetch("/api/auth/logout", {method:"POST", credentials:"same-origin"}); }
+      finally { location.replace("login.html"); }
+    });
+
+    loadMessages();
+  </script>
+</body>
+</html>
