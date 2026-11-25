@@ -80,13 +80,13 @@ td{padding:12px;border-bottom:1px solid var(--line);font-size:12px;vertical-alig
 <div class="shell">
   <aside class="side">
     <div class="side-title">القائمة الرئيسية</div>
-    <a href="admin.html">🏠 لوحة التحكم</a>
+    <a id="dashboardLink" href="admin.html">🏠 لوحة التحكم</a>
     <div class="side-title">إدارة المنصة</div>
     <a href="academic-structure.html">🎓 الهيكل الأكاديمي</a>
     <a href="admin-users.html" class="active">👥 إدارة المستخدمين</a>
-    <a href="admin-messages.html">✉️ رسائل التواصل</a>
-    <a href="admin-notifications.html">🔔 الإشعارات</a>
-    <a href="admin-profile.html">👤 الملف الشخصي</a>
+    <a id="messagesLink" href="admin-messages.html">✉️ رسائل التواصل</a>
+    <a id="notificationsLink" href="admin-notifications.html">🔔 الإشعارات</a>
+    <a id="profileLink" href="admin-profile.html">👤 الملف الشخصي</a>
   </aside>
 
   <main>
@@ -522,6 +522,9 @@ function bindHeader(data) {
   state.actor=data.actor||state.actor;
   $("greet").textContent="مرحباً "+name;
   $("adminAvatar").textContent=name.trim().charAt(0)||"م";
+  const role=String(state.actor.role||"").trim().toLowerCase();
+  const isFullAdmin=["admin","administrator","owner","super_admin","مدير النظام","مدير","مسؤول"].includes(role);
+  ["dashboardLink","messagesLink","notificationsLink","profileLink"].forEach(id=>$(id).hidden=!isFullAdmin);
   if(data.site?.url){
     try{$("sitePill").href=data.site.url;$("siteName").textContent=new URL(data.site.url).host;$("sitePill").hidden=false;}catch(_){}
   }
