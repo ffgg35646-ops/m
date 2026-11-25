@@ -136,6 +136,7 @@ main{flex:1;min-width:0;padding:0 0 40px}
       </section>
 
       <div id="loadState" class="loading">جارٍ تحميل الإحصائيات والتحقق من صلاحيات الحساب...</div>
+      <div id="dataWarnings" class="loading" hidden></div>
       <div id="stats" hidden>
         <div class="sec"><span>👥</span>إحصائيات الأشخاص</div>
         <div class="grid g2" id="people"></div>
@@ -159,7 +160,7 @@ main{flex:1;min-width:0;padding:0 0 40px}
 </div>
 
 <script>
-const fmt = value => Number(value || 0).toLocaleString("en-US");
+const fmt = value => value === null || value === undefined ? "غير متاح" : Number(value).toLocaleString("en-US");
 const $ = id => document.getElementById(id);
 function showModal(title, text) {
   $("modalTitle").textContent = title;
@@ -231,6 +232,13 @@ async function loadDashboard() {
     setMeter("usersBar","usersNums",data.plan.users.used,data.plan.users.limit,"");
     setMeter("storBar","storNums",data.plan.storage.used,data.plan.storage.limit,"GB");
 
+    const warningBox = $("dataWarnings");
+    if (data.missingCollections && data.missingCollections.length) {
+      warningBox.textContent = "تنبيه: مجموعات MongoDB التالية غير موجودة، لذلك ستظهر بياناتها كغير متاحة حتى تضبط أسماء المجموعات في Vercel: " + data.missingCollections.map(item => item.name).join("، ");
+      warningBox.hidden = false;
+    } else {
+      warningBox.hidden = true;
+    }
     renderCards("people",[
       {value:data.people.users.total,label:"إجمالي المستخدمين",icon:"👥",tile:"t-blue",subs:[{label:"نشط",value:data.people.users.active,color:"c-green"},{label:"جلسات سارية",value:data.people.users.sessions,color:"c-cyan"}]},
       {value:data.people.admins.total,label:"إجمالي المسؤولين",icon:"🛡️",tile:"t-red",subs:[{label:"حسابات المسؤولين",value:data.people.admins.total,color:"c-green"}]}
