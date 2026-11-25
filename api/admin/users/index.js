@@ -340,7 +340,7 @@ async function writeStudent(database, auth, action, payload) {
     if (!email && !phone) throw new Error("أدخل البريد الإلكتروني أو رقم الهاتف على الأقل.");
     if (password.length < 8 || password.length > 200) throw new Error("كلمة المرور يجب ألا تقل عن 8 أحرف.");
     if (await duplicateField(users, "email", email)) throw new Error("البريد الإلكتروني مستخدم بالفعل.");
-    if (phone && await duplicateField(users, "phone", phone)) throw new Error("رقم الهاتف مستخدم بالفعل.");
+    if (phone && (await duplicateField(users, "phone", phone) || await duplicateField(users, "mobile", phone))) throw new Error("رقم الهاتف مستخدم بالفعل.");
 
     await validateAcademicSelection(database, payload.category, payload.year);
     const code = text(payload.code, 40) || await nextStudentCode(users);
@@ -384,7 +384,7 @@ async function writeStudent(database, auth, action, payload) {
     if (firstName.length < 2 || lastName.length < 2) throw new Error("أدخل الاسم الأول والاسم الأخير بشكل صحيح.");
     if (!email && !phone) throw new Error("أدخل البريد الإلكتروني أو رقم الهاتف على الأقل.");
     if (await duplicateField(users, "email", email, student._id)) throw new Error("البريد الإلكتروني مستخدم بالفعل.");
-    if (phone && await duplicateField(users, "phone", phone, student._id)) throw new Error("رقم الهاتف مستخدم بالفعل.");
+    if (phone && (await duplicateField(users, "phone", phone, student._id) || await duplicateField(users, "mobile", phone, student._id))) throw new Error("رقم الهاتف مستخدم بالفعل.");
 
     const code = text(payload.code || student.code || student.studentCode, 40);
     if (code && (await duplicateField(users, "code", code, student._id) || await duplicateField(users, "studentCode", code, student._id))) throw new Error("كود الطالب مستخدم بالفعل.");
@@ -476,7 +476,7 @@ async function writeAdmin(database, auth, action, payload) {
     if (!roleRecord) throw new Error("الدور المحدد غير موجود.");
     if (roleRecord.allPermissions && !auth.builtInAdmin) throw new Error("لا تملك صلاحية إسناد دور مدير النظام.");
     if (await duplicateField(admins, "email", email)) throw new Error("البريد الإلكتروني مستخدم بالفعل.");
-    if (phone && await duplicateField(admins, "phone", phone)) throw new Error("رقم الهاتف مستخدم بالفعل.");
+    if (phone && (await duplicateField(admins, "phone", phone) || await duplicateField(admins, "mobile", phone))) throw new Error("رقم الهاتف مستخدم بالفعل.");
 
     const credentials = await hashPassword(password);
     const document = {
@@ -514,7 +514,7 @@ async function writeAdmin(database, auth, action, payload) {
     if (!roleRecord) throw new Error("الدور المحدد غير موجود.");
     if (roleRecord.allPermissions && !auth.builtInAdmin) throw new Error("لا تملك صلاحية إسناد دور مدير النظام.");
     if (await duplicateField(admins, "email", email, target._id)) throw new Error("البريد الإلكتروني مستخدم بالفعل.");
-    if (phone && await duplicateField(admins, "phone", phone, target._id)) throw new Error("رقم الهاتف مستخدم بالفعل.");
+    if (phone && (await duplicateField(admins, "phone", phone, target._id) || await duplicateField(admins, "mobile", phone, target._id))) throw new Error("رقم الهاتف مستخدم بالفعل.");
 
     const active = payload.status === "نشط";
     await admins.updateOne({ _id: target._id }, {
@@ -550,7 +550,7 @@ async function loadData(auth, capabilities) {
           { projection: SAFE_STUDENT_PROJECTION }
         ).sort({ createdAt: -1 }).limit(MAX_LIST).toArray()
       : Promise.resolve([]),
-    capabilities.roles ? ensureDefaultRoles(database) : Promise.resolve([])
+    (capabilities.roles || capabilities.adminCreate) ? ensureDefaultRoles(database) : Promise.resolve([])
   ]);
 
   const enrollmentIds = new Set();
