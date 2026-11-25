@@ -240,7 +240,7 @@ async function loadDashboard() {
       warningBox.hidden = true;
     }
     renderCards("people",[
-      {value:data.people.users.total,label:"إجمالي المستخدمين",icon:"👥",tile:"t-blue",subs:[{label:"نشط",value:data.people.users.active,color:"c-green"},{label:"جلسات سارية",value:data.people.users.sessions,color:"c-cyan"}]},
+      {value:data.people.users.total,label:"إجمالي المستخدمين",icon:"👥",tile:"t-blue",subs:[{label:"نشط",value:data.people.users.active,color:"c-green"},{label:"جلسات دخول سارية",value:data.people.users.sessions,color:"c-cyan"}]},
       {value:data.people.admins.total,label:"إجمالي المسؤولين",icon:"🛡️",tile:"t-red",subs:[{label:"حسابات المسؤولين",value:data.people.admins.total,color:"c-green"}]}
     ]);
     renderCards("business",[
