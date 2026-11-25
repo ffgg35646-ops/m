@@ -34,3 +34,15 @@ NOTIFICATIONS_COLLECTION=notifications
 
 # Student user records must have a stable MongoDB _id and searchable email/phone fields.
 # Admin password resets write passwordHash/passwordSalt using Node.js scrypt.
+
+# Student notification recipients / browser push subscriptions
+STUDENT_ROLE_VALUE=student
+PUSH_SUBSCRIPTIONS_COLLECTION=push_subscriptions
+NOTIFICATION_BATCHES_COLLECTION=notification_batches
+VAPID_PUBLIC_KEY=...
+VAPID_PRIVATE_KEY=...
+VAPID_SUBJECT=mailto:notifications@your-verified-domain.com
+
+# Optional: link student records to guardian/parent account IDs using one of
+# parentUserId, guardianUserId, parentId, guardianId, parentIds, guardianIds, or parents.
+# The recipients API recognizes these field names automatically.
