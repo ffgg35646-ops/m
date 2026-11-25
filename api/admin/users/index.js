@@ -147,7 +147,7 @@ function isOwnerRecord(record, reqEmail = "") {
   const ownerEmail = String(process.env.OWNER_EMAIL || "").trim().toLowerCase();
   const ownerId = String(process.env.OWNER_ADMIN_ID || "").trim();
   return record?.isOwner === true ||
-    ["owner", "super_admin", "مالك"].includes(normalizeRole(record?.role)) ||
+    ["admin", "owner", "super_admin", "مالك"].includes(normalizeRole(record?.role)) ||
     Boolean(ownerEmail && String(record?.email || "").toLowerCase() === ownerEmail) ||
     Boolean(ownerId && String(record?._id || "") === ownerId);
 }
@@ -195,7 +195,7 @@ function publicStudent(record, activeEnrollmentIds) {
   const lastName = text(record.lastName || "");
   const name = text(record.fullName || record.name || [firstName, lastName].filter(Boolean).join(" "));
   const active = record.isActive !== false && record.active !== false &&
-    !["blocked", "deleted", "محظور", "محذوف", "غير نشط"].includes(normalizeRole(record.status));
+    !["blocked", "disabled", "deleted", "محظور", "محذوف", "غير نشط"].includes(normalizeRole(record.status));
   return {
     id: String(record._id),
     firstName: firstName || name.split(/\s+/)[0] || "",
@@ -298,6 +298,28 @@ async function nextStudentCode(users) {
   return String(max + 1);
 }
 
+async function validateAcademicSelection(database, category, year) {
+  const categoryValue = text(category, 140);
+  const yearValue = text(year, 140);
+  if (!categoryValue && !yearValue) return;
+  const collection = process.env.ACADEMIC_STRUCTURE_COLLECTION || "academic_structure";
+  const structure = await database.collection(collection).findOne(
+    { _id: "main" },
+    { projection: { categories: 1, years: 1 } }
+  );
+  if (!structure) return;
+  const categories = Array.isArray(structure.categories) ? structure.categories : [];
+  const years = Array.isArray(structure.years) ? structure.years : [];
+  if (categoryValue && categories.length && !categories.some(item => item.name === categoryValue)) {
+    throw new Error("فئة السنة الدراسية المحددة غير موجودة في الهيكل الأكاديمي.");
+  }
+  if (yearValue && years.length && !years.some(item =>
+    item.name === yearValue && (!categoryValue || item.category === categoryValue)
+  )) {
+    throw new Error("السنة الدراسية المحددة لا تتبع الفئة المختارة.");
+  }
+}
+
 async function findStudent(users, id) {
   const parsed = parseMongoId(id);
   return users.findOne({ $or: [{ _id: parsed }, { _id: String(id) }] });
@@ -320,8 +342,9 @@ async function writeStudent(database, auth, action, payload) {
     if (await duplicateField(users, "email", email)) throw new Error("البريد الإلكتروني مستخدم بالفعل.");
     if (phone && await duplicateField(users, "phone", phone)) throw new Error("رقم الهاتف مستخدم بالفعل.");
 
+    await validateAcademicSelection(database, payload.category, payload.year);
     const code = text(payload.code, 40) || await nextStudentCode(users);
-    if (await duplicateField(users, "code", code)) throw new Error("كود الطالب مستخدم بالفعل.");
+    if (await duplicateField(users, "code", code) || await duplicateField(users, "studentCode", code)) throw new Error("كود الطالب مستخدم بالفعل.");
     const credentials = await hashPassword(password);
     const isActive = payload.isActive !== false;
     const document = {
@@ -364,7 +387,8 @@ async function writeStudent(database, auth, action, payload) {
     if (phone && await duplicateField(users, "phone", phone, student._id)) throw new Error("رقم الهاتف مستخدم بالفعل.");
 
     const code = text(payload.code || student.code || student.studentCode, 40);
-    if (code && await duplicateField(users, "code", code, student._id)) throw new Error("كود الطالب مستخدم بالفعل.");
+    if (code && (await duplicateField(users, "code", code, student._id) || await duplicateField(users, "studentCode", code, student._id))) throw new Error("كود الطالب مستخدم بالفعل.");
+    await validateAcademicSelection(database, payload.category, payload.year);
     const isActive = payload.isActive !== false;
     await users.updateOne({ _id: student._id }, {
       $set: {
@@ -568,6 +592,7 @@ async function loadData(auth, capabilities) {
   return {
     ok: true,
     actor: { name: actorName, role: auth.roleName },
+    site: { url: process.env.APP_URL || "" },
     capabilities,
     admins: adminDocs.map(item => publicAdmin(item, auth.session.userId)),
     students: studentDocs.map(item => publicStudent(item, enrollmentIds)),
@@ -599,7 +624,12 @@ module.exports = async function handler(req, res) {
         const fallback = await requireAdmin(req, { section: "صلاحيات المستخدمين", module: "الطلاب", action: "عرض" });
         if (!fallback.ok) {
           const fallbackAdmins = await requireAdmin(req, { section: "صلاحيات المستخدمين", module: "المشرفون", action: "عرض" });
-          if (!fallbackAdmins.ok) return json(res, fallbackAdmins.status, { ok: false, message: fallbackAdmins.message });
+          if (!fallbackAdmins.ok) {
+            const fallbackRoles = await requireAdmin(req, { section: "صلاحيات المستخدمين", module: "الأدوار والصلاحيات", action: "عرض" });
+            if (!fallbackRoles.ok) return json(res, fallbackRoles.status, { ok: false, message: fallbackRoles.message });
+            const capabilities = await roleCapabilities(database, fallbackRoles.roleName, fallbackRoles.builtInAdmin);
+            return json(res, 200, await loadData(fallbackRoles, capabilities));
+          }
           const capabilities = await roleCapabilities(database, fallbackAdmins.roleName, fallbackAdmins.builtInAdmin);
           return json(res, 200, await loadData(fallbackAdmins, capabilities));
         }
