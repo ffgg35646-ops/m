@@ -75,10 +75,10 @@ module.exports = async function handler(req, res) {
     let delivered = 0;
     let failed = 0;
     let pushStatus = "not_configured";
-    if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY && subscriptionCollections.length) {
+    if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY && process.env.VAPID_SUBJECT && subscriptionCollections.length) {
       const webpush = require("web-push");
       webpush.setVapidDetails(
-        process.env.VAPID_SUBJECT || "mailto:admin@example.com",
+        process.env.VAPID_SUBJECT,
         process.env.VAPID_PUBLIC_KEY,
         process.env.VAPID_PRIVATE_KEY
       );
@@ -104,7 +104,7 @@ module.exports = async function handler(req, res) {
       }));
       delivered = outcomes.filter(item=>item.ok).length;
       failed = outcomes.filter(item=>!item.ok).length;
-      pushStatus = failed === 0 ? "sent" : delivered > 0 ? "partial" : "failed";
+      pushStatus = deviceCount === 0 ? "no_devices" : failed === 0 ? "sent" : delivered > 0 ? "partial" : "failed";
     } else if (subscriptionCollections.length) {
       deviceCount = await db.collection(subscriptionsName).countDocuments({
         $or:[
