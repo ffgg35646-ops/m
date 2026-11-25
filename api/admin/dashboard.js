@@ -30,7 +30,8 @@ module.exports = async function handler(req, res) {
       return json(res, 403, { ok: false, message: "ليس لديك صلاحية دخول لوحة الإدارة." });
     }
 
-    const admin = await database.collection(collectionName()).findOne(
+    const adminCollection = session.authCollection || collectionName();
+    const admin = await database.collection(adminCollection).findOne(
       { _id: session.userId },
       { projection: { name: 1, fullName: 1, email: 1, role: 1 } }
     );
