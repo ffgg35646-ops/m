@@ -36,6 +36,7 @@ NOTIFICATIONS_COLLECTION=notifications
 # Admin password resets write passwordHash/passwordSalt using Node.js scrypt.
 
 # Student notification recipients / browser push subscriptions
+# Generate a VAPID key pair with: npx web-push generate-vapid-keys
 # STUDENT_ROLE_VALUE=student  # set only if student documents have this exact role value
 PUSH_SUBSCRIPTIONS_COLLECTION=push_subscriptions
 NOTIFICATION_BATCHES_COLLECTION=notification_batches
