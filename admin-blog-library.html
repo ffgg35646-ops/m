@@ -246,8 +246,11 @@ function formatDate(value){
 }
 function statusBadge(value){
   const status=String(value||"").toLowerCase();
-  if(["published","active","paid","مدفوع","نشط","تم الدفع","مكتمل"].includes(status))return ["منشور/نشط","green"];
-  if(["draft","pending","قيد الانتظار","بانتظار الدفع","معلق","غير نشط"].includes(status))return ["مسودة/معلق","amber"];
+  if(status==="published")return ["منشور","green"];
+  if(["active","نشط","مكتمل"].includes(status))return ["نشط","green"];
+  if(["paid","مدفوع","تم الدفع"].includes(status))return ["مدفوع","green"];
+  if(["draft","مسودة"].includes(status))return ["مسودة","gray"];
+  if(["pending","قيد الانتظار","بانتظار الدفع","معلق"].includes(status))return ["بانتظار الدفع","amber"];
   if(["failed","cancelled","canceled","ملغي","فشل","محذوف"].includes(status))return ["غير مكتمل","red"];
   return [value||"غير محدد","gray"];
 }
@@ -308,7 +311,7 @@ function fillPostCategories(selected=""){
 }
 function postCategoryName(post){
   const category=state.categories.find(item=>item.id===post.categoryId);
-  return post.tag||category?.name||"بدون تصنيف";
+  return category?.name||post.tag||"بدون تصنيف";
 }
 function renderPosts(){
   const body=$("postsBody");body.replaceChildren();
