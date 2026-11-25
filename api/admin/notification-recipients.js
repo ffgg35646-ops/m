@@ -4,7 +4,10 @@ const { requireAdmin } = require("../_lib/admin");
 function scalar(value) {
   if (value === null || value === undefined || value === "") return "";
   if (typeof value === "string" || typeof value === "number") return String(value);
-  if (typeof value === "object") return String(value.name || value.title || value.label || value.courseName || value.groupName || value._id || "");
+  if (typeof value === "object") {
+    if (typeof value.toHexString === "function") return value.toHexString();
+    return String(value.name || value.title || value.label || value.courseName || value.groupName || value._id || "");
+  }
   return "";
 }
 function values(...items) {
@@ -29,7 +32,9 @@ function relatedIds(user) {
     const value = user[key];
     const list = Array.isArray(value) ? value : value ? [value] : [];
     for (const item of list) {
-      const id = item && typeof item === "object" ? (item.userId || item._id || item.id) : item;
+      const id = item && typeof item === "object"
+        ? (typeof item.toHexString === "function" ? item.toHexString() : (item.userId || item._id || item.id))
+        : item;
       if (id) result.push(String(id));
     }
   }
