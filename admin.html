@@ -104,7 +104,15 @@ main{flex:1;min-width:0;padding:0 0 40px}
     <div class="side-title">إدارة المنصة</div>
     <button type="button" data-module="إعدادات المؤسسة" aria-disabled="true"><span class="ic">⚙️</span>إعدادات المؤسسة<span class="chev">‹</span></button>
     <button type="button" data-module="الاشتراك والفواتير" aria-disabled="true"><span class="ic">👑</span>الاشتراك والفواتير<span class="chev">‹</span></button>
-    <a href="admin-messages.html" class="side-link"><span class="ic">💬</span>الرسائل والإشعارات<span class="chev">‹</span></a>
+    <div class="side-messaging">
+      <button type="button" id="adminMessagesToggle" class="side-link" style="justify-content:space-between">
+        <span style="display:flex;align-items:center;gap:10px"><span class="ic">💬</span>الرسائل والإشعارات</span><span class="chev">⌄</span>
+      </button>
+      <div id="adminMessagesSubmenu" style="padding-right:16px;border-right:2px solid #c7d2fe;margin-right:14px">
+        <a href="admin-messages.html" class="side-link"><span class="ic">✉️</span>رسائل التواصل</a>
+        <a href="admin-notifications.html" class="side-link"><span class="ic">🔔</span>الإشعارات</a>
+      </div>
+    </div>
     <button type="button" data-module="الهيكل الأكاديمي" aria-disabled="true"><span class="ic">🎓</span>الهيكل الأكاديمي<span class="chev">‹</span></button>
     <button type="button" data-module="إدارة المستخدمين" aria-disabled="true"><span class="ic">👥</span>إدارة المستخدمين<span class="chev">‹</span></button>
     <button type="button" data-module="إدارة المحتوى" aria-disabled="true"><span class="ic">📂</span>إدارة المحتوى<span class="chev">‹</span></button>
@@ -286,6 +294,8 @@ $("modalClose").addEventListener("click", () => $("modalBackdrop").classList.rem
 $("modalBackdrop").addEventListener("click", event => { if (event.target === $("modalBackdrop")) $("modalBackdrop").classList.remove("open"); });
 document.addEventListener("keydown", event => { if (event.key === "Escape") $("modalBackdrop").classList.remove("open"); });
 document.querySelectorAll("[data-module]").forEach(button => button.addEventListener("click", () => showModal(button.dataset.module, "هذه الصفحة الإدارية لم يتم تنفيذها وربطها بعد. لن نعرض بيانات أو إجراءات شكلية قبل توصيلها بقاعدة البيانات والصلاحيات.")));
+const adminMessagesToggle=$("adminMessagesToggle"),adminMessagesSubmenu=$("adminMessagesSubmenu");
+if(adminMessagesToggle&&adminMessagesSubmenu)adminMessagesToggle.addEventListener("click",()=>adminMessagesSubmenu.hidden=!adminMessagesSubmenu.hidden);
 loadDashboard();
 </script>
 </body>
