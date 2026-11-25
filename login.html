@@ -41,7 +41,7 @@
         </nav>
       </div>
       <div class="flex items-center gap-2 sm:gap-2.5 shrink-0">
-        <button type="button" id="registerNavBtn" class="px-3.5 sm:px-4 h-9 rounded-lg text-xs sm:text-sm font-bold text-white bg-[#0c8ea6] hover:bg-[#09788d] transition-colors shadow-xs">إنشاء حساب</button>
+        <button type="button" id="registerNavBtn" href="register.html" class="px-3.5 sm:px-4 h-9 rounded-lg text-xs sm:text-sm font-bold text-white bg-[#0c8ea6] hover:bg-[#09788d] transition-colors shadow-xs inline-flex items-center justify-center">إنشاء حساب</a>
         <a href="#login-form" class="px-3.5 sm:px-4 h-9 rounded-lg text-xs sm:text-sm font-bold text-[#0c8ea6] border border-[#0c8ea6] bg-white hover:bg-[#0c8ea6]/5 transition-colors inline-flex items-center justify-center">تسجيل الدخول</a>
         <button type="button" id="langToggleBtn" aria-label="اللغة" class="w-9 h-9 rounded-full border border-slate-200 text-[#1c8ed6] hover:bg-slate-50 flex items-center justify-center transition-colors">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
@@ -86,7 +86,7 @@
           </form>
           <div class="relative my-6 flex items-center justify-center"><div class="w-full border-t border-slate-200"></div><span class="bg-white px-3 text-xs font-semibold text-slate-400">أو</span></div>
           <div class="text-center"><button type="button" id="passkeyBtn" class="inline-flex items-center justify-center gap-2 text-xs sm:text-sm font-bold text-[#1493b0] hover:text-[#0b7088] py-2 px-4 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer"><svg class="w-4 h-4 text-[#1493b0]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg><span>تسجيل الدخول بمفتاح المرور</span></button></div>
-          <div class="mt-6 text-center text-xs sm:text-sm text-slate-500"><span>ليس لديك حساب؟</span><button type="button" id="createAccountLink" class="font-bold text-[#1493b0] hover:underline mr-1 cursor-pointer">إنشاء حساب جديد</button></div>
+          <div class="mt-6 text-center text-xs sm:text-sm text-slate-500"><span>ليس لديك حساب؟</span><a href="register.html" id="createAccountLink" class="font-bold text-[#1493b0] hover:underline mr-1">إنشاء حساب جديد</a></div>
         </div>
       </section>
     </div>
@@ -126,8 +126,6 @@
     const statusBox = document.getElementById('statusBox');
     const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
     const passkeyBtn = document.getElementById('passkeyBtn');
-    const createAccountLink = document.getElementById('createAccountLink');
-    const registerNavBtn = document.getElementById('registerNavBtn');
     function showMessage(text, type = 'info') {
       statusBox.textContent = text;
       statusBox.classList.remove('hidden','bg-emerald-50','text-emerald-700','border-emerald-200','bg-sky-50','text-sky-700','border-sky-200','bg-rose-50','text-rose-700','border-rose-200');
@@ -158,9 +156,6 @@
       showMessage(`تم إرسال رابط استعادة كلمة المرور إلى ${identity}.`,'info');
     });
     passkeyBtn.addEventListener('click', () => showMessage('جاري تهيئة تسجيل الدخول عبر مفتاح المرور (Passkey)...','info'));
-    const goToRegister = () => showMessage('يمكنك الانتقال إلى صفحة إنشاء حساب جديد عبر منصة علي عليان الدولية.','info');
-    createAccountLink.addEventListener('click', goToRegister);
-    registerNavBtn.addEventListener('click', goToRegister);
   </script>
 </body>
 </html>
