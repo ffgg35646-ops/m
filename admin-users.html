@@ -68,8 +68,8 @@ td{padding:12px;border-bottom:1px solid var(--line);font-size:12px;vertical-alig
     <div class="user-menu">
       <button class="user-trigger" id="adminMenuBtn" type="button" aria-haspopup="true" aria-expanded="false"><span class="avatar" id="adminAvatar">م</span><span id="greet">جاري التحقق...</span><span style="color:var(--muted)">⌄</span></button>
       <nav class="user-dropdown" id="adminProfileMenu" hidden>
-        <a class="dropdown-item" href="admin.html">🏠 لوحة التحكم</a>
-        <a class="dropdown-item" href="admin-profile.html">👤 الملف الشخصي</a>
+        <a class="dropdown-item" id="menuDashboardLink" href="admin.html">🏠 لوحة التحكم</a>
+        <a class="dropdown-item" id="menuProfileLink" href="admin-profile.html">👤 الملف الشخصي</a>
         <button class="dropdown-item dropdown-logout" id="profileLogoutBtn" type="button">↪ تسجيل الخروج</button>
       </nav>
     </div>
@@ -82,7 +82,7 @@ td{padding:12px;border-bottom:1px solid var(--line);font-size:12px;vertical-alig
     <div class="side-title">القائمة الرئيسية</div>
     <a id="dashboardLink" href="admin.html">🏠 لوحة التحكم</a>
     <div class="side-title">إدارة المنصة</div>
-    <a href="academic-structure.html">🎓 الهيكل الأكاديمي</a>
+    <a id="academicLink" href="academic-structure.html">🎓 الهيكل الأكاديمي</a>
     <a href="admin-users.html" class="active">👥 إدارة المستخدمين</a>
     <a id="messagesLink" href="admin-messages.html">✉️ رسائل التواصل</a>
     <a id="notificationsLink" href="admin-notifications.html">🔔 الإشعارات</a>
@@ -524,7 +524,8 @@ function bindHeader(data) {
   $("adminAvatar").textContent=name.trim().charAt(0)||"م";
   const role=String(state.actor.role||"").trim().toLowerCase();
   const isFullAdmin=["admin","administrator","owner","super_admin","مدير النظام","مدير","مسؤول"].includes(role);
-  ["dashboardLink","messagesLink","notificationsLink","profileLink"].forEach(id=>$(id).hidden=!isFullAdmin);
+  ["dashboardLink","messagesLink","notificationsLink","profileLink","menuDashboardLink","menuProfileLink"].forEach(id=>$(id).hidden=!isFullAdmin);
+  $("academicLink").hidden=state.capabilities.academic!==true;
   if(data.site?.url){
     try{$("sitePill").href=data.site.url;$("siteName").textContent=new URL(data.site.url).host;$("sitePill").hidden=false;}catch(_){}
   }
