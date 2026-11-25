@@ -15,7 +15,8 @@ module.exports = async function handler(req, res) {
 
     const database = auth.database;
     const users = database.collection(process.env.USERS_COLLECTION || "users");
-    const user = await users.findOne({ _id: parseMongoId(userId) });
+    const parsedId = parseMongoId(userId);
+    const user = await users.findOne({ $or: [{ _id: parsedId }, { _id: userId }] });
     if (!user) return json(res, 404, { ok: false, message: "لم يتم العثور على حساب المستخدم في قاعدة البيانات." });
 
     const credentials = await hashPassword(password);
