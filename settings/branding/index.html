@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f4f6f9">
+  <title>إعدادات المؤسسة - لوحة الإدارة</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:'Tajawal',sans-serif;background:#f4f6f9}
+    .tab-link{display:flex;align-items:center;gap:.75rem;width:100%;padding:.65rem 1rem;border-radius:.65rem;color:#475569;font-size:.875rem;transition:.15s}
+    .tab-link:hover{background:#f8fafc}
+    .tab-link.active{font-weight:700;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
+    .setting-panel{display:none}
+    .setting-panel.active{display:block}
+    .field{width:100%;border:1px solid #e2e8f0;border-radius:.6rem;padding:.62rem .85rem;background:#fff;font-size:.875rem;outline:none}
+    .field:focus{border-color:#3b82f6;box-shadow:0 0 0 3px #3b82f61a}
+    .field[dir=ltr]{text-align:left}
+    .setting-label{display:block;font-size:.75rem;font-weight:700;color:#475569;margin-bottom:.4rem}
+    .upload-card{border:1px solid #e2e8f0;border-radius:.8rem;padding:1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;background:#f8fafc}
+    .preview-img{width:4rem;height:4rem;object-fit:contain;background:white;border:1px solid #e2e8f0;border-radius:.65rem}
+    .main-side-link{display:flex;align-items:center;gap:.65rem;width:100%;padding:.65rem .7rem;border-radius:.55rem;font-size:.8rem;color:#64748b}
+    .main-side-link:hover{background:#f8fafc}
+    .main-side-link.active{background:#4f46e5;color:white;font-weight:700}
+    .settings-side-sub{padding:3px 13px 5px 0;border-right:2px solid #c7d2fe;margin:2px 12px 8px 0}
+    .settings-side-sub a{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:7px;font-size:11px;color:#64748b}
+    .settings-side-sub a:hover{background:#f8fafc;color:#4f46e5}
+    .settings-side-sub a.active{background:#eef2ff;color:#4338ca;font-weight:700}
+    @media(max-width:1279px){.admin-sidebar{display:none}}
+  </style>
+</head>
+<body class="text-slate-700 antialiased">
+  <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-30">
+    <a href="/admin.html" class="flex items-center gap-3">
+      <span class="w-9 h-9 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-extrabold">TP</span>
+      <span class="font-bold text-slate-800">منصة علي عليان الدولية</span>
+    </a>
+    <div class="flex items-center gap-2">
+      <a href="/admin.html" class="px-3 py-2 text-sm rounded-lg text-slate-600 hover:bg-slate-50"><i class="fa-solid fa-gauge-high ml-1"></i>لوحة التحكم</a>
+      <a href="/admin-profile.html" class="px-3 py-2 text-sm rounded-lg text-indigo-700 bg-indigo-50"><i class="fa-regular fa-user ml-1"></i>الملف الشخصي</a>
+    </div>
+  </header>
+
+  <div class="flex min-h-[calc(100vh-4rem)]">
+    <aside class="admin-sidebar w-64 bg-white border-l border-slate-200 shadow-sm flex-shrink-0 p-3">
+      <div class="px-3 py-3 text-xs font-bold text-slate-400">القائمة الرئيسية</div>
+      <a href="/admin.html" class="main-side-link"><i class="fa-solid fa-house w-5 text-center"></i><span>لوحة التحكم</span></a>
+      <div class="px-3 pt-5 pb-2 text-xs font-bold text-slate-400">إدارة المنصة</div>
+      <div class="main-side-link active"><i class="fa-solid fa-gear w-5 text-center"></i><span>إعدادات المؤسسة</span></div>
+      <div class="settings-side-sub" id="organizationLinks">
+        <a href="/settings/info"><i class="fa-solid fa-building w-4"></i>معلومات المؤسسة</a>
+        <a href="/settings/branding" data-page="branding"><i class="fa-solid fa-palette w-4"></i>الهوية البصرية</a>
+        <a href="/settings/contact" data-page="contact"><i class="fa-solid fa-phone w-4"></i>معلومات التواصل</a>
+        <a href="/settings/sections"><i class="fa-solid fa-grip w-4"></i>أقسام المنصة</a>
+        <a href="/settings/homepage"><i class="fa-solid fa-house w-4"></i>الصفحة الرئيسية</a>
+        <a href="/settings/language"><i class="fa-solid fa-globe w-4"></i>إعدادات اللغة</a>
+        <a href="/settings/apps"><i class="fa-solid fa-mobile-screen w-4"></i>تطبيقات Teaching Portals</a>
+        <a href="/settings/currency" data-page="currency"><i class="fa-solid fa-dollar-sign w-4"></i>إعدادات العملة</a>
+        <a href="/settings/registration" data-page="registration"><i class="fa-solid fa-user-plus w-4"></i>إعدادات التسجيل</a>
+        <a href="/settings/seo" data-page="seo"><i class="fa-solid fa-magnifying-glass w-4"></i>إعدادات محركات البحث</a>
+        <a href="/settings/welcome"><i class="fa-solid fa-envelope w-4"></i>رسائل الترحيب</a>
+        <a href="/settings/integrations"><i class="fa-solid fa-link w-4"></i>إعدادات الدمج</a>
+        <a href="/settings/privacy"><i class="fa-solid fa-shield-halved w-4"></i>سياسة الخصوصية</a>
+      </div>
+      <div class="border-t border-slate-100 mt-3 pt-3 space-y-1">
+        <a href="/admin-messages.html" class="main-side-link"><i class="fa-solid fa-envelope-open-text w-5 text-center"></i>الرسائل</a>
+        <a href="/admin-notifications.html" class="main-side-link"><i class="fa-solid fa-bell w-5 text-center"></i>الإشعارات</a>
+        <a href="/courses.html" class="main-side-link"><i class="fa-solid fa-graduation-cap w-5 text-center"></i>الكورسات</a>
+      </div>
+    </aside>
+
+    <main class="flex-1 min-w-0 p-4 sm:p-6 lg:p-7 max-w-7xl mx-auto space-y-6">
+      <div class="bg-gradient-to-l from-indigo-700 to-purple-700 rounded-xl p-5 sm:p-6 text-white shadow-md flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-4 min-w-0">
+          <div class="w-14 h-14 shrink-0 rounded-xl bg-white/15 border border-white/25 flex items-center justify-center text-2xl"><i class="fa-solid fa-building-columns"></i></div>
+          <div class="min-w-0">
+            <h1 id="organizationName" class="text-xl sm:text-2xl font-bold">منصة علي عليان الدولية</h1>
+            <p id="organizationEmail" class="text-indigo-100 text-sm mt-1" dir="ltr">alimohammed20204@gmail.com</p>
+            <div class="mt-2 inline-flex items-center gap-2 bg-white text-slate-700 px-3 py-1 rounded-lg text-xs font-bold shadow-sm">
+              <i class="fa-solid fa-globe text-indigo-600"></i><span id="siteAddress">موقع المؤسسة</span>
+            </div>
+          </div>
+        </div>
+        <span class="text-xs bg-white/15 border border-white/20 px-3 py-2 rounded-lg"><i class="fa-solid fa-shield-halved ml-1"></i>إعدادات مدير النظام</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <nav class="lg:col-span-3 bg-white rounded-xl shadow-sm border border-slate-200 p-3 space-y-1">
+          <a href="/settings/branding" data-tab="branding" class="tab-link"><i class="fa-solid fa-palette w-4"></i><span>الهوية البصرية</span></a>
+          <a href="/settings/contact" data-tab="contact" class="tab-link"><i class="fa-solid fa-address-book w-4"></i><span>معلومات التواصل</span></a>
+          <a href="/settings/currency" data-tab="currency" class="tab-link"><i class="fa-solid fa-coins w-4"></i><span>إعدادات العملة</span></a>
+          <a href="/settings/registration" data-tab="registration" class="tab-link"><i class="fa-solid fa-user-plus w-4"></i><span>إعدادات التسجيل</span></a>
+          <a href="/settings/seo" data-tab="seo" class="tab-link"><i class="fa-solid fa-magnifying-glass-chart w-4"></i><span>إعدادات محركات البحث</span></a>
+        </nav>
+
+        <div class="lg:col-span-9 space-y-6">
+          <section id="tab-branding" class="setting-panel bg-white rounded-xl shadow-sm border border-slate-200 p-5 sm:p-6 space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+              <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-palette text-blue-600"></i><span>الهوية البصرية</span></h2>
+              <p class="text-xs text-slate-400 mt-1">الشعار والأيقونة وصورة البانر والألوان التي تحدد مظهر المنصة.</p>
+            </div>
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
+              <div><label class="block text-sm font-bold text-slate-700 mb-2">شعار المنظمة</label><div class="upload-card"><div class="flex items-center gap-3 min-w-0"><img id="logoPreview" class="preview-img" alt="معاينة الشعار"><label class="cursor-pointer px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-bold hover:bg-slate-50">تغيير الشعار<input id="logoFile" type="file" accept="image/png,image/jpeg,image/webp" class="hidden"></label></div><button type="button" data-reset-image="logoData" class="w-9 h-9 shrink-0 rounded-lg bg-rose-600 hover:bg-rose-700 text-white"><i class="fa-solid fa-trash-can"></i></button></div></div>
+              <div><label class="block text-sm font-bold text-slate-700 mb-2">الأيقونة (Favicon)</label><div class="upload-card"><div class="flex items-center gap-3 min-w-0"><img id="faviconPreview" class="preview-img" alt="معاينة الأيقونة"><label class="cursor-pointer px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-bold hover:bg-slate-50">تغيير الأيقونة<input id="faviconFile" type="file" accept="image/png,image/jpeg,image/webp" class="hidden"></label></div><button type="button" data-reset-image="faviconData" class="w-9 h-9 shrink-0 rounded-lg bg-rose-600 hover:bg-rose-700 text-white"><i class="fa-solid fa-trash-can"></i></button></div></div>
+              <div><label class="block text-sm font-bold text-slate-700 mb-2">صورة البانر</label><div class="upload-card"><div class="flex items-center gap-3 min-w-0"><img id="bannerPreview" class="preview-img" alt="معاينة البانر"><label class="cursor-pointer px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-bold hover:bg-slate-50">تغيير البانر<input id="bannerFile" type="file" accept="image/png,image/jpeg,image/webp" class="hidden"></label></div><button type="button" data-reset-image="bannerData" class="w-9 h-9 shrink-0 rounded-lg bg-rose-600 hover:bg-rose-700 text-white"><i class="fa-solid fa-trash-can"></i></button></div></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+              <div><label class="setting-label">اللون الرئيسي</label><div class="flex items-center gap-2"><input type="color" id="primaryColorPicker" class="w-12 h-10 border border-slate-200 rounded cursor-pointer"><input type="text" id="primaryColorText" maxlength="7" dir="ltr" class="field font-mono text-center font-bold"></div></div>
+              <div><label class="setting-label">اللون الثانوي</label><div class="flex items-center gap-2"><input type="color" id="secondaryColorPicker" class="w-12 h-10 border border-slate-200 rounded cursor-pointer"><input type="text" id="secondaryColorText" maxlength="7" dir="ltr" class="field font-mono text-center font-bold"></div></div>
+              <div><label class="setting-label">اللون المميز (Accent)</label><div class="flex items-center gap-2"><input type="color" id="accentColorPicker" class="w-12 h-10 border border-slate-200 rounded cursor-pointer"><input type="text" id="accentColorText" maxlength="7" dir="ltr" class="field font-mono text-center font-bold"></div></div>
+            </div>
+          </section>
+
+          <section id="tab-contact" class="setting-panel bg-white rounded-xl shadow-sm border border-slate-200 p-5 sm:p-6 space-y-6">
+            <div class="border-b border-slate-100 pb-4"><h2 class="text-lg font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-address-book text-blue-600"></i><span>معلومات التواصل</span></h2><p class="text-xs text-slate-400 mt-1">البريد الإلكتروني وأرقام الهاتف وطرق التواصل وروابط حسابات المؤسسة.</p></div>
+            <div class="border border-slate-100 rounded-xl p-4 sm:p-5 bg-slate-50/40 space-y-4">
+              <h3 class="font-bold text-sm text-slate-700"><i class="fa-solid fa-headset text-indigo-600 ml-2"></i>وسائل التواصل المباشر</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div><label class="setting-label">البريد الإلكتروني</label><input id="contactEmail" type="email" class="field" dir="ltr"></div>
+                <div><label class="setting-label">رقم الهاتف</label><input id="contactPhone" class="field" dir="ltr"></div>
+                <div><label class="setting-label">رقم هاتف إضافي (اختياري)</label><input id="contactExtraPhone" class="field" dir="ltr"></div>
+                <div><label class="setting-label">واتساب</label><input id="contactWhatsapp" class="field" dir="ltr"></div>
+                <div><label class="setting-label">تليجرام</label><input id="contactTelegram" type="url" class="field" dir="ltr"></div>
+                <div><label class="setting-label">ماسنجر</label><input id="contactMessenger" type="url" class="field" dir="ltr"></div>
+              </div>
+            </div>
+            <div class="border border-slate-100 rounded-xl p-4 sm:p-5 bg-slate-50/40 space-y-4">
+              <h3 class="font-bold text-sm text-slate-700"><i class="fa-solid fa-share-nodes text-indigo-600 ml-2"></i>حسابات التواصل الاجتماعي</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div><label class="setting-label">فيسبوك</label><input id="contactFacebook" type="url" class="field" dir="ltr"></div>
+                <div><label class="setting-label">تويتر</label><input id="contactTwitter" type="url" class="field" dir="ltr" placeholder="https://x.com/..."></div>
+                <div><label class="setting-label">انستجرام</label><input id="contactInstagram" type="url" class="field" dir="ltr"></div>
+                <div><label class="setting-label">يوتيوب</label><input id="contactYoutube" type="url" class="field" dir="ltr"></div>
+                <div><label class="setting-label">تيك توك</label><input id="contactTiktok" type="url" class="field" dir="ltr"></div>
+              </div>
+            </div>
+          </section>
+
+          <section id="tab-currency" class="setting-panel bg-white rounded-xl shadow-sm border border-slate-200 p-5 sm:p-6 space-y-6">
+            <div class="border-b border-slate-100 pb-4"><h2 class="text-lg font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-coins text-blue-600"></i><span>إعدادات العملة</span></h2><p class="text-xs text-slate-400 mt-1">العملة الافتراضية والعملات المدعومة وأسعار التحويل.</p></div>
+            <div><label class="setting-label">العملة الافتراضية</label><select id="defaultCurrency" class="field"><option value="EGP">الجنيه المصري (EGP)</option><option value="SAR">الريال السعودي (SAR)</option><option value="USD">الدولار الأمريكي (USD)</option></select><p class="text-xs text-slate-400 mt-2">العملة المستخدمة كعملة أساسية للأسعار.</p></div>
+            <label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" id="multiCurrency" class="mt-1 rounded border-slate-300 text-blue-600"><span><b class="block text-sm">السماح بعملات متعددة</b><small class="text-xs text-slate-400">يسمح للزوار بعرض الأسعار بعملات أخرى عند ربط محول العملات بالموقع.</small></span></label>
+            <div class="space-y-3"><label class="block text-sm font-bold">العملات المتاحة</label><div class="flex flex-wrap gap-6"><label class="flex items-center gap-2 text-sm"><input type="checkbox" name="enabledCurrencies" value="EGP">الجنيه المصري (EGP)</label><label class="flex items-center gap-2 text-sm"><input type="checkbox" name="enabledCurrencies" value="USD">الدولار الأمريكي (USD)</label><label class="flex items-center gap-2 text-sm"><input type="checkbox" name="enabledCurrencies" value="SAR">الريال السعودي (SAR)</label></div><p class="text-xs text-slate-400">يجب تحديد عملة واحدة على الأقل، والعملة الافتراضية ستكون متاحة دائماً.</p></div>
+            <div class="space-y-3 pt-2"><label class="block text-sm font-bold">أسعار التحويل</label><div class="flex items-center gap-3 flex-wrap"><span class="text-sm font-mono font-bold w-20">1 EGP =</span><input id="rateUSD" type="number" min="0" step="0.0001" class="field max-w-40 text-center" dir="ltr"><span class="text-sm font-mono text-slate-500">USD</span></div><div class="flex items-center gap-3 flex-wrap"><span class="text-sm font-mono font-bold w-20">1 EGP =</span><input id="rateSAR" type="number" min="0" step="0.0001" class="field max-w-40 text-center" dir="ltr"><span class="text-sm font-mono text-slate-500">SAR</span></div><p class="text-xs text-slate-400">قيم التحويل للعرض فقط، ولا يتم إجراء تحويل مالي أو تغيير مدفوعات من هذه الصفحة.</p></div>
+          </section>
+
+          <section id="tab-registration" class="setting-panel bg-white rounded-xl shadow-sm border border-slate-200 p-5 sm:p-6 space-y-5">
+            <div class="border-b border-slate-100 pb-4"><h2 class="text-lg font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-user-plus text-blue-600"></i><span>إعدادات التسجيل</span></h2><p class="text-xs text-slate-400 mt-1">الحقول والبيانات المطلوبة عند تسجيل الطلاب الجدد.</p></div>
+            <div class="space-y-3">
+              <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 cursor-pointer"><input type="checkbox" id="deviceLimit" class="mt-1 rounded border-slate-300 text-blue-600"><span><b class="block text-sm">تقييد الطالب على جهاز واحد</b><small class="block text-xs text-slate-400 mt-1">حفظ تفضيل السماح بجهاز واحد للطالب. يحتاج ربطه بمنظومة الجلسات وتسجيل الدخول لتطبيق المنع فعلياً.</small></span></label>
+              <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 cursor-pointer"><input type="checkbox" id="governorateRequired" class="mt-1 rounded border-slate-300 text-blue-600"><span><b class="block text-sm">المحافظة مطلوبة عند التسجيل</b><small class="block text-xs text-slate-400 mt-1">طلب المحافظة عند إنشاء حساب جديد بعد ربط الخيار بنموذج التسجيل.</small></span></label>
+              <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 cursor-pointer"><input type="checkbox" id="cityRequired" class="mt-1 rounded border-slate-300 text-blue-600"><span><b class="block text-sm">المدينة مطلوبة عند التسجيل</b><small class="block text-xs text-slate-400 mt-1">يجب تفعيل المحافظة أولاً.</small></span></label>
+              <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 cursor-pointer"><input type="checkbox" id="parentPhoneRequired" class="mt-1 rounded border-slate-300 text-blue-600"><span><b class="block text-sm">رقم هاتف ولي الأمر مطلوب عند التسجيل</b><small class="block text-xs text-slate-400 mt-1">طلب رقم ولي الأمر عند إنشاء الحساب.</small></span></label>
+              <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 cursor-pointer"><input type="checkbox" id="schoolYearRequired" class="mt-1 rounded border-slate-300 text-blue-600"><span><b class="block text-sm">السنة الدراسية مطلوبة عند التسجيل</b><small class="block text-xs text-slate-400 mt-1">طلب اختيار السنة الدراسية عند إنشاء الحساب.</small></span></label>
+              <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 cursor-pointer"><input type="checkbox" id="gradeCategoryRequired" class="mt-1 rounded border-slate-300 text-blue-600"><span><b class="block text-sm">فئة السنة الدراسية مطلوبة عند التسجيل</b><small class="block text-xs text-slate-400 mt-1">خيار مستقل عن السنة الدراسية.</small></span></label>
+            </div>
+            <p class="text-xs text-amber-700 bg-amber-50 border border-amber-100 rounded-lg p-3">هذه الاختيارات تُحفظ في إعدادات المؤسسة. تطبيقها على نموذج التسجيل وتقييد الأجهزة يتم بعد ربطها بواجهات التسجيل والمصادقة.</p>
+          </section>
+
+          <section id="tab-seo" class="setting-panel bg-white rounded-xl shadow-sm border border-slate-200 p-5 sm:p-6 space-y-6">
+            <div class="border-b border-slate-100 pb-4"><h2 class="text-lg font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-magnifying-glass-chart text-blue-600"></i><span>إعدادات محركات البحث</span></h2><p class="text-xs text-slate-400 mt-1">التحكم في بيانات ظهور المنصة في محركات البحث وأدوات التحليل.</p></div>
+            <div class="border border-slate-100 rounded-xl p-4 sm:p-5 bg-slate-50/40 space-y-4">
+              <h3 class="font-bold text-sm text-slate-700"><i class="fa-solid fa-magnifying-glass text-indigo-600 ml-2"></i>الظهور في نتائج البحث</h3>
+              <div><label class="setting-label">عنوان الميتا (Meta Title)</label><input id="metaTitle" class="field"></div>
+              <div><label class="setting-label">الكلمات المفتاحية (Keywords)</label><input id="metaKeywords" class="field"></div>
+              <div><label class="setting-label">وصف الميتا (Meta Description)</label><textarea id="metaDescription" rows="3" class="field resize-y"></textarea></div>
+            </div>
+            <div class="border border-slate-100 rounded-xl p-4 sm:p-5 bg-slate-50/40 space-y-4">
+              <h3 class="font-bold text-sm text-slate-700"><i class="fa-solid fa-chart-line text-indigo-600 ml-2"></i>أدوات التحليلات والتتبع</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div><label class="setting-label">معرف Google Analytics</label><input id="googleAnalyticsId" class="field font-mono" dir="ltr"></div>
+                <div><label class="setting-label">معرف Google Tag Manager</label><input id="googleTagManagerId" class="field font-mono" dir="ltr"></div>
+                <div><label class="setting-label">معرف Google Ads</label><input id="googleAdsId" class="field font-mono" dir="ltr"></div>
+              </div>
+            </div>
+          </section>
+
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
+            <p id="saveState" class="text-xs text-slate-400" role="status">يتم تحميل الإعدادات...</p>
+            <button id="saveSettingsBtn" type="button" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:opacity-60 text-white font-bold text-sm rounded-lg shadow-md transition flex items-center gap-2">
+              <i class="fa-solid fa-floppy-disk"></i><span>حفظ جميع التغييرات</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast" class="fixed bottom-5 left-5 z-50 hidden max-w-[calc(100%-2.5rem)] bg-slate-800 text-white px-5 py-3 rounded-lg shadow-lg text-sm items-center gap-2" role="status" aria-live="polite">
+    <i class="fa-solid fa-circle-check text-emerald-400"></i><span id="toastMsg"></span>
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const imageState = { logoData: "", faviconData: "", bannerData: "" };
+    const imageFields = [
+      { key: "logoData", input: "logoFile", preview: "logoPreview" },
+      { key: "faviconData", input: "faviconFile", preview: "faviconPreview" },
+      { key: "bannerData", input: "bannerFile", preview: "bannerPreview" }
+    ];
+    const pageTab = location.pathname.replace(/\/+$/, "").split("/").pop() || "branding";
+    const validTabs = ["branding", "contact", "currency", "registration", "seo"];
+    let settingsLoaded = false;
+
+    function setText(id, value) { $(id).value = value ?? ""; }
+    function setCheck(id, value) { $(id).checked = value === true; }
+    function setColor(name, value) {
+      const color = /^#[0-9a-f]{6}$/i.test(value || "") ? value : "#000000";
+      $(name + "Picker").value = color;
+      $(name + "Text").value = color;
+    }
+    function syncColor(name, fromPicker) {
+      const picker = $(name + "Picker");
+      const text = $(name + "Text");
+      if (fromPicker) text.value = picker.value;
+      else if (/^#[0-9a-f]{6}$/i.test(text.value)) picker.value = text.value;
+    }
+    ["primaryColor", "secondaryColor", "accentColor"].forEach(name => {
+      $(name + "Picker").addEventListener("input", () => syncColor(name, true));
+      $(name + "Text").addEventListener("input", () => syncColor(name, false));
+    });
+
+    function switchSettingTab(tabName) {
+      if (!validTabs.includes(tabName)) return;
+      document.querySelectorAll(".setting-panel").forEach(panel => panel.classList.remove("active"));
+      const panel = $("tab-" + tabName);
+      if (panel) panel.classList.add("active");
+      document.querySelectorAll("[data-tab]").forEach(link => {
+        link.classList.toggle("active", link.dataset.tab === tabName);
+        if (link.dataset.tab === tabName) link.setAttribute("aria-current", "page");
+        else link.removeAttribute("aria-current");
+      });
+      document.querySelectorAll("#organizationLinks [data-page]").forEach(link => {
+        link.classList.toggle("active", link.dataset.page === tabName);
+      });
+    }
+
+    async function compressImage(file) {
+      if (!file || !/^image\/(png|jpeg|webp)$/.test(file.type)) throw new Error("اختر صورة بصيغة PNG أو JPG أو WebP.");
+      const source = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const image = new Image();
+          image.onload = () => resolve(image);
+          image.onerror = () => reject(new Error("تعذر قراءة الصورة."));
+          image.src = reader.result;
+        };
+        reader.onerror = () => reject(new Error("تعذر تحميل الصورة."));
+        reader.readAsDataURL(file);
+      });
+      const scale = Math.min(1, 1600 / Math.max(source.width, source.height));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(source.width * scale));
+      canvas.height = Math.max(1, Math.round(source.height * scale));
+      canvas.getContext("2d").drawImage(source, 0, 0, canvas.width, canvas.height);
+      let quality = 0.82;
+      let result = canvas.toDataURL("image/jpeg", quality);
+      while (result.length > 850000 && quality > 0.42) {
+        quality -= 0.08;
+        result = canvas.toDataURL("image/jpeg", quality);
+      }
+      if (result.length > 900000) throw new Error("الصورة كبيرة. اختر صورة أصغر.");
+      return result;
+    }
+
+    imageFields.forEach(item => {
+      $(item.input).addEventListener("change", async event => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+        $("saveState").textContent = "جارٍ تجهيز الصورة...";
+        try {
+          const data = await compressImage(file);
+          imageState[item.key] = data;
+          $(item.preview).src = data;
+          $("saveState").textContent = "تم تجهيز الصورة. اضغط حفظ جميع التغييرات لحفظها.";
+        } catch (error) {
+          event.target.value = "";
+          showToast(error.message, true);
+        }
+      });
+      document.querySelector('[data-reset-image="' + item.key + '"]').addEventListener("click", () => {
+        imageState[item.key] = "";
+        $(item.preview).removeAttribute("src");
+        $(item.input).value = "";
+      });
+    });
+
+    function fillSettings(data) {
+      const s = data.settings;
+      $("organizationName").textContent = s.organization.name || "منصة علي عليان الدولية";
+      $("organizationEmail").textContent = s.contact.email || "";
+      const site = data.siteUrl || "";
+      $("siteAddress").textContent = site ? site.replace(/^https?:\/\//, "").replace(/\/$/, "") : "لم يتم ضبط رابط الموقع";
+      [
+        ["contactEmail", s.contact.email], ["contactPhone", s.contact.phone],
+        ["contactExtraPhone", s.contact.extraPhone], ["contactWhatsapp", s.contact.whatsapp],
+        ["contactTelegram", s.contact.telegram], ["contactMessenger", s.contact.messenger],
+        ["contactFacebook", s.contact.facebook], ["contactTwitter", s.contact.twitter],
+        ["contactInstagram", s.contact.instagram], ["contactYoutube", s.contact.youtube],
+        ["contactTiktok", s.contact.tiktok], ["defaultCurrency", s.currency.defaultCurrency],
+        ["rateUSD", s.currency.rates.USD], ["rateSAR", s.currency.rates.SAR],
+        ["metaTitle", s.seo.metaTitle], ["metaKeywords", s.seo.keywords],
+        ["metaDescription", s.seo.metaDescription], ["googleAnalyticsId", s.seo.googleAnalyticsId],
+        ["googleTagManagerId", s.seo.googleTagManagerId], ["googleAdsId", s.seo.googleAdsId]
+      ].forEach(([id, value]) => setText(id, value));
+      setCheck("multiCurrency", s.currency.multiCurrency);
+      setCheck("deviceLimit", s.registration.deviceLimit);
+      setCheck("governorateRequired", s.registration.governorateRequired);
+      setCheck("cityRequired", s.registration.cityRequired);
+      setCheck("parentPhoneRequired", s.registration.parentPhoneRequired);
+      setCheck("schoolYearRequired", s.registration.schoolYearRequired);
+      setCheck("gradeCategoryRequired", s.registration.gradeCategoryRequired);
+      document.querySelectorAll('input[name="enabledCurrencies"]').forEach(input => {
+        input.checked = s.currency.enabledCurrencies.includes(input.value);
+      });
+      setColor("primaryColor", s.branding.primaryColor);
+      setColor("secondaryColor", s.branding.secondaryColor);
+      setColor("accentColor", s.branding.accentColor);
+      imageState.logoData = s.branding.logoData || "";
+      imageState.faviconData = s.branding.faviconData || "";
+      imageState.bannerData = s.branding.bannerData || "";
+      imageFields.forEach(item => {
+        if (imageState[item.key]) $(item.preview).src = imageState[item.key];
+        else $(item.preview).removeAttribute("src");
+      });
+      settingsLoaded = true;
+      $("saveState").textContent = data.updatedAt ? "آخر حفظ: " + new Date(data.updatedAt).toLocaleString("ar-EG") : "لم يتم حفظ إعدادات سابقة بعد.";
+    }
+
+    function collectSettings() {
+      return {
+        organization: { name: $("organizationName").textContent.trim() },
+        branding: {
+          logoData: imageState.logoData,
+          faviconData: imageState.faviconData,
+          bannerData: imageState.bannerData,
+          primaryColor: $("primaryColorText").value.trim(),
+          secondaryColor: $("secondaryColorText").value.trim(),
+          accentColor: $("accentColorText").value.trim()
+        },
+        contact: {
+          email: $("contactEmail").value.trim(),
+          phone: $("contactPhone").value.trim(),
+          extraPhone: $("contactExtraPhone").value.trim(),
+          whatsapp: $("contactWhatsapp").value.trim(),
+          telegram: $("contactTelegram").value.trim(),
+          messenger: $("contactMessenger").value.trim(),
+          facebook: $("contactFacebook").value.trim(),
+          twitter: $("contactTwitter").value.trim(),
+          instagram: $("contactInstagram").value.trim(),
+          youtube: $("contactYoutube").value.trim(),
+          tiktok: $("contactTiktok").value.trim()
+        },
+        currency: {
+          defaultCurrency: $("defaultCurrency").value,
+          multiCurrency: $("multiCurrency").checked,
+          enabledCurrencies: [...document.querySelectorAll('input[name="enabledCurrencies"]:checked')].map(input => input.value),
+          rates: { USD: $("rateUSD").value, SAR: $("rateSAR").value }
+        },
+        registration: {
+          deviceLimit: $("deviceLimit").checked,
+          governorateRequired: $("governorateRequired").checked,
+          cityRequired: $("cityRequired").checked,
+          parentPhoneRequired: $("parentPhoneRequired").checked,
+          schoolYearRequired: $("schoolYearRequired").checked,
+          gradeCategoryRequired: $("gradeCategoryRequired").checked
+        },
+        seo: {
+          metaTitle: $("metaTitle").value.trim(),
+          keywords: $("metaKeywords").value.trim(),
+          metaDescription: $("metaDescription").value.trim(),
+          googleAnalyticsId: $("googleAnalyticsId").value.trim(),
+          googleTagManagerId: $("googleTagManagerId").value.trim(),
+          googleAdsId: $("googleAdsId").value.trim()
+        }
+      };
+    }
+
+    async function loadSettings() {
+      $("saveSettingsBtn").disabled = true;
+      try {
+        const response = await fetch("/api/admin/settings", { credentials: "same-origin", cache: "no-store" });
+        if (response.status === 401 || response.status === 403) {
+          location.replace("/login.html");
+          return;
+        }
+        const data = await response.json();
+        if (!response.ok || !data.ok) throw new Error(data.message || "تعذر تحميل الإعدادات.");
+        fillSettings(data);
+        if (validTabs.includes(pageTab)) switchSettingTab(pageTab);
+      } catch (error) {
+        $("saveState").textContent = error.message;
+        showToast(error.message, true);
+      } finally {
+        $("saveSettingsBtn").disabled = !settingsLoaded;
+      }
+    }
+
+    function showToast(message, isError = false) {
+      $("toastMsg").textContent = message;
+      $("toast").className = "fixed bottom-5 left-5 z-50 flex max-w-[calc(100%-2.5rem)] px-5 py-3 rounded-lg shadow-lg text-sm items-center gap-2 " + (isError ? "bg-rose-700 text-white" : "bg-slate-800 text-white");
+      $("toast").querySelector("i").className = isError ? "fa-solid fa-circle-exclamation text-white" : "fa-solid fa-circle-check text-emerald-400";
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => { $("toast").classList.add("hidden"); }, 3200);
+    }
+
+    $("cityRequired").addEventListener("change", () => {
+      if ($("cityRequired").checked && !$("governorateRequired").checked) {
+        $("governorateRequired").checked = true;
+        showToast("تم تفعيل المحافظة لأنها مطلوبة قبل المدينة.", false);
+      }
+    });
+    $("saveSettingsBtn").addEventListener("click", async () => {
+      if (!settingsLoaded) return;
+      const button = $("saveSettingsBtn");
+      button.disabled = true;
+      button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>جارٍ الحفظ...</span>';
+      try {
+        const response = await fetch("/api/admin/settings", {
+          method: "PUT",
+          credentials: "same-origin",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ settings: collectSettings() })
+        });
+        const data = await response.json();
+        if (response.status === 401 || response.status === 403) {
+          location.replace("/login.html");
+          return;
+        }
+        if (!response.ok || !data.ok) throw new Error(data.message || "تعذر حفظ الإعدادات.");
+        settingsLoaded = true;
+        $("saveState").textContent = "آخر حفظ: " + new Date(data.updatedAt).toLocaleString("ar-EG");
+        showToast(data.message || "تم حفظ الإعدادات بنجاح.");
+      } catch (error) {
+        showToast(error.message, true);
+      } finally {
+        button.disabled = false;
+        button.innerHTML = '<i class="fa-solid fa-floppy-disk"></i><span>حفظ جميع التغييرات</span>';
+      }
+    });
+
+    switchSettingTab(validTabs.includes(pageTab) ? pageTab : "branding");
+    loadSettings();
+  </script>
+</body>
+</html>
