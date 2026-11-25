@@ -1,4 +1,4 @@
-const { json, method, hashPassword, safeEqual } = require("../../_lib/auth");
+const { json, method, hashPassword, safeEqual, collectionName } = require("../../_lib/auth");
 const { requireAdmin } = require("../../_lib/admin");
 const crypto = require("crypto");
 const { promisify } = require("util");
@@ -20,7 +20,7 @@ module.exports = async function handler(req, res) {
       return json(res, 400, { ok: false, message: "كلمة المرور الجديدة يجب أن تختلف عن الحالية." });
     }
 
-    const source = auth.session.authCollection || "admins";
+    const source = auth.session.authCollection || collectionName();
     const admins = auth.database.collection(source);
     const admin = await admins.findOne(
       { _id: auth.session.userId },
