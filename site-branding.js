@@ -53,7 +53,7 @@
 
   const interactiveSelector = 'button:not(:disabled),input[type="button"]:not(:disabled),input[type="submit"]:not(:disabled),input[type="reset"]:not(:disabled),a[href],a[role="button"],.site-nav nav a,.tabs button,.join,.back,.primary,.secondary,.cta,[data-interactive="true"]';
   function colorBrightness(value) {
-    const match = value.match(/rgba?\\(([^)]+)\\)/i);
+    const match = value.match(/rgba?\(([^)]+)\)/i);
     if (!match) return null;
     const parts = match[1].split(",").map(Number);
     if (parts.length < 3 || parts.slice(0,3).some(Number.isNaN)) return null;
@@ -70,7 +70,7 @@
       const brightness = colorBrightness(style.backgroundColor);
       const gradient = style.backgroundImage && style.backgroundImage !== "none";
       const lightSurface = brightness === null
-        ? !gradient || /#fff|255,\\s*255,\\s*255|#f[0-9a-f]{5}/i.test(style.backgroundImage)
+        ? !gradient || /#fff|255,\s*255,\s*255|#f[0-9a-f]{5}/i.test(style.backgroundImage)
         : brightness >= .76;
       control.classList.toggle("site-hover-light", lightSurface);
       control.classList.toggle("site-hover-color", !lightSurface);
