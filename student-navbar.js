@@ -12,6 +12,7 @@
       const name = String(data?.user?.name || '').trim();
       const role = String(data?.user?.role || 'student').trim().toLowerCase();
       if (!data?.ok || !name || role !== 'student') return;
+      document.documentElement.dataset.studentAuthenticated = 'true';
 
       document.querySelectorAll('[data-student-name]').forEach(node => {
         node.textContent = name;
@@ -39,6 +40,39 @@
         bookPurchase.href = 'orders.html?targetType=library&targetId=' + encodeURIComponent(productId);
         bookPurchase.textContent = 'تفعيل الكتاب بكود';
       }
+      const resolveOwnedContentAction = async () => {
+        try {
+          if (coursePurchase && currentPath === 'course-details.html') {
+            const response = await fetch('/api/student/courses', { credentials: 'same-origin', cache: 'no-store' });
+            const result = await response.json();
+            const owned = (result.courses || []).find(item => item.id === pageParams.get('courseId'));
+            if (response.ok && result.ok && owned) {
+              coursePurchase.href = 'courses.html?courseId=' + encodeURIComponent(owned.id);
+              coursePurchase.textContent = 'ابدأ الدراسة';
+            }
+          }
+          if (bookPurchase && currentPath === 'library-details.html') {
+            const response = await fetch('/api/student/books', { credentials: 'same-origin', cache: 'no-store' });
+            const result = await response.json();
+            const owned = (result.books || []).find(item => item.id === pageParams.get('productId'));
+            if (response.ok && result.ok && owned) {
+              if (owned.fileUrl) {
+                bookPurchase.href = owned.fileUrl;
+                bookPurchase.target = '_blank';
+                bookPurchase.rel = 'noopener noreferrer';
+                bookPurchase.textContent = 'قراءة / تحميل الكتاب';
+              } else if (owned.type === 'physical') {
+                bookPurchase.href = 'orders.html';
+                bookPurchase.textContent = 'متابعة طلب الكتاب';
+              } else {
+                bookPurchase.href = 'library.html';
+                bookPurchase.textContent = 'الكتاب موجود في مكتبتك';
+              }
+            }
+          }
+        } catch (_) {}
+      };
+      resolveOwnedContentAction();
       document.querySelectorAll('[data-shared-page-nav]').forEach(header => {
         const nav = header.querySelector('nav');
         if (nav) {
