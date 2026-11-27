@@ -29,7 +29,7 @@ module.exports = async function handler(req, res) {
         { status: { $nin: [...HIDDEN_STATUSES] } }
       ]
     }, {
-      projection: { images: 1, isActive: 1, status: 1, deletedAt: 1 }
+      projection: { images: { $slice: [imageIndex, 1] }, isActive: 1, status: 1, deletedAt: 1 }
     });
 
     if (!product) {
@@ -37,7 +37,7 @@ module.exports = async function handler(req, res) {
       res.setHeader("Cache-Control", "no-store");
       return res.end();
     }
-    const source = String(Array.isArray(product.images) ? product.images[imageIndex] || "" : "");
+    const source = String(Array.isArray(product.images) ? product.images[0] || "" : "");
     const match = source.match(/^data:image\/(jpeg|png|webp);base64,([a-z0-9+/]+=*)$/i);
     if (!match) {
       res.statusCode = 404;
