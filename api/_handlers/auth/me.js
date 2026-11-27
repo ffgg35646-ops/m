@@ -10,6 +10,10 @@ module.exports = async function handler(req, res) {
     const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
     const session = await database.collection("auth_sessions").findOne({tokenHash,expiresAt:{$gt:new Date()}});
     if (!session) return json(res,401,{ok:false});
+    const refreshedExpiry = new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000);
+    const refreshedMaxAge = Math.floor((refreshedExpiry.getTime() - Date.now()) / 1000);
+    await database.collection("auth_sessions").updateOne({_id:session._id},{$set:{expiresAt:refreshedExpiry,lastSeenAt:new Date()}});
+    res.setHeader("Set-Cookie",`ali_admin_session=${token}; HttpOnly; Secure; SameSite=Lax; Path=/; Expires=${refreshedExpiry.toUTCString()}; Max-Age=${refreshedMaxAge}`);
     const source = session.authCollection || collectionName();
     const user = await database.collection(source).findOne({_id:session.userId},{projection:{email:1,name:1,fullName:1,firstName:1,lastName:1,role:1,accountType:1}});
     if (!user) return json(res,401,{ok:false});
