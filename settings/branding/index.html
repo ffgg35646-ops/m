@@ -553,7 +553,7 @@
         try {
           const supportsBackgroundChoice = item.key === "logoData" || item.key === "bannerData";
           const removeBackground = supportsBackgroundChoice && window.confirm(
-            "اختيار طريقة عرض الصورة:\\nموافق: إزالة الخلفية الصافية وجعلها شفافة.\\nإلغاء: الاحتفاظ بالصورة بخلفيتها كما هي."
+            "اختيار طريقة عرض الصورة:\nموافق: إزالة الخلفية الصافية وجعلها شفافة.\nإلغاء: الاحتفاظ بالصورة بخلفيتها كما هي."
           );
           const data = await compressImage(file, removeBackground);
           imageState[item.key] = data;
