@@ -171,7 +171,7 @@
             safeNext = target.pathname + target.search + target.hash;
           }
         } catch (_) {}
-        window.location.href = safeNext || data.redirect || 'dashboard.html';
+        window.location.href = (data.redirect || 'dashboard.html') === 'dashboard.html' && safeNext ? safeNext : (data.redirect || 'dashboard.html');
       } catch (error) {
         showMessage(error.message, 'error');
       } finally {
