@@ -76,11 +76,11 @@ footer h3{color:#fff;margin:0 0 17px;font-size:18px}.footer-line{margin-bottom:1
 footer a{transition:color .18s ease,transform .18s ease}footer .footer-grid section:last-child .footer-line a:hover{color:#20b9ad}
 .copyright{max-width:1200px;margin:35px auto 0;border-top:1px solid #1e293b;padding-top:22px;text-align:center;font-size:13px;color:#64748b}
 .modal-backdrop{position:fixed;inset:0;z-index:10000;background:rgba(15,23,42,.65);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:18px}
-.modal-backdrop.open{display:flex}.modal{width:min(760px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:18px;box-shadow:0 25px 70px #0f172a4d;direction:rtl}
+.modal-backdrop.open{display:flex}.modal{width:min(1100px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:18px;box-shadow:0 25px 70px #0f172a4d;direction:rtl}
 .modal-head{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;gap:14px;background:#f1faff;border-bottom:1px solid #e2edf4;padding:16px 20px;z-index:1}
 .modal-head h2{margin:0;color:#0b7fa8;font-size:19px}.modal-close{width:38px;height:38px;border:1px solid #dbe7ee;border-radius:10px;background:#fff;color:#0b7fa8;font-size:23px;cursor:pointer;flex:none}
-.modal-content{padding:21px;color:#334155;line-height:2}
-.modal-image{display:block;width:100%;max-height:320px;object-fit:contain;background:#f8fafc;border-radius:12px;margin-bottom:15px}
+.modal-content{padding:16px;color:#334155;line-height:2}
+.modal-image{display:block;width:100%;max-height:78vh;object-fit:contain;background:#f8fafc;border-radius:12px;margin-bottom:15px}
 .modal-tags{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
 .modal-tags span{background:#e8f6fd;border:1px solid #cdebf8;color:#0b7fa8;padding:4px 11px;border-radius:20px;font-size:12px}
 .modal-date{font-size:12px;color:#94a3b8;margin-bottom:12px}
@@ -207,26 +207,24 @@ footer a{transition:color .18s ease,transform .18s ease}footer .footer-grid sect
   function openArticle(post) {
     if (state.loadingPost) return;
     state.loadingPost = true;
-    const requestId = ++articleRequest;
     $("articleModalTitle").textContent = post.title;
-    $("articleTags").replaceChildren();
-    if (post.category) $("articleTags").appendChild(node("span", "", post.category));
-    $("articleDate").textContent = formatDate(post.publishedAt || post.createdAt);
-    $("articleContent").textContent = "جارٍ تحميل المقال...";
+    $("articleTags").hidden = true;
+    $("articleDate").hidden = true;
+    $("articleContent").hidden = true;
     const image = $("articleImage");
-    if (post.image) { image.src = post.image; image.alt = post.title; image.hidden = false; }
-    else { image.removeAttribute("src"); image.hidden = true; }
+    if (post.image) {
+      image.src = post.image;
+      image.alt = post.title;
+      image.hidden = false;
+    } else {
+      image.removeAttribute("src");
+      image.hidden = true;
+      $("articleContent").hidden = false;
+      $("articleContent").textContent = "لا توجد صورة مرفقة بهذا المقال.";
+    }
     $("articleModal").classList.add("open");
     $("closeArticleModal").focus();
-    fetch("/api/public/blog?postId=" + encodeURIComponent(post.id), { credentials: "same-origin", cache: "no-store" })
-      .then(async response => {
-        const data = await response.json().catch(() => ({}));
-        if (requestId !== articleRequest) return;
-        if (!response.ok || !data.ok || !data.post) throw new Error(data.message || "تعذر تحميل المقال.");
-        $("articleContent").textContent = data.post.content || data.post.excerpt || "لا يوجد محتوى إضافي لهذا المقال.";
-      })
-      .catch(error => { if (requestId === articleRequest) $("articleContent").textContent = error.message || "تعذر تحميل المقال حالياً."; })
-      .finally(() => { if (requestId === articleRequest) state.loadingPost = false; });
+    state.loadingPost = false;
   }
   function closeArticle() {
     articleRequest += 1;
@@ -235,6 +233,16 @@ footer a{transition:color .18s ease,transform .18s ease}footer .footer-grid sect
   }
   function renderCard(post) {
     const card = node("article", "post"), thumb = node("div", "bimg");
+    card.tabIndex = 0;
+    card.setAttribute("role", "button");
+    card.setAttribute("aria-label", "عرض صورة " + post.title);
+    card.addEventListener("click", () => openArticle(post));
+    card.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openArticle(post);
+      }
+    });
     if (post.image) {
       const image = node("img"); image.loading = "lazy"; image.alt = post.title; image.src = post.image;
       image.addEventListener("error", () => thumb.replaceChildren(node("span", "fallback", "منصة علي عليان الدولية")), { once: true });
@@ -242,12 +250,11 @@ footer a{transition:color .18s ease,transform .18s ease}footer .footer-grid sect
     } else thumb.appendChild(node("span", "fallback", "منصة علي عليان الدولية"));
     const body = node("div", "bbody");
     if (post.category) body.appendChild(node("span", "chip", post.category));
-    body.append(node("h3", "", post.title), node("p", "", post.excerpt || "اقرأ المقال للتعرف على التفاصيل."));
+    body.append(node("h3", "", post.title), node("p", "", post.excerpt || "اضغط لعرض الصورة."));
     const meta = node("div", "post-meta");
-    meta.append(node("span", "post-date", formatDate(post.publishedAt || post.createdAt)));
-    const more = node("button", "read-more", "قراءة المقال ←");
-    more.type = "button"; more.addEventListener("click", () => openArticle(post));
-    meta.appendChild(more); body.appendChild(meta); card.append(thumb, body);
+    meta.appendChild(node("span", "post-date", formatDate(post.publishedAt || post.createdAt)));
+    body.appendChild(meta);
+    card.append(thumb, body);
     return card;
   }
   function renderPagination() {
