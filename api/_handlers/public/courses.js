@@ -1,5 +1,6 @@
 "use strict";
 
+const { ObjectId } = require("mongodb");
 const { db, json, method } = require("../_lib/auth");
 
 const COURSES = process.env.COURSES_COLLECTION || "courses";
@@ -28,8 +29,62 @@ function publicImage(input, courseId) {
   }
 }
 
+function publicUrl(input) {
+  const raw = value(input, 1600);
+  if (!raw) return "";
+  if (raw.startsWith("/") && !raw.startsWith("//")) return raw;
+  try {
+    const parsed = new URL(raw);
+    return ["http:", "https:"].includes(parsed.protocol) ? parsed.toString() : "";
+  } catch {
+    return "";
+  }
+}
+
+function publicItem(item, index) {
+  return {
+    id: value(item.id, 100) || "item-" + index,
+    name: value(item.name || item.title, 200),
+    type: item.type === "file" || item.type === "ملف" ? "file" : "video",
+    url: publicUrl(item.url || item.fileUrl || item.videoUrl),
+    description: value(item.description || item.content, 2000),
+    sortOrder: Number.isFinite(Number(item.sortOrder)) ? Number(item.sortOrder) : index
+  };
+}
+
+function publicSection(section, index) {
+  const items = Array.isArray(section.items) ? section.items : [];
+  return {
+    id: value(section.id, 100) || "section-" + index,
+    title: value(section.title || section.name, 200),
+    sortOrder: Number.isFinite(Number(section.sortOrder)) ? Number(section.sortOrder) : index,
+    items: items.map(publicItem).sort((a, b) => a.sortOrder - b.sortOrder)
+  };
+}
+
+function publicCourse(row) {
+  const rawPrice = Number(row.price ?? row.amount ?? 0);
+  const price = Number.isFinite(rawPrice) && rawPrice >= 0 ? rawPrice : 0;
+  const rawSections = Array.isArray(row.sections) ? row.sections : Array.isArray(row.courseSections) ? row.courseSections : [];
+  return {
+    id: String(row._id),
+    title: value(row.title || row.name || "دورة تعليمية", 200),
+    description: value(row.description, 4000),
+    subject: value(row.subject || row.subjectName, 140),
+    category: value(row.category || row.gradeCategory, 140),
+    grade: value(row.grade || row.year || row.schoolYear, 140),
+    track: value(row.track || row.branch, 100),
+    price,
+    isFree: row.isFree === true || price === 0,
+    image: publicImage(row.image || row.imageUrl || row.thumbnail || row.coverImage, String(row._id)),
+    pinned: row.pinned === true || row.isPinned === true,
+    sortOrder: Number.isFinite(Number(row.sortOrder)) ? Number(row.sortOrder) : 0,
+    sections: rawSections.map(publicSection).sort((a, b) => a.sortOrder - b.sortOrder)
+  };
+}
+
 function unique(values) {
-  return [...new Set(values.map(value => value.trim()).filter(Boolean))].sort((a, b) =>
+  return [...new Set(values.map(item => item.trim()).filter(Boolean))].sort((a, b) =>
     a.localeCompare(b, "ar")
   );
 }
@@ -40,12 +95,41 @@ module.exports = async function handler(req, res) {
 
   try {
     const database = await db();
-    const rows = await database.collection(COURSES).find({
+    const visibleFilter = {
       deletedAt: { $exists: false },
       isActive: { $ne: false },
       isVisible: { $ne: false },
       visible: { $ne: false }
-    }, {
+    };
+    const courseId = value(req.query?.courseId, 100);
+
+    if (courseId) {
+      const ids = [courseId];
+      if (ObjectId.isValid(courseId)) ids.push(new ObjectId(courseId));
+      const row = await database.collection(COURSES).findOne({
+        ...visibleFilter,
+        _id: { $in: ids }
+      }, {
+        projection: {
+          title: 1, name: 1, description: 1,
+          subject: 1, subjectName: 1,
+          category: 1, gradeCategory: 1,
+          grade: 1, year: 1, schoolYear: 1,
+          track: 1, branch: 1,
+          price: 1, amount: 1, isFree: 1,
+          image: 1, imageUrl: 1, thumbnail: 1, coverImage: 1,
+          status: 1, isActive: 1, isVisible: 1, visible: 1,
+          pinned: 1, isPinned: 1, sortOrder: 1,
+          sections: 1, courseSections: 1, createdAt: 1, updatedAt: 1
+        }
+      });
+      if (!row || HIDDEN_STATUSES.has(value(row.status, 40).toLowerCase())) {
+        return json(res, 404, { ok: false, message: "لم يتم العثور على الدورة أو أنها غير متاحة حالياً." });
+      }
+      return json(res, 200, { ok: true, course: publicCourse(row), generatedAt: new Date().toISOString() });
+    }
+
+    const rows = await database.collection(COURSES).find(visibleFilter, {
       projection: {
         title: 1, name: 1, description: 1,
         subject: 1, subjectName: 1,
@@ -61,24 +145,7 @@ module.exports = async function handler(req, res) {
 
     const courses = rows
       .filter(row => !HIDDEN_STATUSES.has(value(row.status, 40).toLowerCase()))
-      .map(row => {
-        const rawPrice = Number(row.price ?? row.amount ?? 0);
-        const price = Number.isFinite(rawPrice) && rawPrice >= 0 ? rawPrice : 0;
-        return {
-          id: String(row._id),
-          title: value(row.title || row.name || "دورة تعليمية", 200),
-          description: value(row.description, 4000),
-          subject: value(row.subject || row.subjectName, 140),
-          category: value(row.category || row.gradeCategory, 140),
-          grade: value(row.grade || row.year || row.schoolYear, 140),
-          track: value(row.track || row.branch, 100),
-          price,
-          isFree: row.isFree === true || price === 0,
-          image: publicImage(row.image || row.imageUrl || row.thumbnail || row.coverImage, String(row._id)),
-          pinned: row.pinned === true || row.isPinned === true,
-          sortOrder: Number.isFinite(Number(row.sortOrder)) ? Number(row.sortOrder) : 0
-        };
-      })
+      .map(publicCourse)
       .filter(course => course.title);
 
     courses.sort((a, b) => Number(b.pinned) - Number(a.pinned) || a.sortOrder - b.sortOrder);
