@@ -89,25 +89,32 @@ footer a{transition:color .18s ease,transform .18s ease}footer .footer-grid sect
 @media(max-width:1000px){.blog{grid-template-columns:repeat(2,minmax(0,1fr))}.site-nav{gap:9px;padding-inline:15px}.site-nav nav{gap:5px}.site-nav nav a{font-size:14px;padding:10px 12px}}
 @media(max-width:760px){.site-nav nav{display:none}.nav-tools{margin-inline-start:auto}.auth-link{height:41px;padding:0 12px;font-size:13px}.tool{height:41px;min-width:41px}.hero{min-height:290px}.hero h1{font-size:29px}.hero p{font-size:15px}.wrap{width:calc(100% - 28px)}.blog-head{align-items:flex-start;flex-direction:column}.blog{grid-template-columns:1fr}.bimg{height:210px}.footer-grid{grid-template-columns:1fr;gap:25px}.modal-article{font-size:14px}}
 @media(prefers-reduced-motion:reduce){.post,.site-nav nav a,.auth-link,.read-more{transition:none}.post:hover{transform:none}}
+
+.site-nav.internal-nav{background:#f8fbfd;border-bottom-color:#dce9f0}
+.site-nav.internal-nav nav{direction:rtl}
+.site-nav.internal-nav nav a{background:linear-gradient(145deg,#fff,#edf7fb);border-color:#d7eaf3;color:#31566b}
+.site-nav.internal-nav nav a[aria-current=page]{background:#dff3fb;border-color:#9ed8ef;color:#087fae}
+.site-nav.internal-nav .nav-tools .tool{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+@media(max-width:760px){.site-nav.internal-nav nav{display:flex;width:100%;order:2;overflow-x:auto;flex-wrap:nowrap;white-space:nowrap}.site-nav.internal-nav nav a{font-size:12px;padding:8px 10px}.site-nav.internal-nav .nav-tools{margin-inline-start:auto;flex-wrap:wrap}}
 </style>
 </head>
 <body>
-<header class="site-nav" aria-label="التنقل الرئيسي">
-  <nav aria-label="القائمة الرئيسية">
-    <a href="index.html">الرئيسية</a>
-    <a href="public-courses.html">الكورسات</a>
-    <a href="#">الجلسات المباشرة</a>
-    <a href="public-library.html">المكتبة</a>
-    <a href="public-blog.html" aria-current="page">المدونة</a>
-    <a href="support.html">اتصل بنا</a>
+<header class="site-nav internal-nav" aria-label="تنقل الطالب">
+  <nav aria-label="قائمة الطالب">
+    <a href="dashboard.html">الرئيسية</a>
+    <a href="courses.html">كورساتي</a>
+    <a href="library.html">كتبي</a>
+    <a href="blog.html" aria-current="page">المدونة</a>
+    <a href="student-support.html">تواصل معنا</a>
   </nav>
   <div class="nav-tools">
-    <a class="auth-link register" href="register.html">إنشاء حساب</a>
-    <a class="auth-link login" href="login.html">تسجيل الدخول</a>
+    <a class="tool" href="account.html">حسابي</a>
+    <span class="tool" data-student-greeting>مرحبا</span>
+    <button class="tool" type="button" aria-label="الإشعارات">♧</button>
     <button class="tool" type="button" aria-label="اللغة">🌐</button>
-    <span class="tool" aria-label="العملة">EGP</span>
+    <span class="tool">EGP</span>
+    <span class="tool" data-student-avatar>م</span>
   </div>
-  <img class="site-logo" data-site-logo alt="شعار المنصة" hidden>
 </header>
 
 <section class="hero">
@@ -312,5 +319,6 @@ footer a{transition:color .18s ease,transform .18s ease}footer .footer-grid sect
 })();
 </script>
 <script src="/site-branding.js" defer></script>
+<script src="/student-navbar.js" defer></script>
 </body>
 </html>
