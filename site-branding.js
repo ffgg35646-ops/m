@@ -14,8 +14,29 @@
   fetch("/api/site-settings", { credentials: "same-origin", cache: "no-store" })
     .then(response => response.ok ? response.json() : null)
     .then(data => {
+      if (!data?.ok) return;
+      const logoData = String(data.branding?.logoData || "");
+      const bannerData = String(data.branding?.bannerData || "");
+      document.querySelectorAll("[data-site-logo]").forEach(image => {
+        if (logoData) {
+          image.src = logoData;
+          image.hidden = false;
+        } else {
+          image.removeAttribute("src");
+          image.hidden = true;
+        }
+      });
+      const heroVisual = document.querySelector(".hero-visual");
+      if (heroVisual && bannerData) {
+        const image = document.createElement("img");
+        image.src = bannerData;
+        image.alt = "صورة المنصة الرئيسية";
+        image.className = "site-hero-image";
+        heroVisual.replaceChildren(image);
+        heroVisual.classList.add("has-image");
+      }
       const name = String(data?.organization?.name || "").trim();
-      if (!data?.ok || !name || name === OLD_NAME) return;
+      if (!name || name === OLD_NAME) return;
       currentName = name;
       document.title = replaceText(document.title);
       walk(document.documentElement);
