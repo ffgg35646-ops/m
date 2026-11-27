@@ -99,10 +99,20 @@ module.exports = async function handler(req, res) {
     const categoryMap = new Map(categoryRows.map(row => [String(row._id), value(row.name, 140)]));
     const posts = rows.map(row => publicPost(row, categoryMap, false)).filter(post => post.title);
     const usedCategoryIds = new Set(posts.map(post => post.categoryId).filter(Boolean));
-    const categories = categoryRows
+    const categoryEntries = new Map();
+    categoryRows
       .filter(row => usedCategoryIds.has(String(row._id)))
-      .map(row => ({ id: String(row._id), name: value(row.name, 140) }))
-      .filter(category => category.name);
+      .forEach(row => {
+        const id = String(row._id);
+        const name = value(row.name, 140);
+        if (name) categoryEntries.set(id, { id, name });
+      });
+    posts.forEach(post => {
+      if (!post.category) return;
+      const id = post.categoryId || post.category;
+      if (!categoryEntries.has(id)) categoryEntries.set(id, { id, name: post.category });
+    });
+    const categories = [...categoryEntries.values()];
 
     return json(res, 200, {
       ok: true,
