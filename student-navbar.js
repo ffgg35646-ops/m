@@ -10,7 +10,8 @@
       if (!response.ok) return;
       const data = await response.json();
       const name = String(data?.user?.name || '').trim();
-      if (!data?.ok || !name) return;
+      const role = String(data?.user?.role || 'student').trim().toLowerCase();
+      if (!data?.ok || !name || role !== 'student') return;
 
       document.querySelectorAll('[data-student-name]').forEach(node => {
         node.textContent = name;
