@@ -201,6 +201,6 @@ module.exports = async function(req, res) {
     }
   } catch (error) {
     console.error("student code redemption failed:", error.message);
-    return json(res, 500, { ok: false, message: error.message || "تعذر تفعيل المحتوى حالياً." });
+    return json(res, 500, { ok: false, message: "تعذر تفعيل المحتوى حالياً. حاول مرة أخرى أو تواصل مع الدعم." });
   }
 };
