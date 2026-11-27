@@ -4,7 +4,7 @@ const { requireAdmin, roleAllows, normalizeRole } = require("../../_lib/admin");
 
 const POSTS = process.env.BLOG_POSTS_COLLECTION || "blog_posts";
 const CATEGORIES = process.env.BLOG_CATEGORIES_COLLECTION || "blog_categories";
-const PRODUCTS = process.env.LIBRARY_PRODUCTS_COLLECTION || "library_products";
+const PRODUCTS = process.env.LIBRARY_PRODUCTS_COLLECTION || process.env.LIBRARY_COLLECTION || "library_products";
 const ORDERS = process.env.LIBRARY_ORDERS_COLLECTION || process.env.ORDERS_COLLECTION || "orders";
 const ROLES = process.env.PLATFORM_ROLES_COLLECTION || "platform_roles";
 const MAX_ROWS = 1000;
