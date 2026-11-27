@@ -4,6 +4,8 @@
 // Vercel bundles them as private modules instead of creating one function
 // per file. Existing frontend API URLs remain unchanged.
 const routes = Object.freeze({
+  "academic-structure": require("./_handlers/public/academic-structure"),
+  "academic-courses": require("./_handlers/public/academic-courses"),
   "admin/academic-structure": require("./_handlers/admin/academic-structure"),
   "admin/blog-library": require("./_handlers/admin/blog-library"),
   "admin/center-codes": require("./_handlers/admin/center-codes"),
