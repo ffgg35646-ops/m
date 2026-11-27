@@ -133,11 +133,28 @@
   };
 
   document.addEventListener('click', event => {
-    const logout = event.target instanceof Element ? event.target.closest('[data-student-logout], .logout, button.menu-logout') : null;
-    if (!logout) return;
+    const target = event.target instanceof Element ? event.target : null;
+    const purchase = target?.closest('[data-student-purchase]');
+    const logout = target?.closest('[data-student-logout], .logout, button.menu-logout');
+    if (!purchase && !logout) return;
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
     event.stopImmediatePropagation();
+    if (purchase) {
+      const type = purchase.dataset.studentPurchase;
+      const targetId = purchase.dataset.targetId || '';
+      if (!['courses', 'library'].includes(type) || !targetId) return;
+      const orderPath = 'orders.html?targetType=' + encodeURIComponent(type) + '&targetId=' + encodeURIComponent(targetId);
+      fetch('/api/auth/me', { credentials: 'same-origin', cache: 'no-store' })
+        .then(async response => ({ ok: response.ok, data: await response.json().catch(() => ({})) }))
+        .then(({ ok, data }) => {
+          const role = String(data?.user?.role || '').trim().toLowerCase();
+          if (ok && data?.ok && role === 'student') window.location.assign(orderPath);
+          else window.location.assign('login.html?next=' + encodeURIComponent(orderPath));
+        })
+        .catch(() => window.location.assign('login.html?next=' + encodeURIComponent(orderPath)));
+      return;
+    }
     fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' })
       .catch(() => {})
       .finally(() => window.location.replace('login.html'));
