@@ -3,7 +3,7 @@
 const { ObjectId } = require("mongodb");
 const { db, json, method } = require("../_lib/auth");
 
-const PRODUCTS = process.env.LIBRARY_PRODUCTS_COLLECTION || "library_products";
+const PRODUCTS = process.env.LIBRARY_PRODUCTS_COLLECTION || process.env.LIBRARY_COLLECTION || "library_products";
 const HIDDEN_STATUSES = new Set([
   "inactive", "disabled", "deleted", "محذوف", "غير نشط", "غير فعال"
 ]);
