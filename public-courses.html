@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>الكورسات | منصة علي عليان الدولية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#29b6f6;--blue-dark:#0b7fa8;--text:#1e293b;--muted:#64748b;--line:#e2e8f0;--gold:#f5a21a}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--text);font-family:"Cairo","Segoe UI",Tahoma,sans-serif}
+a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.site-nav{display:flex;direction:ltr;align-items:center;justify-content:flex-start;padding:14px 24px;border-bottom:1px solid #e5e7eb;gap:14px;flex-wrap:wrap;background:#fff;position:relative;z-index:5}
+.site-nav nav{order:0;direction:ltr;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.site-nav nav a{padding:12px 17px;border:1px solid rgba(42,169,224,.16);border-radius:14px;font-size:16px;font-weight:700;white-space:nowrap;color:#355568;background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(226,244,252,.72));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 4px 14px rgba(15,92,130,.07),inset 0 1px 0 rgba(255,255,255,.95);transition:transform .2s ease,box-shadow .2s ease,background .2s ease,border-color .2s ease}
+.site-nav nav a:hover{transform:translateY(-2px);border-color:rgba(42,169,224,.38);background:linear-gradient(145deg,#fff,rgba(210,239,251,.9));box-shadow:0 7px 18px rgba(15,92,130,.12),inset 0 1px 0 #fff}
+.site-nav nav a[aria-current="page"]{color:#087fae;background:linear-gradient(145deg,rgba(226,247,255,.98),rgba(194,233,249,.82));border-color:rgba(42,169,224,.4);box-shadow:0 5px 16px rgba(42,169,224,.16),inset 0 1px 0 #fff}
+.nav-tools{order:1;display:flex;align-items:center;gap:9px;direction:ltr;flex-shrink:0}
+.auth-link{height:44px;padding:0 19px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;white-space:nowrap}
+.auth-link.register{color:#fff;background:#0c8ea6;border:1px solid #0c8ea6}
+.auth-link.login{color:#0c8ea6;background:#fff;border:1px solid #0c8ea6}
+.tool{height:44px;min-width:46px;padding:0 11px;border:1px solid #2aa9e0;border-radius:10px;display:grid;place-items:center;color:#1689b5;background:#fff;font-size:13px;font-weight:700}
+.site-logo{order:2;width:46px;height:46px;object-fit:contain;background:#fff;border:1px solid #edf2f7;border-radius:9px;padding:3px;flex:none}
+.hero{position:relative;overflow:hidden;min-height:330px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;background:linear-gradient(160deg,#29b6f6,#0b7fa8);padding:50px 20px 85px}
+.hero-content{position:relative;z-index:1}
+.hero small{display:flex;align-items:center;justify-content:center;gap:14px;letter-spacing:2px;margin-bottom:14px;font-weight:700}
+.hero small:before,.hero small:after{content:"";width:50px;height:1px;background:#fff9}
+.hero h1{font-size:42px;font-weight:800;margin:0 0 12px}
+.hero p{font-size:18px;opacity:.94;margin:0}
+.circle{position:absolute;border-radius:50%;background:#ffffff1f;pointer-events:none}
+.c1{width:200px;height:200px;bottom:-90px;left:13%}
+.c2{width:150px;height:150px;top:120px;right:35%}
+.c3{width:300px;height:300px;top:-150px;right:-60px}
+.c4{width:110px;height:110px;bottom:18px;right:12%}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+.filter{position:relative;z-index:2;background:#fff;border-radius:16px;box-shadow:0 7px 26px rgba(15,23,42,.11);padding:25px 24px;margin-top:-48px}
+.filter-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:19px}
+.filter h2{font-size:18px;font-weight:800;margin:0;color:#1e293b}
+.filter h2:before{content:"⌄ ";color:#4f6ef7;font-size:18px}
+.filter-reset{border:0;background:#eef8fd;color:#0b7fa8;border-radius:9px;padding:8px 13px;font-size:12px;font-weight:800}
+.fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
+.field label{display:block;font-size:13px;color:#475569;margin-bottom:7px;font-weight:700}
+.field select,.field input{width:100%;height:46px;padding:9px 12px;border:1px solid #e2e8f0;border-radius:10px;background:#f8fafc;font-family:inherit;font-size:14px;color:#334155;outline:none}
+.field select:focus,.field input:focus{border-color:#29b6f6;box-shadow:0 0 0 3px rgba(41,182,246,.12)}
+.results-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin:34px 0 17px}
+.results-head h2{margin:0;font-size:24px}
+.results-head p{margin:5px 0 0;color:#64748b;font-size:13px}
+.results-count{color:#0b7fa8;font-size:13px;font-weight:800;white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:25px;margin:0 0 35px}
+.course-card{background:linear-gradient(180deg,#f9b233,#f5a21a);border-radius:18px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.13);display:flex;flex-direction:column;min-width:0;transition:transform .2s ease,box-shadow .2s ease}
+.course-card:hover{transform:translateY(-4px);box-shadow:0 12px 26px rgba(15,23,42,.16)}
+.thumb{height:220px;background:linear-gradient(145deg,#fff,#eaf8ff);display:flex;align-items:center;justify-content:center;overflow:hidden;color:#0b7fa8;font-size:27px;font-weight:800;text-align:center;padding:18px}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb-fallback{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;width:100%;height:100%;background:radial-gradient(circle at 50% 30%,#fff 0,#f2fbff 65%,#dff4fc 100%);color:#117fa7}
+.thumb-fallback span{font-size:13px;font-weight:700;letter-spacing:1px;color:#64748b}
+.card-body{padding:17px 18px 19px;color:#fff;flex:1;display:flex;flex-direction:column}
+.card-title{font-size:18px;font-weight:800;line-height:1.6;margin:0 0 10px}
+.tags{display:flex;gap:7px;margin-bottom:11px;flex-wrap:wrap}
+.tag{font-size:11px;background:#ffffff35;border:1px solid #ffffff65;border-radius:20px;padding:3px 10px}
+.description{font-size:13px;line-height:1.85;margin:0 0 14px;color:#fff;opacity:.97;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.card-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;margin-bottom:13px}
+.price{font-size:17px;font-weight:800;direction:ltr;white-space:nowrap}
+.available{font-size:11px;background:rgba(255,255,255,.23);border:1px solid rgba(255,255,255,.45);border-radius:20px;padding:4px 9px}
+.card-actions{display:flex;gap:9px}
+.card-actions button,.card-actions a{flex:1;text-align:center;padding:10px 8px;border-radius:10px;background:#ffffff2e;border:1px solid #ffffff70;color:#fff;font-size:12px;font-weight:800;transition:background .18s ease,color .18s ease,transform .18s ease}
+.card-actions button:hover,.card-actions a:hover{background:#fff;color:#0b7fa8}
+.card-actions button:active,.card-actions a:active{transform:scale(.97)}
+.state{grid-column:1/-1;text-align:center;padding:45px 18px;background:#f8fafc;border:1px solid #e5e7eb;border-radius:15px;color:#64748b;line-height:1.9}
+.state strong{display:block;color:#334155;font-size:17px;margin-bottom:6px}
+.retry{margin-top:12px;border:0;border-radius:9px;padding:10px 18px;background:#0c8ea6;color:#fff;font-weight:800}
+.pagination{display:flex;justify-content:center;gap:8px;margin:8px 0 58px}
+.pagination button{min-width:40px;height:40px;padding:0 12px;display:flex;align-items:center;justify-content:center;border:1px solid #e2e8f0;border-radius:8px;background:#fff;color:#475569;font-weight:700}
+.pagination button.active{background:#29b6f6;border-color:#29b6f6;color:#fff}
+.pagination button:disabled{opacity:.4;cursor:not-allowed}
+footer{background:#0f172a;color:#9ca3af;padding:50px 20px 28px}
+.footer-grid{max-width:1290px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px}
+footer h3{color:#fff;margin:0 0 20px;font-size:18px}
+.footer-line{margin-bottom:15px;line-height:1.8}
+.footer-contact{display:flex;flex-direction:column;align-items:stretch;direction:rtl;text-align:right}
+.footer-contact h3{display:block;width:100%;text-align:right}
+.footer-contact .footer-line{display:block;width:100%;margin-bottom:12px;text-align:right;direction:rtl}
+.footer-contact .footer-line[dir="ltr"]{direction:ltr;text-align:right;unicode-bidi:plaintext;transition:color .18s ease}
+.footer-contact .footer-line[dir="ltr"]:hover{color:#fff}
+footer .footer-grid section:last-child .footer-line a{display:inline-block;transition:color .18s ease,transform .22s ease,outline-color .22s ease;outline:1px solid transparent;outline-offset:4px;border-radius:3px}
+footer .footer-grid section:last-child .footer-line a:hover{color:#20b9ad;transform:scale(.97);outline-color:rgba(32,185,173,.55)}
+.footer-brand-logo{display:block;width:180px;max-width:100%;height:auto;object-fit:contain;margin:0 0 16px}
+.footer-social{display:flex;align-items:center;gap:12px;margin:22px 0}
+.footer-social a{width:42px;height:42px;border:1px solid #34445f;border-radius:10px;display:grid;place-items:center;color:#dbe5f2;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease}
+.footer-social a svg{width:21px;height:21px;display:block;fill:currentColor}
+.footer-social a:hover{background:#20b9ad;border-color:#20b9ad;color:#fff;transform:translateY(-2px)}
+.copyright{max-width:1290px;margin:40px auto 0;border-top:1px solid #1e293b;padding-top:26px;text-align:center}
+.modal-backdrop{position:fixed;inset:0;z-index:10000;background:rgba(15,23,42,.62);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:18px}
+.modal-backdrop.open{display:flex}
+.modal{width:min(680px,100%);max-height:88vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 25px 70px rgba(15,23,42,.3);direction:rtl}
+.modal-head{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;gap:14px;background:#f1faff;border-bottom:1px solid #e2edf4;padding:17px 21px}
+.modal-head h2{margin:0;color:#0b7fa8;font-size:20px}
+.modal-close{width:38px;height:38px;border:1px solid #dbe7ee;border-radius:10px;background:#fff;color:#0b7fa8;font-size:23px}
+.modal-content{padding:22px;color:#334155;line-height:1.9}
+.modal-content .modal-description{white-space:pre-wrap}
+.modal-tags{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}
+.modal-tags span{background:#edf8fd;border:1px solid #d6edf8;color:#0b7fa8;padding:4px 10px;border-radius:20px;font-size:12px}
+.modal-actions{display:flex;gap:10px;margin-top:20px}
+.modal-actions a{display:inline-flex;align-items:center;justify-content:center;padding:11px 18px;border-radius:10px;background:#0c8ea6;color:#fff;font-weight:800;font-size:13px}
+@media(max-width:1000px){.site-nav{gap:9px;padding-inline:15px}.site-nav nav{gap:5px}.site-nav nav a{font-size:14px;padding:10px 12px}.fields{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.site-nav nav{display:none}.nav-tools{margin-inline-start:auto}.auth-link{height:41px;padding:0 13px;font-size:13px}.tool{height:41px;min-width:41px}.hero{min-height:290px;padding-bottom:72px}.hero h1{font-size:32px}.hero p{font-size:15px}.wrap{padding:0 14px}.filter{padding:20px 16px}.grid{grid-template-columns:1fr;gap:18px}.thumb{height:205px}.results-head{align-items:start;flex-direction:column}.footer-grid{grid-template-columns:1fr}.modal-actions{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){.course-card,.site-nav nav a,.auth-link,.card-actions a,.card-actions button{transition:none}.course-card:hover{transform:none}}
+</style>
+</head>
+<body>
+<header class="site-nav" aria-label="التنقل الرئيسي">
+  <nav aria-label="القائمة الرئيسية">
+    <a href="index.html">الرئيسية</a>
+    <a href="public-courses.html" aria-current="page">الكورسات</a>
+    <a href="#">الجلسات المباشرة</a>
+    <a href="public-library.html">المكتبة</a>
+    <a href="public-blog.html">المدونة</a>
+    <a href="support.html">اتصل بنا</a>
+  </nav>
+  <div class="nav-tools">
+    <a class="auth-link register" href="register.html">إنشاء حساب</a>
+    <a class="auth-link login" href="login.html">تسجيل الدخول</a>
+    <button class="tool" type="button" aria-label="اللغة">🌐</button>
+    <span class="tool" aria-label="العملة" id="currencyLabel">EGP</span>
+  </div>
+  <img class="site-logo" data-site-logo alt="شعار المنصة" hidden>
+</header>
+
+<section class="hero">
+  <div class="circle c1"></div><div class="circle c2"></div><div class="circle c3"></div><div class="circle c4"></div>
+  <div class="hero-content">
+    <small>الكورسات</small>
+    <h1>استكشف دوراتنا التعليمية</h1>
+    <p>مجموعة متنوعة من الدورات المصممة لتناسب احتياجاتك التعليمية</p>
+  </div>
+</section>
+
+<main class="wrap">
+  <section class="filter" aria-labelledby="filter-title">
+    <div class="filter-head">
+      <h2 id="filter-title">تصفية الكورسات</h2>
+      <button class="filter-reset" id="resetFilters" type="button">إعادة ضبط الفلاتر</button>
+    </div>
+    <div class="fields">
+      <div class="field"><label for="filterCategory">فئة السنة الدراسية</label><select id="filterCategory"><option value="">الكل</option></select></div>
+      <div class="field"><label for="filterGrade">السنة الدراسية</label><select id="filterGrade"><option value="">الكل</option></select></div>
+      <div class="field"><label for="filterSubject">المادة</label><select id="filterSubject"><option value="">الكل</option></select></div>
+      <div class="field"><label for="filterTrack">الشعبة</label><select id="filterTrack"><option value="">الكل</option></select></div>
+    </div>
+    <div class="field" style="margin-top:15px">
+      <label for="courseSearch">ابحث عن كورس</label>
+      <input id="courseSearch" type="search" placeholder="اكتب اسم الكورس أو المادة...">
+    </div>
+  </section>
+
+  <div class="results-head">
+    <div><h2>الدورات التعليمية</h2><p>اختر الدورة المناسبة واطّلع على تفاصيلها قبل إنشاء حسابك</p></div>
+    <span class="results-count" id="resultsCount">جارٍ تحميل الكورسات...</span>
+  </div>
+
+  <section class="grid" id="coursesGrid" aria-live="polite">
+    <div class="state"><strong>جارٍ تحميل الدورات التعليمية</strong>يتم عرض الدورات المنشورة والظاهرة من لوحة الإدارة.</div>
+  </section>
+  <nav class="pagination" id="pagination" aria-label="صفحات الكورسات" hidden></nav>
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <section>
+      <img class="footer-brand-logo" src="https://ostaz.fra1.cdn.digitaloceanspaces.com/alielian.teachingportals.com/organizations/2-d8292112-1793307851.png" alt="منصة علي عليان الدولية">
+      <h3>منصة علي عليان الدولية</h3>
+      <p class="footer-line">المنصة الدولية | نصنع التفوق في اللغة العربية برؤية عالمية وأدوات عصرية. مناهج متخصصة، وتأسيس احترافي، وتجربة تعليمية ذكية تواكب طموحك.</p>
+      <div class="footer-social">
+        <a href="#" aria-label="فيسبوك"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-8.2h2.8l.4-3.2h-3.2V7.55c0-.93.26-1.56 1.6-1.56h1.7V3.12c-.3-.04-1.35-.12-2.57-.12-2.55 0-4.3 1.56-4.3 4.43v2.17H7.1v3.2h2.9V21h3.5z"/></svg></a>
+        <a href="#" aria-label="يوتيوب"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.55 3.6 12 3.6 12 3.6s-7.55 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.85.5 9.4.5 9.4.5s7.55 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z"/></svg></a>
+        <a href="#" aria-label="إنستجرام"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm0 2A3.8 3.8 0 0 0 4 7.8v8.4A3.8 3.8 0 0 0 7.8 20h8.4a3.8 3.8 0 0 0 3.8-3.8V7.8A3.8 3.8 0 0 0 16.2 4H7.8Zm4.2 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.2-3.5a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z"/></svg></a>
+      </div>
+    </section>
+    <section class="footer-contact">
+      <h3><a href="support.html">اتصل بنا</a></h3>
+      <div class="footer-line" dir="ltr">+201126529544</div>
+      <div class="footer-line" dir="ltr">+966547803289</div>
+      <div class="footer-line">alimohammed20204@gmail.com</div>
+    </section>
+    <section>
+      <h3>قانوني</h3>
+      <div class="footer-line"><a href="#">الشروط والأحكام</a></div>
+      <div class="footer-line"><a href="#">سياسة الخصوصية</a></div>
+      <div class="footer-line"><a href="support.html">اتصل بنا</a></div>
+    </section>
+  </div>
+  <div class="copyright">© 2026 منصة علي عليان الدولية جميع الحقوق محفوظة</div>
+</footer>
+
+<div class="modal-backdrop" id="courseModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <article class="modal">
+    <header class="modal-head"><h2 id="modalTitle">تفاصيل الدورة</h2><button class="modal-close" id="closeCourseModal" type="button" aria-label="إغلاق">×</button></header>
+    <div class="modal-content">
+      <div class="modal-tags" id="modalTags"></div>
+      <p class="modal-description" id="modalDescription"></p>
+      <div class="modal-actions"><a id="modalRegister" href="register.html">إنشاء حساب للاشتراك</a></div>
+    </div>
+  </article>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  const PAGE_SIZE = 9;
+  const state = { courses: [], filtered: [], page: 1, currency: "EGP" };
+  const $ = id => document.getElementById(id);
+  const grid = $("coursesGrid");
+  const pagination = $("pagination");
+  const labels = {
+    EGP: "جنيه مصري",
+    SAR: "ريال سعودي",
+    USD: "دولار أمريكي"
+  };
+
+  function node(tag, className, text) {
+    const item = document.createElement(tag);
+    if (className) item.className = className;
+    if (text !== undefined) item.textContent = text;
+    return item;
+  }
+
+  function addOptions(select, values) {
+    const current = select.value;
+    select.replaceChildren(new Option("الكل", ""));
+    values.forEach(value => select.add(new Option(value, value)));
+    if (values.includes(current)) select.value = current;
+  }
+
+  function money(course) {
+    if (course.isFree) return "مجاني";
+    try {
+      return new Intl.NumberFormat("ar-EG", {
+        style: "currency", currency: state.currency, maximumFractionDigits: 2
+      }).format(course.price);
+    } catch (_) {
+      return course.price.toFixed(2) + " " + state.currency;
+    }
+  }
+
+  function matches(course) {
+    const category = $("filterCategory").value;
+    const grade = $("filterGrade").value;
+    const subject = $("filterSubject").value;
+    const track = $("filterTrack").value;
+    const search = $("courseSearch").value.trim().toLocaleLowerCase("ar");
+    const text = [course.title, course.description, course.subject, course.category, course.grade, course.track].join(" ").toLocaleLowerCase("ar");
+    return (!category || course.category === category) &&
+      (!grade || course.grade === grade) &&
+      (!subject || course.subject === subject) &&
+      (!track || course.track === track) &&
+      (!search || text.includes(search));
+  }
+
+  function fillFilters() {
+    const categories = [...new Set(state.courses.map(item => item.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ar"));
+    const grades = [...new Set(state.courses.filter(item => !$("filterCategory").value || item.category === $("filterCategory").value).map(item => item.grade).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ar"));
+    const subjects = [...new Set(state.courses.map(item => item.subject).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ar"));
+    const tracks = [...new Set(state.courses.map(item => item.track).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ar"));
+    addOptions($("filterCategory"), categories);
+    addOptions($("filterGrade"), grades);
+    addOptions($("filterSubject"), subjects);
+    addOptions($("filterTrack"), tracks);
+    $("currencyLabel").textContent = state.currency;
+  }
+
+  function openDetails(course) {
+    $("modalTitle").textContent = course.title;
+    $("modalDescription").textContent = course.description || "لا يوجد وصف إضافي لهذه الدورة حالياً.";
+    $("modalTags").replaceChildren();
+    [course.category, course.grade, course.subject, course.track].filter(Boolean).forEach(value => $("modalTags").appendChild(node("span","",value)));
+    $("modalRegister").href = "register.html?courseId=" + encodeURIComponent(course.id);
+    $("courseModal").classList.add("open");
+    $("closeCourseModal").focus();
+  }
+
+  function closeDetails() {
+    $("courseModal").classList.remove("open");
+  }
+
+  function renderCard(course) {
+    const card = node("article","course-card");
+    const thumb = node("div","thumb");
+    if (course.image) {
+      const image = node("img");
+      image.loading = "lazy";
+      image.alt = course.title;
+      image.src = course.image;
+      image.addEventListener("error",() => {
+        thumb.replaceChildren(createFallback(course.title));
+      },{once:true});
+      thumb.appendChild(image);
+    } else {
+      thumb.appendChild(createFallback(course.title));
+    }
+
+    const body = node("div","card-body");
+    const title = node("h3","card-title",course.title);
+    const tags = node("div","tags");
+    [course.category, course.grade, course.subject, course.track].filter(Boolean).slice(0,3).forEach(value => tags.appendChild(node("span","tag",value)));
+    const description = node("p","description",course.description || "تفاصيل الدورة ومحتواها التعليمي متاحة بعد إنشاء حساب.");
+    const meta = node("div","card-meta");
+    meta.append(node("strong","price",money(course)),node("span","available",course.pinned ? "دورة مميزة" : "متاحة للتسجيل"));
+    const actions = node("div","card-actions");
+    const details = node("button","", "تفاصيل الكورس");
+    details.type = "button";
+    details.addEventListener("click",() => openDetails(course));
+    const join = node("a","", "اشترك الآن");
+    join.href = "register.html?courseId=" + encodeURIComponent(course.id);
+    actions.append(details,join);
+    body.append(title,tags,description,meta,actions);
+    card.append(thumb,body);
+    return card;
+  }
+
+  function createFallback(title) {
+    const fallback = node("div","thumb-fallback");
+    fallback.append(node("strong","",title),node("span","","منصة علي عليان الدولية"));
+    return fallback;
+  }
+
+  function renderPagination() {
+    const pages = Math.ceil(state.filtered.length / PAGE_SIZE);
+    pagination.replaceChildren();
+    pagination.hidden = pages <= 1;
+    if (pages <= 1) return;
+    const previous = node("button","","‹");
+    previous.type = "button"; previous.disabled = state.page === 1;
+    previous.addEventListener("click",() => {state.page--;render();});
+    pagination.appendChild(previous);
+    for (let page=1;page<=pages;page++) {
+      const button = node("button",page===state.page?"active":"",String(page));
+      button.type = "button";
+      button.setAttribute("aria-current",page===state.page?"page":"false");
+      button.addEventListener("click",() => {state.page=page;render();});
+      pagination.appendChild(button);
+    }
+    const next = node("button","","›");
+    next.type = "button"; next.disabled = state.page === pages;
+    next.addEventListener("click",() => {state.page++;render();});
+    pagination.appendChild(next);
+  }
+
+  function render() {
+    state.filtered = state.courses.filter(matches);
+    const pages = Math.max(1,Math.ceil(state.filtered.length/PAGE_SIZE));
+    state.page = Math.min(state.page,pages);
+    $("resultsCount").textContent = state.filtered.length + " دورة";
+    grid.replaceChildren();
+    if (!state.filtered.length) {
+      const empty = node("div","state");
+      empty.append(node("strong","","لا توجد كورسات مطابقة"),node("span","","جرّب تغيير الفلاتر أو البحث عن مادة أخرى."));
+      grid.appendChild(empty);
+      pagination.hidden = true;
+      return;
+    }
+    state.filtered.slice((state.page-1)*PAGE_SIZE,state.page*PAGE_SIZE).forEach(course => grid.appendChild(renderCard(course)));
+    renderPagination();
+  }
+
+  function showError(message) {
+    grid.replaceChildren();
+    const error = node("div","state");
+    error.append(node("strong","","تعذر تحميل الكورسات"),node("span","",message));
+    const retry = node("button","retry","إعادة المحاولة");
+    retry.type = "button";
+    retry.addEventListener("click",loadCourses);
+    error.appendChild(retry);
+    grid.appendChild(error);
+    $("resultsCount").textContent = "—";
+    pagination.hidden = true;
+  }
+
+  async function loadCourses() {
+    grid.replaceChildren(node("div","state","جارٍ تحميل الدورات التعليمية..."));
+    $("resultsCount").textContent = "جارٍ تحميل الكورسات...";
+    try {
+      const response = await fetch("/api/public/courses",{credentials:"same-origin",cache:"no-store"});
+      const data = await response.json().catch(()=>({}));
+      if (!response.ok || !data.ok) throw new Error(data.message || "تعذر تحميل الكورسات.");
+      state.courses = Array.isArray(data.courses) ? data.courses : [];
+      state.currency = ["EGP","SAR","USD"].includes(data.currency) ? data.currency : "EGP";
+      fillFilters();
+      render();
+      if (data.truncated) {
+        const note = node("p","muted","يتم عرض أول مجموعة من الكورسات المنشورة والظاهرة.");
+        note.style.textAlign = "center";
+        grid.after(note);
+      }
+    } catch (error) {
+      showError(error.message || "تحقق من اتصال الإنترنت ثم أعد المحاولة.");
+    }
+  }
+
+  ["filterCategory","filterGrade","filterSubject","filterTrack"].forEach(id => $(id).addEventListener("change",() => {
+    if (id === "filterCategory") addOptions($("filterGrade"),[...new Set(state.courses.filter(item => !$("filterCategory").value || item.category === $("filterCategory").value).map(item => item.grade).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ar")));
+    state.page = 1;
+    render();
+  }));
+  $("courseSearch").addEventListener("input",() => {state.page=1;render();});
+  $("resetFilters").addEventListener("click",() => {
+    ["filterCategory","filterGrade","filterSubject","filterTrack"].forEach(id => $(id).value = "");
+    $("courseSearch").value = "";
+    state.page=1;
+    fillFilters();
+    render();
+  });
+  $("closeCourseModal").addEventListener("click",closeDetails);
+  $("courseModal").addEventListener("click",event => {if(event.target === $("courseModal")) closeDetails();});
+  document.addEventListener("keydown",event => {if(event.key === "Escape") closeDetails();});
+  loadCourses();
+})();
+</script>
+<script src="/site-branding.js" defer></script>
+</body>
+</html>

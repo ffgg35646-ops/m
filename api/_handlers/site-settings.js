@@ -8,10 +8,25 @@ module.exports = async function handler(req, res) {
     const database = await db();
     const saved = await database.collection(COLLECTION).findOne(
       { _id: "organization" },
-      { projection: { "settings.organization.name": 1 } }
+      { projection: { "settings.organization.name": 1, "settings.branding.logoData": 1, "settings.branding.bannerData": 1, "settings.legal.privacyText": 1, "settings.contact.facebook": 1, "settings.contact.instagram": 1, "settings.contact.youtube": 1 } }
     );
     const name = String(saved?.settings?.organization?.name || DEFAULT_NAME).trim() || DEFAULT_NAME;
-    return json(res, 200, { ok: true, organization: { name } });
+    return json(res, 200, {
+      ok: true,
+      organization: { name },
+      branding: {
+        logoData: typeof saved?.settings?.branding?.logoData === "string" ? saved.settings.branding.logoData : "",
+        bannerData: typeof saved?.settings?.branding?.bannerData === "string" ? saved.settings.branding.bannerData : ""
+      },
+      legal: {
+        privacyText: typeof saved?.settings?.legal?.privacyText === "string" ? saved.settings.legal.privacyText : ""
+      },
+      socialLinks: {
+        facebook: typeof saved?.settings?.contact?.facebook === "string" ? saved.settings.contact.facebook : "",
+        instagram: typeof saved?.settings?.contact?.instagram === "string" ? saved.settings.contact.instagram : "",
+        youtube: typeof saved?.settings?.contact?.youtube === "string" ? saved.settings.contact.youtube : ""
+      }
+    });
   } catch (error) {
     console.error("public site settings failed:", error.message);
     return json(res, 503, { ok: false, message: "تعذر تحميل إعدادات المنصة." });
