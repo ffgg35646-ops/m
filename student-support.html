@@ -63,18 +63,17 @@
 <body>
   <header class="site-nav" aria-label="التنقل الرئيسي">
     <nav aria-label="القائمة الرئيسية">
-      <a href="index.html">الرئيسية</a>
-      <a href="courses.html">الكورسات</a>
-      <a href="#">الجلسات المباشرة</a>
-      <a href="#">المكتبة</a>
-      <a href="#">المدونة</a>
-      <a href="support.html" aria-current="page">اتصل بنا</a>
+      <a href="dashboard.html">الرئيسية</a>
+      <a href="courses.html">كورساتي</a>
+      <a href="library.html">كتبي</a>
+      <a href="blog.html">المدونة</a>
+      <a href="student-support.html" aria-current="page">تواصل معنا</a>
     </nav>
     <div class="nav-tools">
       <button class="tool" type="button" aria-label="العملة">EGP</button>
       <button class="tool" type="button" aria-label="اللغة">🌐</button>
       <button class="tool" type="button" aria-label="الإشعارات">♧</button>
-      <div class="profile"><div class="avatar" aria-hidden="true">م</div><span>مرحبا mohajmed</span></div>
+      <div class="profile"><div class="avatar" data-student-avatar aria-hidden="true">م</div><span data-student-greeting>مرحبا</span></div>
     </div>
   </header>
 
@@ -166,5 +165,6 @@
     });
   </script>
   <script src="/site-branding.js" defer></script>
+<script src="/student-navbar.js" defer></script>
 </body>
 </html>
