@@ -190,6 +190,7 @@ main{flex:1;min-width:0;padding:0 0 42px}.hero{background:linear-gradient(100deg
         <div class="form-group"><label for="productType">نوع المنتج</label><select class="field" id="productType"><option value="physical">مطبوع</option><option value="رقمي">رقمي</option></select></div>
         <div class="form-group"><label for="productTitle">اسم المنتج *</label><input class="field" id="productTitle" maxlength="240" required></div>
         <div class="form-group full"><label for="productDescription">الوصف</label><textarea class="field" id="productDescription" rows="3" maxlength="4000"></textarea></div>
+        <div class="form-group full" id="productFileUrlGroup"><label for="productFileUrl">رابط ملف القراءة / التحميل للكتاب الرقمي</label><input class="field" id="productFileUrl" type="url" maxlength="1800" placeholder="https://..." dir="ltr"><small class="hint">الرابط لا يظهر إلا للطالب الذي فعّل الكتاب. استخدم رابط HTTPS مباشر وآمن.</small></div>
         <div class="form-group"><label for="productPrice">السعر (EGP)</label><input class="field" id="productPrice" type="number" min="0" step="0.01" value="0"></div>
         <div class="form-group"><label for="productOrder">ترتيب العرض</label><input class="field" id="productOrder" type="number" min="0" step="1" value="0"></div>
         <div class="form-group full">
@@ -449,6 +450,7 @@ function renderProductImageGrid(){
 function openProduct(product=null){
   state.editingProductId=product?.id||null;$("productModalTitle").textContent=product?"تعديل منتج":"إضافة منتج";
   $("productType").value=product?.type||"physical";$("productTitle").value=product?.title||"";$("productDescription").value=product?.description||"";
+  $("productFileUrl").value=product?.fileUrl||"";$("productFileUrlGroup").hidden=$("productType").value==="physical";
   $("productPrice").value=product?.price??0;$("productOrder").value=product?.order??state.products.length;
   $("productFree").checked=product?.isFree===true;$("productActive").checked=product?.isActive!==false;
   $("productFeatured").checked=product?.featuredHome===true;$("productPrice").disabled=$("productFree").checked;
@@ -529,7 +531,7 @@ async function saveProduct(event){
   const data={
     id:state.editingProductId,type:$("productType").value,title:$("productTitle").value,description:$("productDescription").value,
     price:$("productPrice").value,isFree:$("productFree").checked,isActive:$("productActive").checked,
-    featuredHome:$("productFeatured").checked,order:$("productOrder").value,images:state.productImages
+    featuredHome:$("productFeatured").checked,order:$("productOrder").value,images:state.productImages,fileUrl:$("productFileUrl").value.trim()
   };
   try{
     await api(state.editingProductId?"updateProduct":"createProduct",data);closeBackdrop("productBackdrop");showToast("تم حفظ المنتج في قاعدة البيانات.");await loadData(false);
@@ -573,6 +575,7 @@ document.querySelectorAll(".modal-backdrop").forEach(backdrop=>backdrop.addEvent
 document.addEventListener("keydown",event=>{if(event.key==="Escape")document.querySelectorAll(".modal-backdrop.open").forEach(item=>closeBackdrop(item.id));});
 $("postForm").addEventListener("submit",savePost);$("categoryForm").addEventListener("submit",saveCategory);$("productForm").addEventListener("submit",saveProduct);
 $("productFree").addEventListener("change",()=>{$("productPrice").disabled=$("productFree").checked;if($("productFree").checked)$("productPrice").value="0";});
+$("productType").addEventListener("change",()=>{$("productFileUrlGroup").hidden=$("productType").value==="physical";});
 $("productSearch").addEventListener("input",renderProducts);$("productTypeFilter").addEventListener("change",renderProducts);$("productStatusFilter").addEventListener("change",renderProducts);
 ["orderProductFilter","orderTypeFilter"].forEach(id=>$(id).addEventListener("change",renderOrders));$("orderStudentSearch").addEventListener("input",renderOrders);
 $("productImages").addEventListener("change",async event=>{
