@@ -44,12 +44,14 @@ a{text-decoration:none;color:inherit}
 .eyebrow:before,.eyebrow:after{content:"";width:14px;height:2px;background:var(--p)}
 .section h2{font-size:34px;margin:8px 0 30px}
 .tabs{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:34px}
-.tabs a{border:2px solid var(--p);color:var(--p);border-radius:8px;padding:12px 22px;font-size:16px;background:#fff}
-.tabs a.active{background:linear-gradient(90deg,#2db6f2,#0f7a9a);color:#fff}
+.tabs button{border:2px solid var(--p);color:var(--p);border-radius:8px;padding:12px 22px;font-size:16px;background:#fff;font:inherit;font-weight:700;cursor:pointer;transition:background .18s,color .18s,transform .18s}
+.tabs button:hover{background:#eaf8ff}.tabs button:active{transform:scale(.97)}
+.tabs button.active{background:linear-gradient(90deg,#2db6f2,#0f7a9a);color:#fff}
 .grade-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
-.grade-card{background:linear-gradient(160deg,#5b9bf8,#3b7ee8);border-radius:16px;min-height:340px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-size:21px;font-weight:700;gap:22px}
-.grade-circle{width:210px;height:210px;border-radius:50%;background:#0b2a5c;border:3px solid #e11d48;display:grid;place-items:center}
-.grade-circle span{width:158px;height:158px;border-radius:50%;background:#fff;color:#e11d48;font-size:48px;font-weight:900;display:grid;place-items:center;font-style:italic}
+.grade-card{background:linear-gradient(160deg,#5b9bf8,#3b7ee8);border-radius:16px;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-size:21px;font-weight:700;gap:22px;padding:24px;text-align:center;transition:transform .2s,box-shadow .2s}
+.grade-card:hover{transform:translateY(-4px);box-shadow:0 12px 26px #1e40af25}.grade-circle{width:190px;height:190px;border-radius:50%;background:#0b2a5c;border:3px solid #e11d48;display:grid;place-items:center;overflow:hidden}
+.grade-circle img{width:100%;height:100%;object-fit:cover}.grade-circle span{width:145px;height:145px;border-radius:50%;background:#fff;color:#e11d48;font-size:42px;font-weight:900;display:grid;place-items:center;font-style:italic}
+.grade-loading,.grade-empty{grid-column:1/-1;padding:28px;border:1px solid #e5e7eb;border-radius:14px;background:#f8fafc;color:#64748b;text-align:center;font-size:15px}
 .center{text-align:center}.center .eyebrow{justify-content:center}
 .featured{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
 .course-card{background:#fff;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.08);overflow:hidden}
@@ -122,14 +124,8 @@ footer h3{color:#fff;margin:0 0 20px;font-size:18px}
   <div class="wrap">
     <div class="eyebrow">المراحل الدراسية</div>
     <h2>اختر صفك الدراسي</h2>
-    <div class="tabs">
-      <a href="#" class="active">النيل</a><a href="#">IGCSE</a><a href="#">البكالوريا المصرية</a><a href="#">American Diploma</a><a href="#">أبناؤنا في الخارج - المسار المصري</a><a href="#">الكورسات المجانية</a><a href="#">تعليم اللغة لغير الناطقين بها</a>
-    </div>
-    <div class="grade-grid">
-      <div class="grade-card"><div class="grade-circle"><span>Gr2</span></div>Grade 2</div>
-      <div class="grade-card"><div class="grade-circle"><span>Gr1</span></div>Grade 1</div>
-      <div class="grade-card"><div class="grade-circle"><span>KG's</span></div>KG 1 , KG 2</div>
-    </div>
+    <div class="tabs" id="gradeCategories" aria-label="الفئات الدراسية"><div class="grade-loading">جارٍ تحميل الفئات الدراسية...</div></div>
+    <div class="grade-grid" id="gradeGrid" aria-live="polite"><div class="grade-loading">جارٍ تحميل الصفوف الدراسية...</div></div>
   </div>
 </section>
 
@@ -190,6 +186,70 @@ footer h3{color:#fff;margin:0 0 20px;font-size:18px}
   </div>
   <div class="copyright">© 2026 منصة علي عليان الدولية جميع الحقوق محفوظة</div>
 </footer>
+<script>
+(function () {
+  const tabs = document.getElementById("gradeCategories");
+  const grid = document.getElementById("gradeGrid");
+  if (!tabs || !grid) return;
+  let categories = [], years = [], activeCategory = "";
+  const el = (tag, className, value) => {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (value !== undefined) node.textContent = value;
+    return node;
+  };
+  function render() {
+    tabs.replaceChildren();
+    grid.replaceChildren();
+    if (!categories.length) {
+      tabs.appendChild(el("div", "grade-empty", "لا توجد فئات دراسية مضافة من لوحة الإدارة حتى الآن."));
+      return;
+    }
+    categories.forEach(category => {
+      const button = el("button", category.name === activeCategory ? "active" : "", category.name);
+      button.type = "button";
+      button.setAttribute("aria-pressed", String(category.name === activeCategory));
+      button.addEventListener("click", () => { activeCategory = category.name; render(); });
+      tabs.appendChild(button);
+    });
+    const visibleYears = years.filter(year => year.category === activeCategory);
+    if (!visibleYears.length) {
+      grid.appendChild(el("div", "grade-empty", "لا توجد صفوف دراسية مضافة لهذه الفئة حالياً."));
+      return;
+    }
+    visibleYears.forEach(year => {
+      const card = el("a", "grade-card");
+      card.href = "grade-courses.html?category=" + encodeURIComponent(year.category) + "&grade=" + encodeURIComponent(year.name);
+      card.setAttribute("aria-label", "عرض دورات " + year.name);
+      card.style.background = "linear-gradient(160deg," + year.color + ",#2457a8)";
+      const circle = el("div", "grade-circle");
+      if (year.imageData) {
+        const image = el("img");
+        image.src = year.imageData;
+        image.alt = "صورة " + year.name;
+        circle.appendChild(image);
+      } else {
+        circle.appendChild(el("span", "", year.imageText || year.name.slice(0, 5)));
+      }
+      card.append(circle, el("span", "", year.name), el("small", "", "عرض الدورات ←"));
+      grid.appendChild(card);
+    });
+  }
+  fetch("/api/academic-structure", { credentials: "same-origin", cache: "no-store" })
+    .then(response => { if (!response.ok) throw new Error("تعذر الاتصال بالهيكل الأكاديمي."); return response.json(); })
+    .then(data => {
+      if (!data.ok) throw new Error(data.message || "تعذر تحميل الصفوف الدراسية.");
+      categories = Array.isArray(data.categories) ? data.categories : [];
+      years = Array.isArray(data.years) ? data.years : [];
+      activeCategory = categories[0]?.name || "";
+      render();
+    })
+    .catch(error => {
+      tabs.replaceChildren();
+      grid.replaceChildren(el("div", "grade-empty", error.message || "تعذر تحميل الصفوف الدراسية."));
+    });
+})();
+</script>
   <script src="/site-branding.js" defer></script>
 </body>
 </html>
