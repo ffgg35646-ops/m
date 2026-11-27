@@ -8,10 +8,10 @@ module.exports = async function handler(req, res) {
     const database = await db();
     const saved = await database.collection(COLLECTION).findOne(
       { _id: "organization" },
-      { projection: { "settings.organization.name": 1 } }
+      { projection: { "settings.organization.name": 1, "settings.branding.logoData": 1, "settings.branding.bannerData": 1 } }
     );
     const name = String(saved?.settings?.organization?.name || DEFAULT_NAME).trim() || DEFAULT_NAME;
-    return json(res, 200, { ok: true, organization: { name } });
+    return json(res, 200, {\n      ok: true,\n      organization: { name },\n      branding: {\n        logoData: typeof saved?.settings?.branding?.logoData === "string" ? saved.settings.branding.logoData : "",\n        bannerData: typeof saved?.settings?.branding?.bannerData === "string" ? saved.settings.branding.bannerData : ""\n      }\n    });
   } catch (error) {
     console.error("public site settings failed:", error.message);
     return json(res, 503, { ok: false, message: "تعذر تحميل إعدادات المنصة." });
