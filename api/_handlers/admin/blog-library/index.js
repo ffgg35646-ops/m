@@ -104,6 +104,7 @@ function publicProduct(doc, index = 0) {
     featuredHome: doc.featuredHome === true,
     order: sortValue(doc.sortOrder ?? doc.order, index),
     images,
+    fileUrl: str(doc.fileUrl || doc.downloadUrl || doc.pdfUrl, 1800),
     createdAt: doc.createdAt || null,
     updatedAt: doc.updatedAt || null
   };
@@ -282,6 +283,8 @@ function cleanProduct(data, previous = {}) {
   const images = Array.isArray(data.images) ? data.images.slice(0, 8).map(safeImage).filter(Boolean) :
     (Array.isArray(previous.images) ? previous.images : []);
   if (Array.isArray(data.images) && data.images.length > 8) fail("الحد الأقصى 8 صور للمنتج.");
+  const fileUrl = safeUrl(data.fileUrl === undefined ? (previous.fileUrl || previous.downloadUrl || previous.pdfUrl) : data.fileUrl, "رابط ملف الكتاب");
+  if (type !== "physical" && !isFree && !fileUrl) fail("أضف رابط ملف القراءة أو التحميل للمنتج الرقمي قبل حفظه.");
   return {
     title, name: title, description: str(data.description, 4000),
     type, typeLabel: type, price, isFree,
@@ -289,7 +292,7 @@ function cleanProduct(data, previous = {}) {
     status: (data.isActive === undefined ? previous.isActive !== false : data.isActive === true) ? "active" : "inactive",
     featuredHome: data.featuredHome === true,
     sortOrder: sortValue(data.order, sortValue(previous.sortOrder ?? previous.order)),
-    images, updatedAt: new Date()
+    images, fileUrl, downloadUrl: fileUrl, updatedAt: new Date()
   };
 }
 async function reorderCollection(db, collectionName, ids, auth, eventName) {
