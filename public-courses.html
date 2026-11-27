@@ -311,8 +311,8 @@ footer .footer-grid section:last-child .footer-line a:hover{color:#20b9ad;transf
     const details = node("button","", "تفاصيل الكورس");
     details.type = "button";
     details.addEventListener("click",() => openDetails(course));
-    const join = node("a","", "اشترك الآن");
-    join.href = "register.html?courseId=" + encodeURIComponent(course.id);
+    const join = node("a","", "شراء");
+    join.href = "login.html";
     actions.append(details,join);
     body.append(title,tags,description,meta,actions);
     card.append(thumb,body);
