@@ -73,7 +73,8 @@ module.exports = async function(req, res) {
         category: text(patch.category || user.category || user.gradeCategory, 160),
         year: text(patch.year || user.year || user.schoolYear, 160),
         governorate: patch.governorate, city: patch.city,
-        division: patch.division, code: text(user.code || user.studentCode, 40)
+        division: patch.division, code: text(user.code || user.studentCode, 40),
+        createdAt: user.createdAt || null, updatedAt: patch.updatedAt
       }
     });
   } catch (error) {
