@@ -195,10 +195,51 @@
   }
   installPrivacyPolicyModal();
 
+
+  function applyFooterSocialLinks(links) {
+    const fieldsByLabel = {
+      "فيسبوك": "facebook",
+      "facebook": "facebook",
+      "إنستجرام": "instagram",
+      "انستجرام": "instagram",
+      "instagram": "instagram",
+      "يوتيوب": "youtube",
+      "youtube": "youtube"
+    };
+    document.querySelectorAll(".footer-social a").forEach(link => {
+      const label = String(link.getAttribute("aria-label") || link.textContent || "")
+        .replace(/\s+/g, " ").trim().toLowerCase();
+      const field = fieldsByLabel[label];
+      const rawUrl = field ? String(links && links[field] || "").trim() : "";
+      let safeUrl = "";
+      try {
+        const parsed = new URL(rawUrl);
+        if (parsed.protocol === "https:" || parsed.protocol === "http:") safeUrl = parsed.href;
+      } catch (_) {}
+
+      if (safeUrl) {
+        link.href = safeUrl;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.removeAttribute("aria-disabled");
+        link.removeAttribute("tabindex");
+      } else {
+        link.removeAttribute("href");
+        link.removeAttribute("target");
+        link.removeAttribute("rel");
+        link.setAttribute("aria-disabled", "true");
+        link.tabIndex = -1;
+      }
+    });
+  }
+
+  applyFooterSocialLinks({});
+
   fetch("/api/site-settings", { credentials: "same-origin", cache: "no-store" })
     .then(response => response.ok ? response.json() : null)
     .then(data => {
       if (!data?.ok) return;
+      applyFooterSocialLinks(data.socialLinks || {});
       const logoData = String(data.branding?.logoData || "");
       const bannerData = String(data.branding?.bannerData || "");
       document.querySelectorAll("[data-site-logo]").forEach(image => {
