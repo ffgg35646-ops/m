@@ -314,7 +314,9 @@ footer .footer-grid section:last-child .footer-line a:hover{color:#20b9ad;transf
     details.type = "button";
     details.addEventListener("click",() => openDetails(course));
     const join = node("a","", "شراء");
-    join.href = "login.html";
+    join.href = "login.html?next=" + encodeURIComponent("orders.html?targetType=courses&targetId=" + course.id);
+    join.dataset.studentPurchase = "courses";
+    join.dataset.targetId = course.id;
     actions.append(details,join);
     body.append(title,tags,description,meta,actions);
     card.append(thumb,body);
@@ -420,5 +422,6 @@ footer .footer-grid section:last-child .footer-line a:hover{color:#20b9ad;transf
 })();
 </script>
 <script src="/site-branding.js" defer></script>
+<script src="/student-navbar.js" defer></script>
 </body>
 </html>
