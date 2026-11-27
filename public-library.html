@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>المكتبة | منصة علي عليان الدولية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#29b6f6;--blue-dark:#0b7fa8;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:#fff;color:var(--ink);font-family:"Cairo","Segoe UI",Tahoma,sans-serif}
+a{text-decoration:none;color:inherit}button,input,select{font:inherit}
+.wrap{width:min(1200px,calc(100% - 40px));margin-inline:auto}
+.site-nav{display:flex;direction:ltr;align-items:center;justify-content:flex-start;padding:14px 24px;border-bottom:1px solid #e5e7eb;gap:14px;flex-wrap:wrap;background:#fff}
+.site-nav nav{order:0;direction:ltr;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.site-nav nav a{padding:13px 18px;border:1px solid rgba(42,169,224,.16);border-radius:14px;font-size:16px;font-weight:700;white-space:nowrap;color:#355568;background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(226,244,252,.72));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 4px 14px rgba(15,92,130,.07),inset 0 1px 0 rgba(255,255,255,.95);transition:transform .2s ease,box-shadow .2s ease,background .2s ease,border-color .2s ease}
+.site-nav nav a:hover{transform:translateY(-2px);border-color:rgba(42,169,224,.38);background:linear-gradient(145deg,#fff,rgba(210,239,251,.9));box-shadow:0 7px 18px rgba(15,92,130,.12),inset 0 1px 0 #fff}
+.site-nav nav a[aria-current=page]{color:#087fae;background:linear-gradient(145deg,rgba(226,247,255,.98),rgba(194,233,249,.82));border-color:rgba(42,169,224,.4);box-shadow:0 5px 16px rgba(42,169,224,.16),inset 0 1px 0 #fff}
+.nav-tools{order:1;display:flex;align-items:center;gap:10px;direction:ltr;flex-shrink:0}
+.auth-link{height:46px;padding:0 20px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;white-space:nowrap;transition:background .2s,color .2s,border-color .2s,transform .2s}
+.auth-link.register{color:#fff;background:#0c8ea6;border:1px solid #0c8ea6}.auth-link.register:hover{background:#09788d}
+.auth-link.login{color:#0c8ea6;background:#fff;border:1px solid #0c8ea6}.auth-link.login:hover{background:rgba(12,142,166,.06)}
+.tool{min-width:48px;height:46px;padding:0 11px;border:1px solid var(--blue);border-radius:10px;display:grid;place-items:center;color:var(--blue-dark);font-size:13px;font-weight:700;background:#fff}
+.site-logo{order:2;width:46px;height:46px;object-fit:contain;background:#fff;border:1px solid #edf2f7;border-radius:9px;padding:3px;flex:none}
+.hero{position:relative;overflow:hidden;min-height:350px;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;background:linear-gradient(160deg,#29b6f6,#0b7fa8);padding:48px 20px}
+.hero-content{position:relative;z-index:1}.hero small{display:flex;align-items:center;justify-content:center;gap:14px;letter-spacing:2px;margin-bottom:14px;font-size:15px}
+.hero small:before,.hero small:after{content:"";width:50px;height:1px;background:#ffffff99}
+.hero h1{font-size:42px;font-weight:800;margin:0 0 12px}.hero p{font-size:18px;line-height:1.9;margin:0;opacity:.94}
+.circle{position:absolute;border-radius:50%;background:#ffffff1f;pointer-events:none}
+.c1{width:200px;height:200px;bottom:-90px;left:10%}.c2{width:150px;height:150px;top:48%;right:34%;transform:translateY(-50%)}
+.c3{width:300px;height:300px;top:-150px;right:-60px}.c4{width:110px;height:110px;bottom:22px;right:12%}
+.library-main{padding:38px 0 66px}.library-heading{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:24px}
+.library-heading h2{font-size:25px;margin:0 0 5px}.library-heading p{margin:0;color:var(--muted);font-size:14px}
+.library-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.search,.type-filter{height:44px;border:1px solid var(--line);border-radius:10px;background:#f8fafc;color:var(--ink);padding:0 13px;outline:none}
+.search{width:min(290px,65vw)}.type-filter{min-width:145px}
+.search:focus,.type-filter:focus{border-color:#29b6f6;box-shadow:0 0 0 3px #29b6f61a}
+.results-count{font-size:13px;color:var(--muted);white-space:nowrap}
+.store{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;min-height:250px}
+.pcard{background:#fff;border:1px solid #e2e8f0;border-radius:14px;overflow:hidden;box-shadow:0 3px 14px #0000000d;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;display:flex;flex-direction:column;min-width:0}
+.pcard:hover{transform:translateY(-5px);box-shadow:0 13px 28px #0f56731a;border-color:#bde8fa}
+.pimg{height:235px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(135deg,#6d28d9,#ec4899,#f59e0b);color:#fff;text-align:center;font-size:25px;font-weight:800;padding:18px;position:relative}
+.pimg img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}.pimg .image-fallback{position:relative;z-index:1;max-width:100%;overflow-wrap:anywhere}
+.pbody{padding:16px 15px 15px;display:flex;flex-direction:column;gap:10px;flex:1}
+.pbody h3{font-size:16px;line-height:1.7;font-weight:800;margin:0;min-height:54px}
+.product-type{align-self:flex-start;background:#edf8fd;color:#0b7fa8;border:1px solid #d6edf8;border-radius:20px;padding:3px 10px;font-size:11px}
+.price{font-size:18px;font-weight:800;color:#0b7fa8;margin-top:2px}.price small{font-size:11px;font-weight:600;margin-left:3px;color:#64748b}
+.pbtns{display:flex;gap:8px;margin-top:auto;padding-top:5px}
+.pbtns a,.pbtns button{flex:1;min-width:0;display:inline-flex;align-items:center;justify-content:center;text-align:center;padding:10px 7px;border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;transition:transform .18s,background .18s,color .18s,border-color .18s}
+.buy{background:#29b6f6;color:#fff;border:1px solid #29b6f6}.buy:hover{background:#0b7fa8;border-color:#0b7fa8}
+.more{background:#fff;border:1px solid #cbd5e1;color:#334155}.more:hover{border-color:#29b6f6;color:#0b7fa8;background:#f0faff}
+.pbtns a:active,.pbtns button:active{transform:scale(.97)}
+.state{grid-column:1/-1;border:1px solid var(--line);border-radius:14px;background:#f8fafc;padding:28px 20px;text-align:center;color:var(--muted);line-height:1.8}
+.state strong{display:block;color:var(--ink);font-size:17px;margin-bottom:5px}
+.retry{margin-top:12px;border:0;border-radius:8px;padding:9px 16px;background:#0c8ea6;color:#fff;font-weight:700;cursor:pointer}
+.pagination{display:flex;justify-content:center;gap:8px;margin:34px 0 0}
+.pagination button{width:39px;height:39px;border:1px solid #e2e8f0;border-radius:9px;background:#fff;color:#334155;cursor:pointer}
+.pagination button.active{background:#29b6f6;border-color:#29b6f6;color:#fff}.pagination button:disabled{opacity:.4;cursor:not-allowed}
+footer{background:#0f172a;color:#9ca3af;padding:48px 20px 24px}
+.footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px}
+footer h3{color:#fff;margin:0 0 17px;font-size:18px}.footer-line{margin-bottom:12px;line-height:1.9;font-size:14px;color:#94a3b8}
+.footer-contact{display:flex;flex-direction:column;align-items:stretch;direction:rtl;text-align:right}.footer-contact h3{display:block;width:100%;text-align:right}
+.footer-contact .footer-line{display:block;width:100%;margin-bottom:11px;text-align:right}
+.footer-contact .footer-line[dir="ltr"]{direction:ltr;text-align:right;unicode-bidi:plaintext}
+.footer-brand-logo{display:block;width:180px;max-width:100%;height:auto;object-fit:contain;margin:0 0 15px}
+.footer-social{display:flex;align-items:center;gap:11px;margin:19px 0}
+.footer-social a{width:41px;height:41px;border:1px solid #34445f;border-radius:10px;display:grid;place-items:center;color:#dbe5f2;transition:background .18s,border-color .18s,color .18s,transform .18s}
+.footer-social a svg{width:20px;height:20px;display:block;fill:currentColor}
+.footer-social a:hover{background:#20b9ad;border-color:#20b9ad;color:#fff;transform:translateY(-2px)}
+footer a{transition:color .18s ease,transform .18s ease}footer .footer-grid section:last-child .footer-line a:hover{color:#20b9ad}
+.copyright{max-width:1200px;margin:35px auto 0;border-top:1px solid #1e293b;padding-top:22px;text-align:center;font-size:13px;color:#64748b}
+.modal-backdrop{position:fixed;inset:0;z-index:10000;background:rgba(15,23,42,.65);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:18px}
+.modal-backdrop.open{display:flex}.modal{width:min(650px,100%);max-height:88vh;overflow:auto;background:#fff;border-radius:18px;box-shadow:0 25px 70px #0f172a4d;direction:rtl}
+.modal-head{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;gap:14px;background:#f1faff;border-bottom:1px solid #e2edf4;padding:16px 20px}
+.modal-head h2{margin:0;color:#0b7fa8;font-size:19px}.modal-close{width:38px;height:38px;border:1px solid #dbe7ee;border-radius:10px;background:#fff;color:#0b7fa8;font-size:23px;cursor:pointer}
+.modal-content{padding:21px;color:#334155;line-height:1.9}.modal-product-image{width:100%;max-height:280px;object-fit:contain;background:#f8fafc;border-radius:12px;margin-bottom:14px}
+.modal-description{white-space:pre-wrap;overflow-wrap:anywhere}.modal-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px}
+.modal-actions{display:flex;gap:10px;margin-top:18px}.modal-actions a{display:inline-flex;align-items:center;justify-content:center;padding:11px 18px;border-radius:10px;background:#0c8ea6;color:#fff;font-weight:800;font-size:13px}
+@media(max-width:1050px){.store{grid-template-columns:repeat(3,minmax(0,1fr))}.site-nav{gap:9px;padding-inline:15px}.site-nav nav{gap:5px}.site-nav nav a{font-size:14px;padding:10px 12px}}
+@media(max-width:760px){.site-nav nav{display:none}.nav-tools{margin-inline-start:auto}.auth-link{height:41px;padding:0 12px;font-size:13px}.tool{height:41px;min-width:41px}.hero{min-height:290px}.hero h1{font-size:32px}.hero p{font-size:15px}.wrap{width:calc(100% - 28px)}.library-heading{align-items:flex-start;flex-direction:column}.library-tools{width:100%}.search{flex:1;width:auto}.store{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.pimg{height:190px}.pbody{padding:13px 11px}.pbody h3{font-size:14px}.pbtns{flex-direction:column}.footer-grid{grid-template-columns:1fr;gap:25px}.modal-actions{flex-direction:column}}
+@media(max-width:480px){.store{grid-template-columns:1fr}.pcard{max-width:420px;width:100%;margin-inline:auto}.pimg{height:220px}.pbtns{flex-direction:row}}
+@media(prefers-reduced-motion:reduce){.pcard,.site-nav nav a,.auth-link,.pbtns a,.pbtns button{transition:none}.pcard:hover{transform:none}}
+</style>
+</head>
+<body>
+<header class="site-nav" aria-label="التنقل الرئيسي">
+  <nav aria-label="القائمة الرئيسية">
+    <a href="index.html">الرئيسية</a>
+    <a href="public-courses.html">الكورسات</a>
+    <a href="#">الجلسات المباشرة</a>
+    <a href="public-library.html" aria-current="page">المكتبة</a>
+    <a href="#">المدونة</a>
+    <a href="support.html">اتصل بنا</a>
+  </nav>
+  <div class="nav-tools">
+    <a class="auth-link register" href="register.html">إنشاء حساب</a>
+    <a class="auth-link login" href="login.html">تسجيل الدخول</a>
+    <button class="tool" type="button" aria-label="اللغة">🌐</button>
+    <span class="tool" id="currencyLabel" aria-label="العملة">EGP</span>
+  </div>
+  <img class="site-logo" data-site-logo alt="شعار المنصة" hidden>
+</header>
+<section class="hero">
+  <div class="circle c1"></div><div class="circle c2"></div><div class="circle c3"></div><div class="circle c4"></div>
+  <div class="hero-content"><small>المكتبة</small><h1>مكتبتنا</h1><p>كتب وموارد تعليمية تسهّل عليك التعلّم والمراجعة</p></div>
+</section>
+<main class="wrap library-main">
+  <div class="library-heading">
+    <div><h2>موارد المكتبة</h2><p>تصفّح الكتب والمواد التعليمية المتاحة من إدارة المنصة</p></div>
+    <div class="library-tools">
+      <input class="search" id="productSearch" type="search" placeholder="ابحث باسم الكتاب أو المنتج..." aria-label="ابحث في المكتبة">
+      <select class="type-filter" id="productTypeFilter" aria-label="نوع المنتج">
+        <option value="all">كل المنتجات</option><option value="رقمي">منتجات رقمية</option><option value="physical">منتجات مطبوعة</option>
+      </select>
+      <span class="results-count" id="resultsCount">جارٍ تحميل المكتبة...</span>
+    </div>
+  </div>
+  <section class="store" id="libraryGrid" aria-live="polite"><div class="state"><strong>جارٍ تحميل المكتبة</strong>يتم عرض المنتجات النشطة من لوحة الإدارة.</div></section>
+  <nav class="pagination" id="pagination" aria-label="صفحات المكتبة" hidden></nav>
+</main>
+<footer>
+  <div class="footer-grid">
+    <section>
+      <img class="footer-brand-logo" src="https://ostaz.fra1.cdn.digitaloceanspaces.com/alielian.teachingportals.com/organizations/2-d8292112-1793307851.png" alt="منصة علي عليان الدولية">
+      <h3>منصة علي عليان الدولية</h3>
+      <p class="footer-line">المنصة الدولية | نصنع التفوق في اللغة العربية برؤية عالمية وأدوات عصرية. مناهج متخصصة، وتأسيس احترافي، وتجربة تعليمية ذكية تواكب طموحك.</p>
+      <div class="footer-social">
+        <a href="#" aria-label="فيسبوك"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-8.2h2.8l.4-3.2h-3.2V7.55c0-.93.26-1.56 1.6-1.56h1.7V3.12c-.3-.04-1.35-.12-2.57-.12-2.55 0-4.3 1.56-4.3 4.43v2.17H7.1v3.2h2.9V21h3.5z"/></svg></a>
+        <a href="#" aria-label="يوتيوب"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.55 3.6 12 3.6 12 3.6s-7.55 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.85.5 9.4.5 9.4.5s7.55 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z"/></svg></a>
+        <a href="#" aria-label="إنستجرام"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm0 2A3.8 3.8 0 0 0 4 7.8v8.4A3.8 3.8 0 0 0 7.8 20h8.4a3.8 3.8 0 0 0 3.8-3.8V7.8A3.8 3.8 0 0 0 16.2 4H7.8Zm4.2 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.2-3.5a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z"/></svg></a>
+      </div>
+    </section>
+    <section class="footer-contact">
+      <h3><a href="support.html">اتصل بنا</a></h3>
+      <div class="footer-line" dir="ltr">+201126529544</div><div class="footer-line" dir="ltr">+966547803289</div>
+      <div class="footer-line">alimohammed20204@gmail.com</div>
+    </section>
+    <section>
+      <h3>قانوني</h3>
+      <div class="footer-line"><a href="#">الشروط والأحكام</a></div>
+      <div class="footer-line"><a href="#privacy">سياسة الخصوصية</a></div>
+      <div class="footer-line"><a href="support.html">تواصل معنا</a></div>
+    </section>
+  </div>
+  <div class="copyright">© 2026 منصة علي عليان الدولية جميع الحقوق محفوظة</div>
+</footer>
+<div class="modal-backdrop" id="productModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <article class="modal">
+    <header class="modal-head"><h2 id="modalTitle">تفاصيل المنتج</h2><button class="modal-close" id="closeProductModal" type="button" aria-label="إغلاق">×</button></header>
+    <div class="modal-content">
+      <img class="modal-product-image" id="modalImage" alt="" hidden>
+      <p class="modal-description" id="modalDescription"></p>
+      <div class="modal-meta"><span class="product-type" id="modalType"></span><strong class="price" id="modalPrice"></strong></div>
+      <div class="modal-actions"><a id="modalBuy" href="#" target="_blank" rel="noopener noreferrer">شراء الآن عبر واتساب</a></div>
+    </div>
+  </article>
+</div>
+<script>
+(function () {
+  "use strict";
+  const PAGE_SIZE=12;
+  const state={products:[],filtered:[],page:1,currency:"EGP"};
+  const $=id=>document.getElementById(id);
+  const grid=$("libraryGrid"),pagination=$("pagination");
+  function node(tag,className,text){const el=document.createElement(tag);if(className)el.className=className;if(text!==undefined)el.textContent=text;return el;}
+  function money(product){
+    if(product.isFree)return "مجاني";
+    try{return new Intl.NumberFormat("ar-EG",{style:"currency",currency:state.currency,maximumFractionDigits:2}).format(product.price);}
+    catch(_){return Number(product.price||0).toFixed(2)+" "+state.currency;}
+  }
+  function typeName(product){return product.type==="physical"?"منتج مطبوع":"منتج رقمي";}
+  function whatsappUrl(product){const message="السلام عليكم، أرغب في شراء المنتج: "+product.title+" - "+money(product);return "https://wa.me/201126529544?text="+encodeURIComponent(message);}
+  function matches(product){
+    const q=$("productSearch").value.trim().toLocaleLowerCase("ar"),type=$("productTypeFilter").value;
+    const text=[product.title,product.description,typeName(product)].join(" ").toLocaleLowerCase("ar");
+    return (!q||text.includes(q))&&(type==="all"||product.type===type);
+  }
+  function openDetails(product){
+    $("modalTitle").textContent=product.title;$("modalDescription").textContent=product.description||"لا يوجد وصف إضافي لهذا المنتج حالياً.";
+    $("modalType").textContent=typeName(product);$("modalPrice").textContent=money(product);
+    const image=$("modalImage");
+    if(product.image){image.src=product.image;image.alt=product.title;image.hidden=false;}else{image.removeAttribute("src");image.hidden=true;}
+    $("modalBuy").href=whatsappUrl(product);$("productModal").classList.add("open");$("closeProductModal").focus();
+  }
+  function closeDetails(){$("productModal").classList.remove("open");}
+  function renderCard(product){
+    const card=node("article","pcard"),thumb=node("div","pimg");
+    if(product.image){
+      const image=node("img");image.loading="lazy";image.alt=product.title;image.src=product.image;
+      image.addEventListener("error",()=>thumb.replaceChildren(node("span","image-fallback",product.title)),{once:true});thumb.appendChild(image);
+    }else{thumb.appendChild(node("span","image-fallback",product.title));}
+    const body=node("div","pbody");body.append(node("h3","",product.title),node("span","product-type",typeName(product)),node("div","price",money(product)));
+    const actions=node("div","pbtns"),buy=node("a","buy","شراء الآن"),more=node("button","more","قراءة المزيد");
+    buy.href=whatsappUrl(product);buy.target="_blank";buy.rel="noopener noreferrer";
+    more.type="button";more.addEventListener("click",()=>openDetails(product));actions.append(buy,more);body.appendChild(actions);card.append(thumb,body);return card;
+  }
+  function renderPagination(){
+    const pages=Math.ceil(state.filtered.length/PAGE_SIZE);pagination.replaceChildren();pagination.hidden=pages<=1;if(pages<=1)return;
+    const prev=node("button","","‹");prev.type="button";prev.disabled=state.page===1;prev.addEventListener("click",()=>{state.page--;render();});pagination.appendChild(prev);
+    for(let p=1;p<=pages;p++){const b=node("button",p===state.page?"active":"",String(p));b.type="button";b.setAttribute("aria-current",p===state.page?"page":"false");b.addEventListener("click",()=>{state.page=p;render();});pagination.appendChild(b);}
+    const next=node("button","","›");next.type="button";next.disabled=state.page===pages;next.addEventListener("click",()=>{state.page++;render();});pagination.appendChild(next);
+  }
+  function render(){
+    state.filtered=state.products.filter(matches);state.page=Math.min(state.page,Math.max(1,Math.ceil(state.filtered.length/PAGE_SIZE)));
+    $("resultsCount").textContent=state.filtered.length.toLocaleString("ar-EG")+" منتج";grid.replaceChildren();
+    if(!state.filtered.length){
+      const empty=node("div","state");empty.append(node("strong","",state.products.length?"لا توجد منتجات مطابقة":"المكتبة فارغة حالياً"),
+        node("span","",state.products.length?"جرّب تغيير البحث أو نوع المنتج.":"ستظهر الكتب والموارد هنا بمجرد إضافتها وتفعيلها من لوحة الإدارة."));
+      grid.appendChild(empty);pagination.hidden=true;return;
+    }
+    state.filtered.slice((state.page-1)*PAGE_SIZE,state.page*PAGE_SIZE).forEach(product=>grid.appendChild(renderCard(product)));renderPagination();
+  }
+  function showError(message){
+    grid.replaceChildren();const error=node("div","state");error.append(node("strong","","تعذر تحميل المكتبة"),node("span","",message));
+    const retry=node("button","retry","إعادة المحاولة");retry.type="button";retry.addEventListener("click",loadProducts);error.appendChild(retry);
+    grid.appendChild(error);$("resultsCount").textContent="—";pagination.hidden=true;
+  }
+  async function loadProducts(){
+    grid.replaceChildren(node("div","state","جارٍ تحميل منتجات المكتبة..."));$("resultsCount").textContent="جارٍ تحميل المكتبة...";
+    try{
+      const response=await fetch("/api/public/library",{credentials:"same-origin",cache:"no-store"}),data=await response.json().catch(()=>({}));
+      if(!response.ok||!data.ok)throw new Error(data.message||"تعذر تحميل منتجات المكتبة.");
+      state.products=Array.isArray(data.products)?data.products:[];state.currency=["EGP","SAR","USD"].includes(data.currency)?data.currency:"EGP";
+      $("currencyLabel").textContent=state.currency;render();
+    }catch(error){showError(error.message||"تحقق من اتصال الإنترنت ثم أعد المحاولة.");}
+  }
+  $("productSearch").addEventListener("input",()=>{state.page=1;render();});
+  $("productTypeFilter").addEventListener("change",()=>{state.page=1;render();});
+  $("closeProductModal").addEventListener("click",closeDetails);
+  $("productModal").addEventListener("click",event=>{if(event.target===$("productModal"))closeDetails();});
+  document.addEventListener("keydown",event=>{if(event.key==="Escape")closeDetails();});
+  loadProducts();
+})();
+</script>
+<script src="/site-branding.js" defer></script>
+</body>
+</html>
