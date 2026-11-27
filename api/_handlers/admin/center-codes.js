@@ -4,7 +4,7 @@ const { ObjectId } = require("mongodb");
 const CODES = process.env.CENTER_CODES_COLLECTION || "center_codes";
 const COURSE = process.env.COURSES_COLLECTION || "courses";
 const LIVE = process.env.LIVE_SESSIONS_COLLECTION || "live_sessions";
-const LIBRARY = process.env.LIBRARY_COLLECTION || "library_products";
+const LIBRARY = process.env.LIBRARY_PRODUCTS_COLLECTION || process.env.LIBRARY_COLLECTION || "library_products";
 const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const clean = (v,n=200)=>String(v??"").trim().slice(0,n);
 const expired = d=>!!d && new Date(d+"T23:59:59").getTime()<Date.now();
