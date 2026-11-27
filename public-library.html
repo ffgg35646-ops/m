@@ -193,9 +193,10 @@ footer a{transition:color .18s ease,transform .18s ease}footer .footer-grid sect
       image.addEventListener("error",()=>thumb.replaceChildren(node("span","image-fallback",product.title)),{once:true});thumb.appendChild(image);
     }else{thumb.appendChild(node("span","image-fallback",product.title));}
     const body=node("div","pbody");body.append(node("h3","",product.title),node("span","product-type",typeName(product)),node("div","price",money(product)));
-    const actions=node("div","pbtns"),buy=node("a","buy","شراء الآن"),more=node("button","more","قراءة المزيد");
-    buy.href=whatsappUrl(product);buy.target="_blank";buy.rel="noopener noreferrer";
-    more.type="button";more.addEventListener("click",()=>openDetails(product));actions.append(buy,more);body.appendChild(actions);card.append(thumb,body);return card;
+    const actions=node("div","pbtns"),buy=node("a","buy","شراء الآن"),more=node("a","more","عرض المزيد");
+    buy.href="login.html";
+    more.href="library-details.html?productId="+encodeURIComponent(product.id);
+    actions.append(buy,more);body.appendChild(actions);card.append(thumb,body);return card;
   }
   function renderPagination(){
     const pages=Math.ceil(state.filtered.length/PAGE_SIZE);pagination.replaceChildren();pagination.hidden=pages<=1;if(pages<=1)return;
