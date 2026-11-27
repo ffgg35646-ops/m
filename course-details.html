@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>تفاصيل الكورس | منصة علي عليان الدولية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#29b6f6;--blue-dark:#0b7fa8;--text:#1e293b;--muted:#64748b;--line:#e2e8f0}
+*{box-sizing:border-box}body{margin:0;background:#fff;color:var(--text);font-family:"Cairo","Segoe UI",Tahoma,sans-serif}a{text-decoration:none;color:inherit}button{font:inherit;cursor:pointer}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:12px 24px;background:#fff;min-height:76px;border-bottom:1px solid #eef2f7}
+.nav nav{display:flex;align-items:center;gap:24px;flex-wrap:wrap}.nav nav a{font-size:14px;color:#334155;font-weight:700}.nav nav a:hover{color:var(--blue-dark)}
+.logo{width:48px;height:48px;object-fit:contain;border:1px solid #edf2f7;border-radius:10px;padding:3px}
+.actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.btn{padding:10px 17px;border-radius:10px;font-size:13px;font-weight:800}.btn-primary{background:#0c8ea6;color:#fff}.btn-outline{background:#fff;color:#0c8ea6;border:1px solid #0c8ea6}.tool{height:40px;min-width:42px;padding:0 10px;border:1px solid #2aa9e0;border-radius:9px;color:#1689b5;background:#fff;font-size:12px;font-weight:800}
+.chero{position:relative;overflow:hidden;background:linear-gradient(160deg,#29b6f6,#0b7fa8);color:#fff;padding:42px 0 35px}
+.chero:before,.chero:after{content:"";position:absolute;border-radius:50%;background:#ffffff1f;pointer-events:none}.chero:before{width:260px;height:260px;top:-140px;right:-45px}.chero:after{width:190px;height:190px;bottom:-115px;left:12%}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}.chero .wrap{position:relative;z-index:1}.crumb{font-size:12px;color:#e6f7ff;margin-bottom:13px}.crumb a{text-decoration:underline;text-underline-offset:3px}
+.chero h1{font-size:30px;font-weight:800;margin:0 0 13px;line-height:1.5}.ctags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:13px}.ctags span{font-size:12px;border:1px solid #ffffff66;background:#ffffff26;padding:5px 13px;border-radius:20px}.course-description{max-width:850px;line-height:1.9;font-size:14px;color:#f0fbff;margin:0 0 17px;white-space:pre-wrap}
+.enter{display:inline-flex;align-items:center;gap:10px;background:#10b981;color:#fff;padding:11px 19px;border-radius:9px;font-size:14px;font-weight:800}.enter strong{direction:ltr}
+.detail{display:grid;grid-template-columns:minmax(270px,1fr) minmax(0,2.4fr);gap:25px;padding:28px 0 65px;align-items:start}
+.content,.preview{background:#fff;border-radius:14px;box-shadow:0 2px 14px #0001;border:1px solid #f0f3f7}.content{padding:18px 12px}.content h2{font-size:18px;font-weight:800;padding:0 8px 13px;border-bottom:1px solid var(--line);margin:0 0 14px}
+.section{border:1px solid var(--line);border-radius:9px;margin-bottom:10px;overflow:hidden}.section-head{width:100%;border:0;background:#fff;display:flex;align-items:center;gap:10px;padding:12px 13px;text-align:right;color:#334155}.section-head strong{font-size:13px;font-weight:700;flex:1}.section-head em{font-style:normal;font-size:10px;color:#6b7fd7;background:#eef1fb;border-radius:12px;padding:3px 9px;white-space:nowrap}.section-head .chev{font-size:17px;color:#64748b}.section.open>.section-head{background:linear-gradient(135deg,#29b6f6,#0b7fa8);color:#fff}.section.open>.section-head em{background:#ffffff33;color:#fff}.section.open>.section-head .chev{color:#fff}
+.lesson-list{display:none;background:#fff}.section.open>.lesson-list{display:block}.lesson{width:100%;display:flex;align-items:center;gap:9px;padding:11px 13px;border:0;border-top:1px solid #f1f5f9;background:#fff;color:#475569;text-align:right;font-size:12px}.lesson:hover,.lesson.selected{background:#eef8fd;color:#0b7fa8}.lesson-name{flex:1}.lesson-kind{font-size:11px;background:#edf8fd;color:#0b7fa8;padding:3px 8px;border-radius:20px}
+.preview{min-height:420px;padding:25px;display:flex;flex-direction:column}.preview-empty{min-height:360px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#9ca3af}.eye{font-size:55px;filter:grayscale(1);margin-bottom:7px}.preview-empty h2{font-size:19px;color:#6b7280;margin:0 0 5px}.preview-empty p{font-size:13px;margin:0;line-height:1.8}
+.preview-content{width:100%}.preview-title{display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:17px}.preview-title .play-icon{width:43px;height:43px;display:grid;place-items:center;border-radius:12px;background:#eaf8fd;color:#0b7fa8;font-size:19px;flex:none}.preview-title h2{font-size:17px;margin:0 0 3px}.preview-title p{font-size:11px;color:#94a3b8;margin:0}
+.media-frame{width:100%;aspect-ratio:16/9;background:#0f172a;border-radius:12px;overflow:hidden;display:grid;place-items:center;margin-bottom:14px}.media-frame video,.media-frame iframe{width:100%;height:100%;border:0;display:block}.media-frame video{object-fit:contain}.media-placeholder{color:#dbeafe;text-align:center;padding:20px;font-size:13px;line-height:1.9}.item-description{font-size:13px;color:#64748b;line-height:1.9;white-space:pre-wrap;margin:10px 0}.file-link{display:inline-flex;align-items:center;gap:8px;background:#eaf8fd;color:#0b7fa8;border-radius:9px;padding:10px 14px;font-size:12px;font-weight:800;margin-top:7px}
+.state{max-width:760px;margin:45px auto;padding:28px 20px;text-align:center;border:1px solid var(--line);border-radius:14px;background:#f8fafc;color:#64748b;line-height:1.9}.state strong{display:block;color:#334155;font-size:17px;margin-bottom:5px}.retry{margin-top:12px;border:0;border-radius:9px;padding:10px 18px;background:#0c8ea6;color:#fff;font-weight:800}
+footer{background:#0f172a;color:#cbd5e1;padding:45px 0 20px}.f-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:35px}.f-grid h3{color:#fff;font-size:17px;margin:0 0 14px}.f-grid p,.f-grid a{display:block;font-size:13px;line-height:2;color:#94a3b8}.copy{border-top:1px solid #1e293b;margin-top:28px;padding-top:18px;text-align:center;font-size:12px;color:#64748b}
+@media(max-width:900px){.detail{grid-template-columns:1fr}.content{order:1}.preview{order:2}.f-grid{grid-template-columns:1fr}}
+@media(max-width:650px){.nav{padding:10px 13px;flex-wrap:wrap}.nav nav{order:3;width:100%;gap:13px;overflow:auto;white-space:nowrap}.nav nav a{font-size:12px}.actions{margin-inline-start:auto}.btn{padding:9px 11px;font-size:11px}.tool{height:36px;min-width:37px}.wrap{padding:0 14px}.chero{padding:30px 0}.chero h1{font-size:23px}.detail{padding-top:19px}.preview{padding:17px;min-height:330px}.preview-empty{min-height:270px}.content{padding:14px 10px}}
+</style>
+</head>
+<body>
+<header class="nav">
+  <img class="logo" data-site-logo alt="شعار المنصة" hidden>
+  <nav aria-label="القائمة الرئيسية">
+    <a href="index.html">الرئيسية</a><a href="public-courses.html" aria-current="page">الكورسات</a><a href="public-library.html">المكتبة</a><a href="public-blog.html">المدونة</a><a href="support.html">اتصل بنا</a>
+  </nav>
+  <div class="actions">
+    <a class="btn btn-outline" href="login.html">تسجيل الدخول</a>
+    <a class="btn btn-primary" href="register.html">إنشاء حساب</a>
+    <button class="tool" type="button" aria-label="اللغة">🌐</button><span class="tool">EGP</span>
+  </div>
+</header>
+
+<section class="chero">
+  <div class="wrap">
+    <div class="crumb"><a href="public-courses.html">الكورسات</a> / تفاصيل الكورس</div>
+    <h1 id="courseTitle">جارٍ تحميل بيانات الكورس...</h1>
+    <div class="ctags" id="courseTags"></div>
+    <p class="course-description" id="courseDescription"></p>
+    <a class="enter" id="purchaseLink" href="login.html">🛒 شراء الكورس <strong id="coursePrice"></strong></a>
+  </div>
+</section>
+
+<main class="wrap">
+  <div class="detail">
+    <aside class="content">
+      <h2>محتوى الكورس</h2>
+      <div id="sectionsList"><div class="state">جارٍ تحميل أقسام ودروس الكورس...</div></div>
+    </aside>
+    <section class="preview" id="previewPane" aria-live="polite">
+      <div class="preview-empty"><div class="eye">👁</div><h2>معاينة محتوى الكورس</h2><p>اختر درساً من القائمة لعرض الفيديو أو الملف الخاص به</p></div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <section><h3>منصة علي عليان الدولية</h3><p>المنصة الدولية | نصنع التفوق في اللغة العربية برؤية عالمية وأدوات عصرية، ومناهج متخصصة وتجربة تعليمية ذكية.</p></section>
+      <section><h3>اتصل بنا</h3><p dir="ltr">+201126529544</p><p dir="ltr">+966547803289</p><p>alimohammed20204@gmail.com</p></section>
+      <section><h3>قانوني</h3><a href="#">الشروط والأحكام</a><a href="#">سياسة الخصوصية</a><a href="support.html">تواصل معنا</a></section>
+    </div>
+    <div class="copy">© 2026 منصة علي عليان الدولية جميع الحقوق محفوظة</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  const $ = id => document.getElementById(id);
+  let course = null;
+  function make(tag, className, text){
+    const element = document.createElement(tag);
+    if(className) element.className = className;
+    if(text !== undefined) element.textContent = text;
+    return element;
+  }
+  function formatPrice(value, free){
+    if(free || Number(value) === 0) return "مجاني";
+    try{return new Intl.NumberFormat("ar-EG",{style:"currency",currency:"EGP",maximumFractionDigits:2}).format(Number(value)||0);}
+    catch(_){return String(value)+" EGP";}
+  }
+  function totalItems(section){return Array.isArray(section.items)?section.items.length:0;}
+  function renderHeader(data){
+    $("courseTitle").textContent = data.title || "تفاصيل الكورس";
+    $("courseDescription").textContent = data.description || "";
+    $("coursePrice").textContent = formatPrice(data.price,data.isFree);
+    $("purchaseLink").href = "login.html?courseId="+encodeURIComponent(data.id);
+    $("courseTags").replaceChildren();
+    [data.category,data.grade,data.subject,data.track].filter(Boolean).forEach(value=>$("courseTags").appendChild(make("span","",value)));
+    document.title = (data.title || "تفاصيل الكورس")+" | منصة علي عليان الدولية";
+  }
+  function embedUrl(raw){
+    try{
+      const url = new URL(raw);
+      const host = url.hostname.replace(/^www\./,"").toLowerCase();
+      if(host==="youtu.be"){
+        const id=url.pathname.split("/").filter(Boolean)[0];
+        return id?"https://www.youtube-nocookie.com/embed/"+encodeURIComponent(id):"";
+      }
+      if(host==="youtube.com"||host==="m.youtube.com"){
+        let id=url.searchParams.get("v");
+        if(!id && url.pathname.startsWith("/embed/")) id=url.pathname.split("/")[2];
+        if(!id && url.pathname.startsWith("/shorts/")) id=url.pathname.split("/")[2];
+        return id?"https://www.youtube-nocookie.com/embed/"+encodeURIComponent(id):"";
+      }
+      if(host==="vimeo.com"){
+        const id=url.pathname.split("/").filter(Boolean).pop();
+        return id&&/^\d+$/.test(id)?"https://player.vimeo.com/video/"+id:"";
+      }
+    }catch(_){}
+    return "";
+  }
+  function preview(item, section){
+    const pane=$("previewPane");pane.replaceChildren();
+    const content=make("div","preview-content");
+    const title=make("div","preview-title");
+    title.appendChild(make("span","play-icon",item.type==="video"?"▶":"▤"));
+    const copy=make("div");copy.appendChild(make("h2","",item.name||"درس"));
+    copy.appendChild(make("p","",section.title+" • "+(item.type==="video"?"فيديو":"ملف")));
+    title.appendChild(copy);content.appendChild(title);
+    if(item.url){
+      if(item.type==="video"){
+        const frame=make("div","media-frame");
+        const embed=embedUrl(item.url);
+        if(embed){
+          const iframe=document.createElement("iframe");iframe.src=embed;iframe.title=item.name||"فيديو الدرس";iframe.loading="lazy";
+          iframe.allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";iframe.allowFullscreen=true;
+          frame.appendChild(iframe);
+        }else{
+          const video=document.createElement("video");video.controls=true;video.preload="metadata";video.playsInline=true;video.src=item.url;
+          video.addEventListener("error",()=>{frame.replaceChildren(make("div","media-placeholder","تعذر تشغيل الفيديو داخل الصفحة. يمكنك فتح رابط الفيديو مباشرة من الزر بالأسفل."));},{once:true});
+          frame.appendChild(video);
+        }
+        content.appendChild(frame);
+        const link=make("a","file-link","فتح رابط الفيديو في نافذة جديدة ↗");link.href=item.url;link.target="_blank";link.rel="noopener noreferrer";content.appendChild(link);
+      }else{
+        const link=make("a","file-link","فتح / تحميل ملف الدرس ↗");link.href=item.url;link.target="_blank";link.rel="noopener noreferrer";content.appendChild(link);
+      }
+    }else{
+      content.appendChild(make("div","media-frame", "لم يضف الأدمن رابطاً لهذا المحتوى بعد."));
+    }
+    if(item.description)content.appendChild(make("p","item-description",item.description));
+    pane.appendChild(content);
+  }
+  function renderSections(){
+    const list=$("sectionsList");list.replaceChildren();
+    const sections=Array.isArray(course.sections)?course.sections:[];
+    if(!sections.length){
+      list.appendChild(make("div","state","لم تتم إضافة أقسام أو دروس لهذا الكورس حتى الآن."));
+      return;
+    }
+    sections.forEach((section,index)=>{
+      const card=make("article","section"+(index===0?" open":""));
+      const head=make("button","section-head");
+      head.type="button";
+      const title=make("strong","",section.title||"قسم بدون عنوان");
+      const count=make("em","",(totalItems(section))+" دروس");
+      const chevron=make("span","chev",index===0?"⌄":"‹");
+      head.append(title,count,chevron);
+      const lessons=make("div","lesson-list");
+      (section.items||[]).forEach(item=>{
+        const button=make("button","lesson");
+        button.type="button";
+        button.appendChild(make("span","lesson-name",item.name||"درس بدون عنوان"));
+        button.appendChild(make("span","lesson-kind",item.type==="file"?"ملف":"فيديو"));
+        button.addEventListener("click",()=>{
+          list.querySelectorAll(".lesson.selected").forEach(el=>el.classList.remove("selected"));
+          button.classList.add("selected");
+          preview(item,section);
+        });
+        lessons.appendChild(button);
+      });
+      head.addEventListener("click",()=>{
+        const wasOpen=card.classList.contains("open");
+        list.querySelectorAll(".section.open").forEach(el=>{el.classList.remove("open");const c=el.querySelector(".chev");if(c)c.textContent="‹";});
+        if(!wasOpen){card.classList.add("open");chevron.textContent="⌄";}
+      });
+      card.append(head,lessons);list.appendChild(card);
+    });
+  }
+  function showError(message){
+    $("courseTitle").textContent="تعذر تحميل الكورس";
+    $("courseTags").replaceChildren();
+    $("courseDescription").textContent=message;
+    $("purchaseLink").hidden=true;
+    $("sectionsList").replaceChildren();
+    const state=make("div","state");state.appendChild(make("strong","","تعذر تحميل بيانات الكورس"));
+    state.appendChild(make("span","",message));
+    const retry=make("button","retry","إعادة المحاولة");retry.type="button";retry.addEventListener("click",loadCourse);state.appendChild(retry);
+    $("sectionsList").appendChild(state);
+  }
+  async function loadCourse(){
+    const id=new URLSearchParams(location.search).get("courseId");
+    if(!id){showError("رابط الكورس غير مكتمل. ارجع إلى صفحة الكورسات واختر الكورس مرة أخرى.");return;}
+    $("purchaseLink").hidden=false;
+    try{
+      const response=await fetch("/api/public/courses?courseId="+encodeURIComponent(id),{credentials:"same-origin",cache:"no-store"});
+      const data=await response.json().catch(()=>({}));
+      if(!response.ok||!data.ok||!data.course)throw new Error(data.message||"الكورس غير متاح حالياً.");
+      course=data.course;renderHeader(course);renderSections();
+    }catch(error){showError(error.message||"تحقق من اتصال الإنترنت ثم أعد المحاولة.");}
+  }
+  loadCourse();
+})();
+</script>
+<script src="/site-branding.js" defer></script>
+</body>
+</html>
