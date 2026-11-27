@@ -110,7 +110,7 @@ footer{background:#0f172a;color:#cbd5e1;padding:50px 0 20px}.f-grid{display:grid
       const small=document.createElement("small");small.textContent=currency;
       $("productPrice").append(small,document.createTextNode(" "+(product.isFree?"مجاني":Number(product.price||0).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}))));
       $("productDescription").textContent=product.description||"لا يوجد وصف إضافي لهذا الكتاب حالياً.";
-      $("buyLink").href="login.html?productId="+encodeURIComponent(product.id);
+      $("buyLink").href="login.html?next="+encodeURIComponent("orders.html?targetType=library&targetId="+product.id);
       const holder=$("productImage");holder.replaceChildren();
       if(product.images&&product.images.length){
         const main=document.createElement("img");main.src=product.images[0];main.alt=product.title;main.id="mainProductImage";
