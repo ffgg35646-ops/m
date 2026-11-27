@@ -98,7 +98,7 @@ footer{background:#0f172a;color:#cbd5e1;padding:45px 0 20px}.f-grid{display:grid
     $("courseTitle").textContent = data.title || "تفاصيل الكورس";
     $("courseDescription").textContent = data.description || "";
     $("coursePrice").textContent = formatPrice(data.price,data.isFree);
-    $("purchaseLink").href = "login.html?courseId="+encodeURIComponent(data.id);
+    $("purchaseLink").href = "login.html?next="+encodeURIComponent("orders.html?targetType=courses&targetId="+data.id);
     $("courseTags").replaceChildren();
     [data.category,data.grade,data.subject,data.track].filter(Boolean).forEach(value=>$("courseTags").appendChild(make("span","",value)));
     document.title = (data.title || "تفاصيل الكورس")+" | منصة علي عليان الدولية";
