@@ -51,6 +51,105 @@
     }`;
   (document.head || document.documentElement).appendChild(interactionStyle);
 
+  // Shared entrance and card motion for public pages and student/admin screens.
+  const motionStyle = document.createElement("style");
+  motionStyle.id = "site-entrance-card-motion";
+  motionStyle.textContent = [
+    ".site-hero-rise, .site-hero-part { opacity:0; will-change:opacity,transform,filter; animation:siteHeroRise .86s cubic-bezier(.2,.78,.24,1) both; }",
+    "@keyframes siteHeroRise { from { opacity:0; transform:translate3d(0,28px,0) scale(.988); filter:blur(2px); } to { opacity:1; transform:translate3d(0,0,0) scale(1); filter:blur(0); } }",
+    "[data-site-motion-card='pending'] { opacity:0; transform:translate3d(var(--site-motion-x,12px),0,0); transition:opacity .56s ease,transform .64s cubic-bezier(.2,.78,.24,1),box-shadow .28s ease,border-color .28s ease; transition-delay:var(--site-motion-delay,0ms); will-change:opacity,transform; }",
+    "[data-site-motion-card='visible'] { opacity:1; transform:translate3d(0,0,0); }",
+    "[data-site-motion-card='visible']:hover { transform:translate3d(0,-3px,0) scale(1.012); box-shadow:0 14px 32px rgba(15,35,60,.11); border-color:rgba(42,169,224,.22); transition-delay:0ms; }",
+    "[data-site-motion-card='visible']:hover img:not([data-no-zoom]) { transform:scale(1.035); }",
+    "@media(max-width:768px) { [data-site-motion-card='pending'] { transform:translate3d(var(--site-motion-mobile-x,8px),0,0); } [data-site-motion-card='visible']:hover { transform:translate3d(0,-2px,0) scale(1.008); } }",
+    "@media(prefers-reduced-motion:reduce) { .site-hero-rise,.site-hero-part { opacity:1; transform:none; filter:none; animation:none; } [data-site-motion-card='pending'],[data-site-motion-card='visible'] { opacity:1; transform:none; transition:none; } [data-site-motion-card='visible']:hover { transform:none; box-shadow:inherit; } [data-site-motion-card='visible']:hover img:not([data-no-zoom]) { transform:none; } }"
+  ].join("\n");
+  (document.head || document.documentElement).appendChild(motionStyle);
+
+  const motionCardSelector = [
+    ".course-card", ".benefit", ".teacher", ".pcard", ".post",
+    ".card", ".panel", ".stat", ".surface", ".security-card",
+    ".feature-card", ".form-card", ".tablecard", ".product",
+    ".plan", ".course", ".grade-card", ".about-visual", ".promo-panel",
+    ".featured > article", ".benefits > article", ".teacher-grid > *",
+    "#gradeGrid > *", "#coursesGrid > article",
+    "#libraryGrid > article", "#blogGrid > article"
+  ].join(",");
+  let motionCardIndex = 0;
+  let cardObserver = null;
+
+  if (typeof IntersectionObserver === "function") {
+    cardObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.setAttribute("data-site-motion-card", "visible");
+        cardObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -4% 0px" });
+  }
+
+  function prepareHeroMotion(hero) {
+    if (!(hero instanceof HTMLElement) || hero.dataset.siteHeroMotion === "1") return;
+    hero.dataset.siteHeroMotion = "1";
+
+    const content = hero.querySelector(".hero-content") || hero.querySelector(":scope > .wrap");
+    if (content) {
+      if (content.classList.contains("wrap") && content.children.length > 1) {
+        [...content.children].forEach((part, index) => {
+          if (!(part instanceof HTMLElement) || part.classList.contains("circle")) return;
+          part.classList.add("site-hero-part");
+          part.style.animationDelay = String(index * 110) + "ms";
+        });
+      } else {
+        content.classList.add("site-hero-rise");
+      }
+      return;
+    }
+
+    [...hero.children].forEach((part, index) => {
+      if (!(part instanceof HTMLElement) || part.classList.contains("circle")) return;
+      part.classList.add("site-hero-part");
+      part.style.animationDelay = String(index * 95) + "ms";
+    });
+  }
+
+  function prepareMotionCard(card) {
+    if (!(card instanceof HTMLElement) || card.dataset.siteMotionCard) return;
+    const index = motionCardIndex++;
+    const offset = index % 2 === 0 ? 12 : -12;
+    card.style.setProperty("--site-motion-x", String(offset) + "px");
+    card.style.setProperty("--site-motion-mobile-x", String(offset > 0 ? 8 : -8) + "px");
+    card.style.setProperty("--site-motion-delay", String((index % 4) * 45) + "ms");
+
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      card.dataset.siteMotionCard = "visible";
+      return;
+    }
+
+    card.dataset.siteMotionCard = cardObserver ? "pending" : "visible";
+    if (cardObserver) cardObserver.observe(card);
+  }
+
+  function prepareMotionTree(root) {
+    if (!(root instanceof Element)) return;
+    if (root.matches(".hero")) prepareHeroMotion(root);
+    root.querySelectorAll(".hero").forEach(prepareHeroMotion);
+    if (root.matches(motionCardSelector)) prepareMotionCard(root);
+    root.querySelectorAll(motionCardSelector).forEach(prepareMotionCard);
+  }
+
+  prepareMotionTree(document.documentElement);
+  if (document.body && typeof MutationObserver === "function") {
+    const motionMutationObserver = new MutationObserver(records => {
+      records.forEach(record => {
+        record.addedNodes.forEach(node => {
+          if (node instanceof Element) prepareMotionTree(node);
+        });
+      });
+    });
+    motionMutationObserver.observe(document.body, { childList: true, subtree: true });
+  }
+
   const interactiveSelector = 'button:not(:disabled),input[type="button"]:not(:disabled),input[type="submit"]:not(:disabled),input[type="reset"]:not(:disabled),a.btn,a.button,a[class*="btn"],a[class*="button"],a[role="button"],.site-nav nav a,.tabs button,.join,.back,.grade-card,.primary,.secondary,.cta,[data-interactive="true"]';
   function colorBrightness(value) {
     const match = value.match(/rgba?\(([^)]+)\)/i);
