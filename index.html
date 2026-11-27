@@ -72,8 +72,9 @@ a{text-decoration:none;color:inherit}
 .teacher:focus-visible{outline:3px solid #0f7a9a;outline-offset:4px}
 .teacher .person{width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:76px}
 .benefits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
-.benefit{background:#fcfdff;border-radius:16px;box-shadow:0 2px 14px rgba(0,0,0,.06);padding:26px 22px;display:flex;gap:18px;align-items:center;min-height:190px}
-.benefit .icon{font-size:52px;flex:none}
+.benefit{background:#fcfdff;border:1px solid transparent;border-radius:16px;box-shadow:0 2px 14px rgba(0,0,0,.06);padding:26px 22px;display:flex;gap:18px;align-items:center;min-height:190px;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;transform-origin:center}
+.benefit:hover{transform:scale(.97);border-color:rgba(12,142,166,.38);box-shadow:0 8px 22px rgba(12,142,166,.11)}
+.benefit .icon{font-size:62px;line-height:1;flex:none;filter:drop-shadow(0 3px 4px rgba(15,92,130,.12))}
 .benefit h3{margin:0 0 10px;font-size:21px}
 .benefit p{margin:0;color:#555;line-height:1.9;font-size:15px}
 .about{background:linear-gradient(160deg,#2db6f2,#0f7a9a);color:#fff;padding:82px 0}
