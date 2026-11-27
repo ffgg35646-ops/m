@@ -163,7 +163,15 @@
       try {
         const data = await postAuth('/api/auth/login', { identity, password });
         showMessage('تم تسجيل الدخول بنجاح. جاري فتح لوحة التحكم...','success');
-        window.location.href = data.redirect || 'dashboard.html';
+        const requestedNext = new URLSearchParams(window.location.search).get('next') || '';
+        let safeNext = '';
+        try {
+          const target = new URL(requestedNext, window.location.origin);
+          if (target.origin === window.location.origin && !requestedNext.startsWith('//')) {
+            safeNext = target.pathname + target.search + target.hash;
+          }
+        } catch (_) {}
+        window.location.href = safeNext || data.redirect || 'dashboard.html';
       } catch (error) {
         showMessage(error.message, 'error');
       } finally {
