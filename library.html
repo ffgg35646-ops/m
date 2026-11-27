@@ -14,7 +14,7 @@
 <header class="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
  <div class="h-16 px-3 sm:px-6 flex items-center justify-between gap-3">
   <div class="flex items-center gap-3"><button id="menuBtn" class="lg:hidden w-9 h-9 border rounded-lg">☰</button><nav class="hidden md:flex gap-4 text-sm font-bold text-slate-600"><a href="index.html">الرئيسية</a><a href="courses.html">الكورسات</a><a href="#live" data-info="الجلسات المباشرة">الجلسات المباشرة</a><a href="library.html" class="text-sky-600">المكتبة</a><a href="#blog" data-info="المدونة">المدونة</a><a href="support.html">تواصل معنا</a></nav></div>
-  <div class="flex items-center gap-2"><button id="profileBtn" class="rounded-full bg-slate-50 border px-3 py-2 text-xs font-bold">مرحبا mohajmed</button><button id="notifBtn" class="w-9 h-9 rounded-full border text-sky-600">♧</button><span class="border rounded-full px-3 py-2 text-xs font-bold text-sky-600">EGP</span><a href="dashboard.html" class="w-9 h-9 rounded-full bg-slate-200 grid place-items-center font-bold">م</a></div>
+  <div class="flex items-center gap-2"><button id="profileBtn" data-student-greeting class="rounded-full bg-slate-50 border px-3 py-2 text-xs font-bold">مرحبا</button><button id="notifBtn" class="w-9 h-9 rounded-full border text-sky-600">♧</button><span class="border rounded-full px-3 py-2 text-xs font-bold text-sky-600">EGP</span><a href="dashboard.html" data-student-avatar class="w-9 h-9 rounded-full bg-slate-200 grid place-items-center font-bold">م</a></div>
  </div>
  <nav class="md:hidden flex gap-4 overflow-x-auto px-4 py-2 text-xs font-bold whitespace-nowrap bg-slate-50"><a href="index.html">الرئيسية</a><a href="courses.html">الكورسات</a><a href="#live" data-info="الجلسات المباشرة">الجلسات المباشرة</a><a href="library.html">المكتبة</a><a href="#blog" data-info="المدونة">المدونة</a><a href="support.html">تواصل معنا</a></nav>
 </header>
@@ -52,4 +52,4 @@ document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>switchView(b.d
 $('#menuBtn').onclick=()=>{$('#sidebar').classList.add('open');$('#overlay').classList.add('open')};function closeMenu(){$('#sidebar').classList.remove('open');$('#overlay').classList.remove('open')}$('#closeMenu').onclick=$('#overlay').onclick=closeMenu;$('#chatBtn').onclick=()=>dialog('المساعدة الفورية','مرحباً mohajmed! يمكنك التنقل بين مكتبتي ومكتبتنا وامتحاناتي من القائمة الجانبية.');$('#notifBtn').onclick=()=>dialog('الإشعارات','لا توجد إشعارات جديدة حالياً.');$('#profileBtn').onclick=()=>dialog('الملف الشخصي','اسم الطالب: mohajmed');render();
 </script>
   <script src="/site-branding.js" defer></script>
-</body></html>
+<script src="/student-navbar.js" defer></script>\n</body></html>
