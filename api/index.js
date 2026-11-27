@@ -7,6 +7,7 @@ const routes = Object.freeze({
   "academic-structure": require("./_handlers/public/academic-structure"),
   "academic-courses": require("./_handlers/public/academic-courses"),
   "public/courses": require("./_handlers/public/courses"),
+  "public/course-image": require("./_handlers/public/course-image"),
   "admin/academic-structure": require("./_handlers/admin/academic-structure"),
   "admin/blog-library": require("./_handlers/admin/blog-library"),
   "admin/center-codes": require("./_handlers/admin/center-codes"),

@@ -13,10 +13,12 @@ function value(input, max = 4000) {
   return String(input ?? "").trim().slice(0, max);
 }
 
-function publicImage(input) {
+function publicImage(input, courseId) {
   const image = value(input, 400000);
   if (!image) return "";
-  if (/^data:image\/(?:jpeg|png|webp);base64,[a-z0-9+/]+=*$/i.test(image)) return image;
+  if (/^data:image\/(?:jpeg|png|webp);base64,[a-z0-9+/]+=*$/i.test(image)) {
+    return "/api/public/course-image?courseId=" + encodeURIComponent(courseId);
+  }
   if (image.startsWith("/") && !image.startsWith("//")) return image;
   try {
     const parsed = new URL(image);
@@ -72,7 +74,7 @@ module.exports = async function handler(req, res) {
           track: value(row.track || row.branch, 100),
           price,
           isFree: row.isFree === true || price === 0,
-          image: publicImage(row.image || row.imageUrl || row.thumbnail || row.coverImage),
+          image: publicImage(row.image || row.imageUrl || row.thumbnail || row.coverImage, String(row._id)),
           pinned: row.pinned === true || row.isPinned === true,
           sortOrder: Number.isFinite(Number(row.sortOrder)) ? Number(row.sortOrder) : 0
         };
