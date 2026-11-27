@@ -38,6 +38,8 @@ a{text-decoration:none;color:inherit}
 @keyframes welcomeTextCycle{0%,49.99%{opacity:1}50%,99.99%{opacity:0}}
 @media(prefers-reduced-motion:reduce){.welcome,.welcome-text{animation:none}.site-nav nav a,.auth-link,.tool,.button{transition:none}}
 .hero-visual{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);border-radius:22px;height:410px;display:grid;place-items:center;font-size:100px;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.hero-visual.has-image{background:transparent;border-color:transparent;box-shadow:none}.site-hero-image{width:100%;height:100%;object-fit:contain;padding:12px}
+.site-logo{order:2;width:46px;height:46px;object-fit:contain;background:#fff;border:1px solid #edf2f7;border-radius:9px;padding:3px;flex:none}
 .section{padding:60px 0}
 .section.alt{background:#f0f8ff}
 .eyebrow{color:var(--p);font-size:15px;display:flex;align-items:center;gap:8px}
@@ -104,6 +106,7 @@ footer h3{color:#fff;margin:0 0 20px;font-size:18px}
     <a class="auth-link login" href="login.html">تسجيل الدخول</a>
     <button class="tool" type="button" aria-label="اللغة">🌐</button>
   </div>
+  <img class="site-logo" data-site-logo alt="شعار المنصة" hidden>
 </header>
 
 <section class="hero">
