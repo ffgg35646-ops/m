@@ -57,12 +57,24 @@ module.exports = async function(req, res) {
     if (!target) return json(res, 404, { ok: false, message: "المحتوى المرتبط بالكود غير متاح حالياً." });
 
     if (isCourse) {
+      const selectors = idValues(targetId);
       const existing = await auth.database.collection(ENROLLMENTS).findOne({
-        ...userLookup(auth.user),
-        courseId: { $in: idValues(targetId) },
-        deletedAt: { $exists: false }
+        $and: [
+          userLookup(auth.user),
+          { $or: [
+            { courseId: { $in: selectors } },
+            { course_id: { $in: selectors } },
+            { "course._id": { $in: selectors } },
+            { "course.id": { $in: selectors } },
+            { course: { $in: selectors } }
+          ] },
+          { deletedAt: { $exists: false } }
+        ]
       });
-      if (existing && existing.isActive !== false && !["deleted", "inactive", "محذوف", "غير نشط"].includes(String(existing.status || "").toLowerCase())) {
+      const existingStatus = String(existing?.status || "").trim().toLowerCase();
+      const existingExpiry = existing?.expiresAt || existing?.accessEndsAt;
+      const existingExpired = existingExpiry ? new Date(existingExpiry).getTime() < Date.now() : false;
+      if (existing && existing.isActive !== false && !existingExpired && !["deleted", "inactive", "محذوف", "غير نشط", "expired", "منتهي"].includes(existingStatus)) {
         return json(res, 409, { ok: false, message: "هذا الكورس مضاف بالفعل إلى كورساتك." });
       }
     } else {
