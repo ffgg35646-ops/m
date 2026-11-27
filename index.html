@@ -66,7 +66,10 @@ a{text-decoration:none;color:inherit}
 .actions a{flex:1;text-align:center;padding:11px 6px;border-radius:8px;font-size:13px}
 .actions .join{background:#3bb8f4;color:#fff}.actions .details{border:2px solid var(--p);color:var(--p)}
 .teacher-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
-.teacher{background:linear-gradient(160deg,#2ee67f,#14c96c);border-radius:12px;min-height:300px;color:#fff;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 14px;gap:16px;font-size:18px;font-weight:700}
+.teacher{background:linear-gradient(160deg,#2ee67f,#14c96c);border-radius:12px;min-height:300px;color:#fff;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 14px;gap:16px;font-size:18px;font-weight:700;cursor:pointer;transition:transform .22s ease,box-shadow .22s ease;transform-origin:center}
+.teacher:hover{transform:scale(.94);box-shadow:0 10px 24px rgba(20,201,108,.2)}
+.teacher:active{transform:scale(.91)}
+.teacher:focus-visible{outline:3px solid #0f7a9a;outline-offset:4px}
 .teacher .person{width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:76px}
 .benefits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
 .benefit{background:#fcfdff;border-radius:16px;box-shadow:0 2px 14px rgba(0,0,0,.06);padding:26px 22px;display:flex;gap:18px;align-items:center;min-height:190px}
@@ -147,10 +150,10 @@ footer h3{color:#fff;margin:0 0 20px;font-size:18px}
   <div class="wrap">
     <h2>المدرسين</h2>
     <div class="teacher-grid">
-      <div class="teacher"><div class="person">👤</div>علي محمد عليان<br>Arabic Teacher</div>
-      <div class="teacher"><div class="person">👩‍🎓</div>Eman Farid<br>Math Teacher</div>
-      <div class="teacher"><div class="person">👤</div>Ahmed Mohamed<br>Math Teacher</div>
-      <div class="teacher"><div class="person">👤</div>Hassan Aba Zeed<br>English Teacher</div>
+      <div class="teacher" role="button" tabindex="0" aria-label="العودة إلى أعلى الصفحة: علي محمد عليان"><div class="person">👤</div>علي محمد عليان<br>Arabic Teacher</div>
+      <div class="teacher" role="button" tabindex="0" aria-label="العودة إلى أعلى الصفحة: Eman Farid"><div class="person">👩‍🎓</div>Eman Farid<br>Math Teacher</div>
+      <div class="teacher" role="button" tabindex="0" aria-label="العودة إلى أعلى الصفحة: Ahmed Mohamed"><div class="person">👤</div>Ahmed Mohamed<br>Math Teacher</div>
+      <div class="teacher" role="button" tabindex="0" aria-label="العودة إلى أعلى الصفحة: Hassan Aba Zeed"><div class="person">👤</div>Hassan Aba Zeed<br>English Teacher</div>
     </div>
   </div>
 </section>
@@ -189,6 +192,20 @@ footer h3{color:#fff;margin:0 0 20px;font-size:18px}
   </div>
   <div class="copyright">© 2026 منصة علي عليان الدولية جميع الحقوق محفوظة</div>
 </footer>
+<script>
+(function () {
+  document.querySelectorAll(".teacher").forEach(card => {
+    const goToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+    card.addEventListener("click", goToTop);
+    card.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        goToTop();
+      }
+    });
+  });
+})();
+</script>
 <script>
 (function () {
   const tabs = document.getElementById("gradeCategories");
@@ -253,6 +270,6 @@ footer h3{color:#fff;margin:0 0 20px;font-size:18px}
     });
 })();
 </script>
-  <script src="/site-branding.js" defer></script>
+<script src="/site-branding.js" defer></script>
 </body>
 </html>
