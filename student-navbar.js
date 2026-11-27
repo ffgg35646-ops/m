@@ -77,7 +77,12 @@
           const currency = document.createElement('span');
           currency.className = 'tool';
           currency.textContent = 'EGP';
-          actions.append(accountLink, greeting, language, currency);
+          const logoutLink = document.createElement('a');
+          logoutLink.className = 'btn btn-outline';
+          logoutLink.href = 'login.html';
+          logoutLink.dataset.studentLogout = 'true';
+          logoutLink.textContent = 'تسجيل الخروج';
+          actions.append(accountLink, greeting, language, currency, logoutLink);
         }
       });
 
@@ -93,6 +98,16 @@
     }
   };
 
+  document.addEventListener('click', event => {
+    const logout = event.target instanceof Element ? event.target.closest('[data-student-logout], a.logout, button.menu-logout') : null;
+    if (!logout) return;
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' })
+      .catch(() => {})
+      .finally(() => window.location.replace('login.html'));
+  }, true);
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', applyStudentName, { once: true });
   } else {
