@@ -98,6 +98,7 @@ function fillProfile(profile){
  $("phone").value=profile.phone||"";
  $("email").value=profile.email||"";
  $("guardianPhone").value=profile.guardianPhone||"";
+ if(profile.category&&!Array.from(category.options).some(option=>option.value===profile.category))category.add(new Option(profile.category,profile.category));
  category.value=profile.category||"";
  populateYears(profile.year||"");
  setGovernorate(profile.governorate||"",profile.city||"");
