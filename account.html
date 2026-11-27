@@ -49,6 +49,7 @@
 const cities={"القاهرة":["القاهرة"],"الجيزة":["الجيزة","6 أكتوبر","الشيخ زايد"],"الإسكندرية":["الإسكندرية","برج العرب"],"الدقهلية":["المنصورة","ميت غمر","طلخا"],"الغربية":["طنطا","المحلة الكبرى","زفتى","كفر الزيات"],"الشرقية":["الزقازيق","العاشر من رمضان","بلبيس"],"القليوبية":["بنها","شبرا الخيمة","قليوب"],"البحيرة":["دمنهور","كفر الدوار","رشيد"],"كفر الشيخ":["كفر الشيخ","دسوق","بلطيم"],"المنوفية":["شبين الكوم","منوف","السادات"],"دمياط":["دمياط","رأس البر"],"بورسعيد":["بورسعيد"],"الإسماعيلية":["الإسماعيلية","فايد"],"السويس":["السويس"],"الفيوم":["الفيوم"],"بني سويف":["بني سويف"],"المنيا":["المنيا"],"أسيوط":["أسيوط"],"سوهاج":["سوهاج"],"قنا":["قنا"],"الأقصر":["الأقصر"],"أسوان":["أسوان"],"مطروح":["مرسى مطروح"],"شمال سيناء":["العريش"],"جنوب سيناء":["الطور","شرم الشيخ"],"البحر الأحمر":["الغردقة"],"الوادي الجديد":["الخارجة"]};
 const $=id=>document.getElementById(id);
 const category=$("category"),year=$("year"),governorate=$("governorate"),city=$("city");
+Object.keys(cities).forEach(name=>governorate.add(new Option(name,name)));
 const profileForm=$("profileForm"),passwordForm=$("passwordForm");
 let academic={categories:[],years:[]},originalProfile=null;
 function notice(id,message,type="success"){
@@ -71,14 +72,17 @@ function populateYears(selected=""){
  const items=academic.years.filter(item=>item.category===chosen);
  year.replaceChildren(new Option(items.length?"اختر السنة الدراسية":"لا توجد سنوات متاحة", ""));
  items.forEach(item=>year.add(new Option(item.name,item.name)));
- year.disabled=!items.length;
- if(selected&&items.some(item=>item.name===selected))year.value=selected;
+ if(selected&&!items.some(item=>item.name===selected))year.add(new Option(selected,selected));
+ year.disabled=!items.length&&!selected;
+ if(selected)year.value=selected;
 }
 async function loadAcademic(){
  const data=await api("/api/auth/register");
  academic=data.structure||{categories:[],years:[]};
  category.replaceChildren(new Option("اختر فئة السنة الدراسية",""));
  academic.categories.forEach(item=>category.add(new Option(item.name,item.name)));
+ const currentCategory=originalProfile?.category||"";
+ if(currentCategory&&!academic.categories.some(item=>item.name===currentCategory))category.add(new Option(currentCategory,currentCategory));
 }
 function setGovernorate(value,cityValue){
  governorate.value=value||"";
@@ -158,7 +162,7 @@ const sidebar=$("sidebar"),overlay=$("overlay");
 $("menuBtn").addEventListener("click",()=>{sidebar.classList.add("open");overlay.classList.add("show");});
 overlay.addEventListener("click",()=>{sidebar.classList.remove("open");overlay.classList.remove("show");});
 loadProfile();
-</script>>
+</script>
   <script src="/site-branding.js" defer></script>
 <script src="/student-navbar.js" defer></script>
 </body></html>
