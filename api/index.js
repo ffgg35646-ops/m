@@ -43,6 +43,13 @@ const routes = Object.freeze({
   "push/public-key": require("./_handlers/push/public-key"),
   "push/subscribe": require("./_handlers/push/subscribe"),
   "site-settings": require("./_handlers/site-settings"),
+  "student/profile": require("./_handlers/student/profile"),
+  "student/change-password": require("./_handlers/student/change-password"),
+  "student/courses": require("./_handlers/student/courses"),
+  "student/books": require("./_handlers/student/books"),
+  "student/orders": require("./_handlers/student/orders"),
+  "student/redeem": require("./_handlers/student/redeem"),
+  "student/exams": require("./_handlers/student/exams"),
   "support/messages": require("./_handlers/support/messages"),
 });
 
