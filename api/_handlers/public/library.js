@@ -64,7 +64,6 @@ module.exports = async function handler(req, res) {
         price,
         isFree: row.isFree === true || price === 0,
         image: images.length ? publicImage(images[0], id, 0) : "",
-        imageCount: images.filter(Boolean).length,
         order: Number.isFinite(Number(row.sortOrder ?? row.order)) ?
           Number(row.sortOrder ?? row.order) : index
       };
