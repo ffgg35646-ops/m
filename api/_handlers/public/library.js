@@ -45,7 +45,7 @@ module.exports = async function handler(req, res) {
       projection: {
         title: 1, name: 1, description: 1, type: 1, typeLabel: 1,
         price: 1, isFree: 1, isActive: 1, status: 1,
-        images: 1, sortOrder: 1, order: 1, createdAt: 1
+        images: { $slice: 1 }, sortOrder: 1, order: 1, createdAt: 1
       }
     }).sort({ sortOrder: 1, createdAt: -1, _id: 1 }).limit(LIMIT).toArray();
 
