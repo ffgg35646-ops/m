@@ -24,6 +24,20 @@
         node.textContent = firstInitial;
       });
 
+      const pageParams = new URLSearchParams(window.location.search);
+      const currentPath = window.location.pathname.split('/').pop() || '';
+      const coursePurchase = document.getElementById('purchaseLink');
+      if (coursePurchase && currentPath === 'course-details.html') {
+        const courseId = pageParams.get('courseId') || '';
+        coursePurchase.href = 'orders.html?targetType=courses&targetId=' + encodeURIComponent(courseId);
+        coursePurchase.textContent = 'تفعيل الكورس بكود';
+      }
+      const bookPurchase = document.getElementById('buyLink');
+      if (bookPurchase && currentPath === 'library-details.html') {
+        const productId = pageParams.get('productId') || '';
+        bookPurchase.href = 'orders.html?targetType=library&targetId=' + encodeURIComponent(productId);
+        bookPurchase.textContent = 'تفعيل الكتاب بكود';
+      }
       document.querySelectorAll('[data-shared-page-nav]').forEach(header => {
         const nav = header.querySelector('nav');
         if (nav) {
