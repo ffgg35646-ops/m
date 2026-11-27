@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f3f7fb">
+<title>الدورات الدراسية | منصة علي عليان الدولية</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f7fb;color:#1e293b;font-family:Tajawal,Tahoma,sans-serif}a{color:inherit;text-decoration:none}
+header{background:#fff;border-bottom:1px solid #e5eaf1;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-weight:800;color:#147eaa}.back{border:1px solid #dbe5ee;border-radius:9px;padding:9px 14px;font-size:13px;font-weight:700}
+main{max-width:1180px;margin:34px auto;padding:0 20px}.hero{background:linear-gradient(120deg,#159acb,#126b91);color:#fff;border-radius:18px;padding:27px 30px;margin-bottom:24px}.hero small{opacity:.85}.hero h1{margin:8px 0;font-size:30px}.hero p{margin:0;line-height:1.8;opacity:.9}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.course{background:#fff;border:1px solid #e5ebf2;border-radius:15px;overflow:hidden;box-shadow:0 5px 18px #0f172a09;display:flex;flex-direction:column}.cover{height:175px;background:linear-gradient(135deg,#dff4fc,#eaf1ff);display:grid;place-items:center;color:#167da9;font-size:24px;font-weight:800;overflow:hidden}.cover img{width:100%;height:100%;object-fit:cover}.body{padding:17px;display:flex;flex-direction:column;gap:10px;flex:1}.body h2{font-size:18px;margin:0}.meta{display:flex;gap:7px;flex-wrap:wrap}.tag{background:#edf7fb;color:#147da5;border-radius:20px;padding:5px 10px;font-size:11px;font-weight:700}.desc{font-size:13px;color:#64748b;line-height:1.8;margin:0;flex:1}.foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:5px}.price{font-weight:800;color:#0f766e}.join{background:#0b8eaf;color:#fff;border-radius:9px;padding:9px 12px;font-size:12px;font-weight:800;white-space:nowrap}.state{background:#fff;border:1px solid #e5ebf2;border-radius:13px;padding:28px;text-align:center;color:#64748b;line-height:1.9}.empty{padding:38px 18px}.empty b{display:block;color:#334155;margin-bottom:5px}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){header{padding:13px}.brand{font-size:13px}main{margin:20px auto;padding:0 13px}.hero{padding:22px 18px}.hero h1{font-size:24px}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><a class="brand" href="index.html">منصة علي عليان الدولية</a><a class="back" href="index.html#">← العودة للصفحة الرئيسية</a></header>
+<main>
+<section class="hero"><small id="categoryName">الفئة الدراسية</small><h1 id="gradeName">الصف الدراسي</h1><p>الدورات التعليمية المتاحة لهذا الصف الدراسي</p></section>
+<div id="coursesState" class="state">جارٍ تحميل الدورات المتاحة...</div>
+<section id="coursesGrid" class="grid" hidden></section>
+</main>
+<script>
+(function(){
+  const params = new URLSearchParams(location.search);
+  const category = (params.get("category") || "").trim();
+  const grade = (params.get("grade") || "").trim();
+  const state = document.getElementById("coursesState");
+  const grid = document.getElementById("coursesGrid");
+  document.getElementById("categoryName").textContent = category || "الفئة الدراسية";
+  document.getElementById("gradeName").textContent = grade || "الصف الدراسي";
+  document.title = (grade || "الدورات الدراسية") + " | منصة علي عليان الدولية";
+  function node(tag, className, value){const item=document.createElement(tag);if(className)item.className=className;if(value!==undefined)item.textContent=value;return item;}
+  function showError(message){state.className="state";state.textContent=message;}
+  if(!category || !grade){showError("رابط الصف الدراسي غير مكتمل. ارجع للرئيسية واختر الصف مرة أخرى.");return;}
+  fetch("/api/academic-courses?category="+encodeURIComponent(category)+"&grade="+encodeURIComponent(grade),{credentials:"same-origin",cache:"no-store"})
+    .then(response=>response.json().then(data=>({ok:response.ok,data})))
+    .then(({ok,data})=>{
+      if(!ok || !data.ok)throw new Error(data.message || "تعذر تحميل الدورات.");
+      const courses=Array.isArray(data.courses)?data.courses:[];
+      state.hidden=true;grid.hidden=false;grid.replaceChildren();
+      if(!courses.length){grid.className="grid";grid.appendChild(node("div","state empty","لا توجد دورات منشورة لهذا الصف حالياً. تابعنا، سيتم عرض الدورات هنا بمجرد إضافتها من لوحة الإدارة."));return;}
+      courses.forEach(course=>{
+        const card=node("article","course");
+        const cover=node("div","cover");
+        if(course.image){const img=node("img");img.src=course.image;img.alt=course.title;cover.appendChild(img);}
+        else cover.textContent=course.title;
+        const body=node("div","body");
+        body.appendChild(node("h2","",course.title));
+        const meta=node("div","meta");
+        if(course.subject)meta.appendChild(node("span","tag",course.subject));
+        meta.appendChild(node("span","tag",course.grade));
+        body.appendChild(meta);
+        if(course.description)body.appendChild(node("p","desc",course.description));
+        const foot=node("div","foot");
+        foot.appendChild(node("span","price",course.isFree?"مجانية":new Intl.NumberFormat("ar-EG",{style:"currency",currency:"EGP",maximumFractionDigits:2}).format(course.price)));
+        const link=node("a","join","إنشاء حساب للاشتراك");
+        link.href="register.html";
+        foot.appendChild(link);body.appendChild(foot);card.append(cover,body);grid.appendChild(card);
+      });
+    })
+    .catch(error=>showError(error.message || "تعذر تحميل الدورات حالياً."));
+})();
+</script>
+<script src="/site-branding.js" defer></script>
+</body>
+</html>
