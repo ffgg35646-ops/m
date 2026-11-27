@@ -81,6 +81,120 @@
   }, true);
   document.querySelectorAll(interactiveSelector).forEach(classifyHoverTarget);
 
+
+  function isPrivacyPolicyLink(link) {
+    const label = String(link.textContent || "").replace(/\s+/g, " ").trim();
+    return label === "سياسة الخصوصية" || link.getAttribute("href") === "#privacy";
+  }
+  function installPrivacyPolicyModal() {
+    const hasPrivacyLink = [...document.querySelectorAll("a")].some(isPrivacyPolicyLink);
+    if (!hasPrivacyLink) return;
+
+    const style = document.createElement("style");
+    style.id = "site-privacy-modal-style";
+    style.textContent = "\n    .site-privacy-overlay{position:fixed;inset:0;z-index:100000;display:grid;place-items:center;padding:22px;background:rgba(15,23,42,.62);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}\n    .site-privacy-overlay[hidden]{display:none}\n    .site-privacy-dialog{width:min(760px,100%);max-height:min(86vh,820px);display:flex;flex-direction:column;overflow:hidden;background:#fff;border:1px solid rgba(42,169,224,.22);border-radius:22px;box-shadow:0 24px 80px rgba(15,23,42,.28);direction:rtl;animation:sitePrivacyIn .2s ease-out}\n    .site-privacy-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px;background:linear-gradient(120deg,#effaff,#fff);border-bottom:1px solid #e5eef4}\n    .site-privacy-heading{margin:0;color:#0f7a9a;font-size:22px;font-weight:800}\n    .site-privacy-subtitle{margin:5px 0 0;color:#64748b;font-size:13px}\n    .site-privacy-close{width:40px;height:40px;flex:none;border:1px solid #dbe7ee;border-radius:12px;background:#fff;color:#0f7a9a;font:700 24px/1 \"Segoe UI\",Tahoma,sans-serif;cursor:pointer;transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s ease}\n    .site-privacy-close:hover{background:#20b9ad;border-color:#20b9ad;color:#fff;transform:rotate(4deg)}\n    .site-privacy-content{padding:24px;overflow:auto;min-height:170px;color:#334155;font-size:16px;line-height:2;white-space:pre-wrap;overflow-wrap:anywhere}\n    @keyframes sitePrivacyIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}\n    @media(max-width:600px){.site-privacy-overlay{padding:12px}.site-privacy-dialog{max-height:90vh;border-radius:17px}.site-privacy-head{padding:16px}.site-privacy-heading{font-size:19px}.site-privacy-content{padding:18px;font-size:15px}}\n    @media(prefers-reduced-motion:reduce){.site-privacy-dialog{animation:none}.site-privacy-close{transition:none}}\n";
+    document.head.appendChild(style);
+
+    const overlay = document.createElement("div");
+    overlay.className = "site-privacy-overlay";
+    overlay.hidden = true;
+    overlay.setAttribute("aria-hidden", "true");
+
+    const dialog = document.createElement("section");
+    dialog.className = "site-privacy-dialog";
+    dialog.setAttribute("role", "dialog");
+    dialog.setAttribute("aria-modal", "true");
+    dialog.setAttribute("aria-labelledby", "site-privacy-heading");
+    dialog.tabIndex = -1;
+
+    const header = document.createElement("header");
+    header.className = "site-privacy-head";
+    const headingWrap = document.createElement("div");
+    const heading = document.createElement("h2");
+    heading.className = "site-privacy-heading";
+    heading.id = "site-privacy-heading";
+    heading.textContent = "سياسة الخصوصية";
+    const subtitle = document.createElement("p");
+    subtitle.className = "site-privacy-subtitle";
+    subtitle.textContent = "منصة علي عليان الدولية";
+    headingWrap.append(heading, subtitle);
+
+    const closeButton = document.createElement("button");
+    closeButton.className = "site-privacy-close";
+    closeButton.type = "button";
+    closeButton.setAttribute("aria-label", "إغلاق نافذة سياسة الخصوصية");
+    closeButton.textContent = "×";
+    header.append(headingWrap, closeButton);
+
+    const content = document.createElement("div");
+    content.className = "site-privacy-content";
+    content.setAttribute("aria-live", "polite");
+    content.textContent = "جار تحميل سياسة الخصوصية...";
+    dialog.append(header, content);
+    overlay.appendChild(dialog);
+    document.body.appendChild(overlay);
+
+    let lastFocused = null;
+    let previousOverflow = "";
+    let requestNumber = 0;
+
+    function closeModal() {
+      if (overlay.hidden) return;
+      requestNumber += 1;
+      overlay.hidden = true;
+      overlay.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = previousOverflow;
+      if (lastFocused && lastFocused.isConnected) lastFocused.focus();
+    }
+
+    async function openModal(trigger) {
+      lastFocused = trigger;
+      previousOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      overlay.hidden = false;
+      overlay.setAttribute("aria-hidden", "false");
+      content.textContent = "جار تحميل سياسة الخصوصية...";
+      closeButton.focus();
+      const currentRequest = ++requestNumber;
+      try {
+        const response = await fetch("/api/site-settings", {
+          credentials: "same-origin",
+          cache: "no-store"
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.ok) throw new Error("privacy settings unavailable");
+        if (currentRequest !== requestNumber || overlay.hidden) return;
+        const policy = String(data.legal && data.legal.privacyText || "").trim();
+        content.textContent = policy || "لم يتم نشر سياسة الخصوصية بعد. يرجى مراجعة إدارة المنصة.";
+      } catch (_) {
+        if (currentRequest !== requestNumber || overlay.hidden) return;
+        content.textContent = "تعذر تحميل سياسة الخصوصية حاليًا. يرجى المحاولة مرة أخرى لاحقًا.";
+      }
+    }
+
+    document.addEventListener("click", event => {
+      const link = event.target instanceof Element ? event.target.closest("a") : null;
+      if (!link || !isPrivacyPolicyLink(link)) return;
+      event.preventDefault();
+      openModal(link);
+    });
+    closeButton.addEventListener("click", closeModal);
+    overlay.addEventListener("click", event => {
+      if (event.target === overlay) closeModal();
+    });
+    document.addEventListener("keydown", event => {
+      if (overlay.hidden) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeModal();
+      } else if (event.key === "Tab") {
+        event.preventDefault();
+        closeButton.focus();
+      }
+    });
+  }
+  installPrivacyPolicyModal();
+
   fetch("/api/site-settings", { credentials: "same-origin", cache: "no-store" })
     .then(response => response.ok ? response.json() : null)
     .then(data => {
