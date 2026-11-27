@@ -51,7 +51,7 @@
     }`;
   (document.head || document.documentElement).appendChild(interactionStyle);
 
-  const interactiveSelector = 'button:not(:disabled),input[type="button"]:not(:disabled),input[type="submit"]:not(:disabled),input[type="reset"]:not(:disabled),a[href],a[role="button"],.site-nav nav a,.tabs button,.join,.back,.primary,.secondary,.cta,[data-interactive="true"]';
+  const interactiveSelector = 'button:not(:disabled),input[type="button"]:not(:disabled),input[type="submit"]:not(:disabled),input[type="reset"]:not(:disabled),a.btn,a.button,a[class*="btn"],a[class*="button"],a[role="button"],.site-nav nav a,.tabs button,.join,.back,.grade-card,.primary,.secondary,.cta,[data-interactive="true"]';
   function colorBrightness(value) {
     const match = value.match(/rgba?\(([^)]+)\)/i);
     if (!match) return null;
