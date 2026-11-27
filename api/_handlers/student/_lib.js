@@ -91,6 +91,17 @@ function enrollmentExpiry(row, course) {
   return null;
 }
 
+function safeAssetUrl(input, max = 1800) {
+  const raw = text(input, max);
+  if (!raw) return '';
+  if (raw.startsWith('/') && !raw.startsWith('//')) return raw;
+  try {
+    const url = new URL(raw);
+    return ['http:', 'https:'].includes(url.protocol) ? url.toString() : '';
+  } catch {
+    return '';
+  }
+}
 function imageUrl(source, id, kind) {
   const raw = text(source, 400000);
   if (!raw) return "";
@@ -118,7 +129,7 @@ function publicCourse(course, enrollment) {
       id: text(item.id, 100) || "item-" + itemIndex,
       name: text(item.name || item.title, 200),
       type: item.type === "file" || item.type === "ملف" ? "file" : "video",
-      url: text(item.url || item.fileUrl || item.videoUrl, 1800),
+      url: safeAssetUrl(item.url || item.fileUrl || item.videoUrl, 1800),
       description: text(item.description || item.content, 3000),
       sortOrder: Number.isFinite(Number(item.sortOrder)) ? Number(item.sortOrder) : itemIndex
     })).sort((a, b) => a.sortOrder - b.sortOrder)
@@ -200,7 +211,7 @@ async function ownedBookRows(database, user) {
       type: product.type === "physical" || product.type === "مطبوع" ? "physical" : "digital",
       price: Number.isFinite(Number(product.price ?? order.amount)) ? Number(product.price ?? order.amount) : 0,
       image: imageUrl(image, productId, "library"),
-      fileUrl: text(product.fileUrl || product.downloadUrl || product.pdfUrl || product.file?.url, 1800),
+      fileUrl: safeAssetUrl(product.fileUrl || product.downloadUrl || product.pdfUrl || product.file?.url, 1800),
       orderId: String(order._id),
       activatedAt: order.activatedAt || order.createdAt || order.orderedAt || null,
       deliveryStatus: text(order.deliveryStatus || "تم التفعيل", 80)
