@@ -170,6 +170,7 @@ footer a{transition:color .18s ease,transform .18s ease}footer .footer-grid sect
   "use strict";
   const PAGE_SIZE = 9;
   const state = { posts: [], filtered: [], categories: [], selectedCategory: "all", page: 1, loadingPost: false };
+  let articleRequest = 0;
   const $ = id => document.getElementById(id);
   const grid = $("blogGrid"), pagination = $("pagination");
   function node(tag, className, text) {
@@ -206,6 +207,7 @@ footer a{transition:color .18s ease,transform .18s ease}footer .footer-grid sect
   function openArticle(post) {
     if (state.loadingPost) return;
     state.loadingPost = true;
+    const requestId = ++articleRequest;
     $("articleModalTitle").textContent = post.title;
     $("articleTags").replaceChildren();
     if (post.category) $("articleTags").appendChild(node("span", "", post.category));
@@ -219,13 +221,15 @@ footer a{transition:color .18s ease,transform .18s ease}footer .footer-grid sect
     fetch("/api/public/blog?postId=" + encodeURIComponent(post.id), { credentials: "same-origin", cache: "no-store" })
       .then(async response => {
         const data = await response.json().catch(() => ({}));
+        if (requestId !== articleRequest) return;
         if (!response.ok || !data.ok || !data.post) throw new Error(data.message || "تعذر تحميل المقال.");
         $("articleContent").textContent = data.post.content || data.post.excerpt || "لا يوجد محتوى إضافي لهذا المقال.";
       })
-      .catch(error => { $("articleContent").textContent = error.message || "تعذر تحميل المقال حالياً."; })
-      .finally(() => { state.loadingPost = false; });
+      .catch(error => { if (requestId === articleRequest) $("articleContent").textContent = error.message || "تعذر تحميل المقال حالياً."; })
+      .finally(() => { if (requestId === articleRequest) state.loadingPost = false; });
   }
   function closeArticle() {
+    articleRequest += 1;
     $("articleModal").classList.remove("open");
     state.loadingPost = false;
   }
