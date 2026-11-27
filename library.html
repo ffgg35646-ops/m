@@ -1,57 +1,182 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>مكتبتي - منصة علي عليان الدولية</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#fff">
+<title>كتبي | منصة علي عليان الدولية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f3f6fa;color:#1e293b;font-family:Cairo,Tahoma,sans-serif}.purple{background:linear-gradient(135deg,#6f5be8,#7c69ef);box-shadow:0 8px 24px #6f5be833}.cyan{background:linear-gradient(135deg,#1b9ad6,#28a9e2);box-shadow:0 8px 24px #1b9ad62e}.surface{background:#fff;border:1px solid #e9eff5;border-radius:16px;box-shadow:0 4px 20px #0f172a0a}.stat{background:#ffffff29;border:1px solid #ffffff48;border-radius:12px}.side{color:#475569}.side:hover{background:#f1f5f9}.active{background:linear-gradient(135deg,#1b9ad6,#28a9e2)!important;color:#fff!important;box-shadow:0 6px 16px #1b9ad640}.cta{background:linear-gradient(180deg,#6f5be8,#5f4ad8)}.modal{display:none}.modal.open{display:flex}.no-scrollbar::-webkit-scrollbar{display:none}@media(max-width:1023px){#sidebar{position:fixed;right:0;top:0;bottom:0;z-index:60;transform:translateX(105%);transition:.2s;box-shadow:0 0 30px #0f172a22}#sidebar.open{transform:translateX(0)}#overlay.open{display:block}}
+:root{--blue:#159ac7;--blue-dark:#0c7fa8;--ink:#1e293b;--muted:#64748b;--line:#e7edf3;--bg:#f4f7fb;--green:#0d9b70}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Cairo,Tahoma,sans-serif}button,a,input{font:inherit}a{text-decoration:none;color:inherit}button{cursor:pointer}
+.top{direction:ltr;height:68px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 22px;gap:14px;position:sticky;top:0;z-index:30}.top-left,.top-right{display:flex;align-items:center;gap:15px;direction:rtl}.brand{display:flex;align-items:center;text-decoration:none;color:var(--ink);font-weight:800}.brandmark{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:white;background:linear-gradient(135deg,#2199e3,#0f88b8)}.topnav{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px}.topnav a{padding:9px 12px;border-radius:8px;font-size:12px;font-weight:700;color:#475569}.topnav a:hover,.topnav a.active{color:var(--blue-dark);background:#e8f6fd}.userpill,.round{border:1px solid var(--line);background:white;color:#475569}.userpill{border-radius:30px;padding:5px 11px;display:flex;align-items:center;gap:8px;font-size:12px}.avatar{width:29px;height:29px;border-radius:50%;background:var(--blue);color:white;display:grid;place-items:center}.round{width:36px;height:36px;border-radius:50%;color:var(--blue)}
+.layout{display:flex;min-height:calc(100vh - 66px)}aside{width:252px;flex-shrink:0;background:#fff;border-left:1px solid var(--line);padding:22px 13px}.side{display:grid;gap:5px}.side a{padding:11px 13px;border-radius:11px;text-decoration:none;color:#475569;font-size:13px;font-weight:700}.side a:hover{background:#f1f5f9}.side a.active{background:linear-gradient(135deg,#139ec9,#0e88b0);color:white;box-shadow:0 6px 16px #139ec933}.side .logout{border-top:1px solid var(--line);margin-top:12px;padding-top:17px}.main{flex:1;min-width:0;padding:28px clamp(14px,3vw,38px)}.wrap{max-width:1180px;margin:auto}
+.hero{background:linear-gradient(135deg,#2199e3,#139ec9 55%,#0f88b8);color:white;border-radius:16px;padding:23px 26px;display:flex;align-items:center;justify-content:space-between;gap:16px;box-shadow:0 8px 24px #139ec92e;margin-bottom:21px}.hero h1{font-size:26px;margin:0;font-weight:800}.hero p{font-size:12px;margin:5px 0 0;color:#ffffffdf}.hero-stat{border:1px solid #ffffff48;background:#ffffff24;border-radius:12px;padding:8px 15px;text-align:center;font-size:11px}.hero-stat strong{display:block;font-size:22px}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:17px}.toolbar input{width:min(100%,330px);height:43px;border:1px solid #dce6ee;border-radius:10px;padding:0 12px;background:#fff;outline:none;font-size:12px}.toolbar input:focus{border-color:#48a9d0;box-shadow:0 0 0 3px #159ac71a}.primary{border:0;border-radius:10px;padding:10px 17px;color:#fff;font-weight:800;font-size:11px;background:linear-gradient(110deg,#159dc9,#0e82aa);box-shadow:0 6px 15px #168fc52b}.secondary{border:1px solid #dbe5ed;border-radius:10px;padding:9px 14px;background:#fff;color:#526176;font-size:11px;font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.book-card,.exam-card,.panel{background:#fff;border:1px solid #e9eff5;border-radius:16px;box-shadow:0 4px 20px #0f172a08;overflow:hidden}.book-card{display:flex;flex-direction:column}.book-cover{height:185px;background:linear-gradient(135deg,#e0f2fe,#f0fdfa);display:grid;place-items:center;overflow:hidden;color:#0b789b;font-size:27px;font-weight:900;text-align:center;padding:18px}.book-cover img{width:100%;height:100%;object-fit:cover}.book-body{padding:16px;display:flex;flex-direction:column;gap:9px;flex:1}.book-body h2{font-size:14px;margin:0;font-weight:800}.book-body p{font-size:11px;color:var(--muted);line-height:1.8;margin:0;flex:1}.tags{display:flex;gap:6px;flex-wrap:wrap}.tags span{background:#edf8fc;color:#167fa3;padding:4px 8px;border-radius:20px;font-size:10px;font-weight:700}.book-actions{display:flex;gap:7px;flex-wrap:wrap}
+.state{padding:42px 18px;text-align:center;background:#fff;border:1px solid var(--line);border-radius:15px;color:#8291a2;font-size:12px;line-height:2}.state strong{display:block;font-size:17px;color:#334155;margin-bottom:6px}.panel{padding:20px;margin-top:18px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.panel h2{font-size:15px;margin:0}
+.exam-card{padding:17px;display:flex;flex-direction:column;gap:10px}.exam-card h3{font-size:14px;margin:0}.exam-card p{font-size:11px;color:var(--muted);margin:0;line-height:1.8}.attempt{display:inline-flex;align-self:flex-start;padding:4px 9px;border-radius:20px;background:#ecfdf5;color:#047857;font-size:10px;font-weight:800}
+.modal{position:fixed;inset:0;z-index:80;background:#0f172a88;display:none;align-items:center;justify-content:center;padding:16px}.modal.open{display:flex}.modalbox{width:min(780px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:17px;box-shadow:0 20px 60px #0003}.modalhead{display:flex;justify-content:space-between;align-items:center;padding:15px 19px;border-bottom:1px solid var(--line);background:#f8fafc;position:sticky;top:0}.modalhead h2{font-size:15px;margin:0}.close{border:0;background:#e9eef4;border-radius:50%;width:32px;height:32px}.modalbody{padding:20px}.question{border:1px solid #e7edf3;border-radius:12px;padding:15px;margin-bottom:12px}.question h3{font-size:13px;margin:0 0 12px}.option{display:flex;gap:9px;align-items:flex-start;padding:8px 9px;border-radius:8px;font-size:12px;color:#475569}.option:hover{background:#f7fafc}.result{padding:15px;border-radius:12px;background:#eff8ff;color:#175985;line-height:1.8;margin-bottom:15px;font-size:13px;font-weight:800}.correct{background:#ecfdf5;color:#047857}.wrong{background:#fff1f2;color:#be123c}
+.mobile-toggle,.mobile-close,.backdrop{display:none}
+@media(max-width:1050px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.topnav{gap:5px}.topnav a{font-size:11px;padding:8px}}
+@media(max-width:800px){.top{height:60px;padding:0 12px}.topnav{display:none}.mobile-toggle{display:inline-grid;place-items:center}.layout{min-height:calc(100vh - 60px)}aside{position:fixed;z-index:61;top:0;bottom:0;right:0;width:260px;transform:translateX(105%);transition:transform .2s;box-shadow:-10px 0 30px #0f172a1a}.layout.menu-open aside{transform:translateX(0)}.mobile-close{display:flex;justify-content:space-between;align-items:center;padding:0 7px 14px;margin-bottom:8px;border-bottom:1px solid var(--line);font-size:13px;font-weight:800}.backdrop{display:none;position:fixed;inset:0;background:#0f172a66;z-index:60}.layout.menu-open .backdrop{display:block}.main{padding:19px 12px}.panel{padding:15px}.hero{padding:18px}.hero h1{font-size:21px}}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.hero-stat{display:none}.toolbar{align-items:stretch;flex-direction:column}.toolbar input{width:100%}.book-cover{height:170px}.userpill .name{display:none}.modalbody{padding:13px}}
 </style>
 </head>
-<body class="min-h-screen flex flex-col">
-<header class="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
- <div class="relative h-16 px-3 sm:px-6 flex items-center justify-between gap-3" dir="ltr">
-  <div class="flex items-center gap-3" dir="ltr"><a href="dashboard.html" aria-label="الرئيسية" class="w-[46px] h-[46px] rounded-[10px] bg-white shadow-md border border-slate-100 grid place-items-center overflow-hidden"><img data-site-logo alt="شعار المنصة" hidden class="w-full h-full object-contain"></a><button id="menuBtn" class="lg:hidden w-9 h-9 border rounded-lg">☰</button><nav class="absolute left-1/2 -translate-x-1/2 hidden md:flex gap-1 text-sm font-bold text-slate-600" dir="rtl"><a href="dashboard.html" class="px-3 py-2 rounded-lg">الرئيسية</a><a href="courses.html" class="px-3 py-2 rounded-lg">الكورسات</a><a href="library.html" class="px-3 py-2 rounded-lg text-sky-600 bg-sky-50">المكتبة</a><a href="blog.html" class="px-3 py-2 rounded-lg">المدونة</a><a href="student-support.html" class="px-3 py-2 rounded-lg">تواصل معنا</a></nav></div>
-  <div class="flex items-center gap-2" dir="rtl"><button id="profileBtn" data-student-greeting class="rounded-full bg-slate-50 border px-3 py-2 text-xs font-bold">مرحبا</button><button id="notifBtn" class="w-9 h-9 rounded-full border text-sky-600">♧</button><button type="button" aria-label="اللغة" class="w-9 h-9 rounded-full border text-sky-600">◎</button><span class="border rounded-full px-3 py-2 text-xs font-bold text-sky-600">EGP</span><a href="dashboard.html" data-student-avatar class="w-9 h-9 rounded-full bg-slate-200 grid place-items-center font-bold">م</a></div>
- </div>
- <nav class="md:hidden flex gap-4 overflow-x-auto px-4 py-2 text-xs font-bold whitespace-nowrap bg-slate-50"><a href="dashboard.html">الرئيسية</a><a href="courses.html">كورساتي</a><a href="library.html">كتبي</a><a href="blog.html">المدونة</a><a href="student-support.html">تواصل معنا</a><a href="account.html">حسابي</a></nav>
+<body>
+<header class="top">
+  <div class="top-left"><button class="round mobile-toggle" id="menuToggle" aria-label="فتح القائمة">☰</button><a class="brand" href="dashboard.html"><span class="brandmark">ع</span></a></div>
+  <nav class="topnav" aria-label="تنقل الطالب"><a href="dashboard.html">الرئيسية</a><a href="courses.html">كورساتي</a><a class="active" href="library.html">كتبي</a><a href="blog.html">المدونة</a><a href="student-support.html">تواصل معنا</a></nav>
+  <div class="top-right"><div class="userpill"><span class="name" data-student-greeting>مرحبا</span><span class="avatar" data-student-avatar>م</span></div><a class="round" href="account.html" aria-label="حسابي" style="display:grid;place-items:center">♙</a></div>
 </header>
-<div id="overlay" class="hidden fixed inset-0 bg-slate-900/40 z-50"></div>
-<div class="flex-1 flex flex-col lg:flex-row">
-<main class="flex-1 min-w-0 order-2 lg:order-1 flex flex-col"><div class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-7 flex-1">
-<section id="libraryView" class="space-y-6">
- <div class="purple text-white rounded-2xl px-5 sm:px-7 py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-  <div class="flex gap-3 order-2 sm:order-1 self-end sm:self-auto"><div class="stat px-4 py-3 text-center min-w-24"><div id="pendingCount" class="text-xl font-extrabold">0</div><div class="text-xs">بانتظار الدفع</div></div><div class="stat px-4 py-3 text-center min-w-24"><div id="purchaseCount" class="text-xl font-extrabold">0</div><div class="text-xs">المشتريات</div></div></div>
-  <div class="order-1 sm:order-2"><h1 class="text-2xl sm:text-3xl font-extrabold">مكتبتي</h1><p class="text-sm text-white/90 mt-1">متابعة طلبات الكتب وفتح الملفات الرقمية</p></div>
- </div>
- <div id="emptyState" class="surface py-16 px-6 text-center"><div class="text-5xl text-violet-500 mb-4">▤</div><h2 class="text-xl font-extrabold">لا مشتريات بعد</h2><p class="text-sm text-slate-400 mt-2 mb-6">تصفح المكتبة وأكمل عملية شراء لتظهر هنا</p><button id="browseBtn" class="cta text-white rounded-xl px-6 py-3 text-sm font-bold">تصفح المكتبة</button></div>
- <div id="purchasedState" class="hidden space-y-4"><div class="flex justify-between items-center gap-3"><h2 class="font-extrabold">الكتب والملفات الرقمية المشتراة</h2><button id="browseMore" class="cta text-white rounded-xl px-4 py-2 text-xs font-bold">تصفح المكتبة</button></div><div id="purchasedGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div></div>
-</section>
-<section id="storeView" class="hidden space-y-6">
- <div class="cyan rounded-2xl text-white text-center px-6 py-9"><div class="text-xs font-bold">— المكتبة —</div><h1 class="text-3xl font-extrabold mt-2">مكتبتنا</h1><p class="text-sm mt-2 text-white/90">كتب ومواد تعليمية تسهل عليك التعلم والمراجعة</p></div>
- <div class="flex justify-between items-center"><button id="backBtn" class="text-sky-600 text-sm font-bold">العودة إلى مكتبتي ←</button><span class="text-xs text-slate-400">alielian.com/store</span></div>
- <article class="surface overflow-hidden max-w-sm"><div class="h-56 bg-gradient-to-br from-slate-50 via-blue-50 to-yellow-50 p-5 flex flex-col justify-between border-b"><span class="text-xs font-bold text-sky-600">PDF • موارد تعليمية</span><div class="text-center"><div class="text-4xl font-black" dir="ltr"><span class="text-blue-900">PAST</span> <span class="text-fuchsia-600">PAPER</span></div><div class="bg-white rounded-lg shadow border p-3 w-36 mx-auto mt-3 -rotate-2 text-xs font-bold">امتحان اللغة العربية<div class="h-1 bg-slate-200 mt-3"></div><div class="h-1 bg-slate-100 mt-2"></div><div class="h-1 bg-slate-200 mt-2"></div></div></div><span class="text-amber-500 text-left">💡</span></div><div class="p-5 space-y-4"><h2 class="font-extrabold" dir="ltr">PastPaper</h2><div class="text-sky-600 font-extrabold" dir="ltr">EGP 600.00</div><div class="grid grid-cols-2 gap-2"><button id="buyBtn" class="bg-sky-600 hover:bg-sky-700 text-white rounded-xl py-2.5 text-sm font-bold">شراء الآن</button><button id="readBtn" class="border rounded-xl py-2.5 text-sm font-bold">قراءة المزيد</button></div></div></article>
-</section>
-<section id="examsView" class="hidden space-y-6"><div class="cyan rounded-2xl text-white p-6 flex justify-between items-center"><div><h1 class="text-3xl font-extrabold">امتحاناتي</h1><p class="text-sm mt-1">تابع امتحاناتك ودرجاتك وإجاباتك من مكان واحد.</p></div><div class="stat p-3 text-center"><b class="text-xl">0</b><div class="text-xs">كل الامتحانات</div></div></div><div class="surface py-16 text-center"><div class="text-5xl text-sky-500 mb-4">☑</div><h2 class="text-xl font-extrabold">لا توجد امتحانات بعد</h2><p class="text-sm text-slate-400 mt-2">ستظهر هنا الامتحانات التي بدأت فيها أو قمت بتسليمها.</p></div></section>
+<div class="layout" id="layout">
+  <div class="backdrop" id="backdrop"></div>
+  <aside><div>
+    <div class="mobile-close"><span>قائمة الطالب</span><button class="round" id="closeMenu">✕</button></div>
+    <nav class="side">
+      <a href="dashboard.html">▦　لوحة التحكم</a><a href="courses.html">▤　كورساتي</a><a href="orders.html">🛒　طلباتي</a><a class="active" href="library.html">▣　كتبي</a><a href="library.html?view=exams">✓　امتحاناتي</a><a href="account.html">♙　حسابي</a><a class="logout" href="login.html">↪　تسجيل الخروج</a>
+    </nav>
+  </div></aside>
+  <main class="main"><div class="wrap">
+    <section id="libraryView">
+      <div class="hero"><div><h1>كتبي</h1><p>الكتب والمراجع التي تم تفعيلها على حسابك</p></div><div class="hero-stat"><strong id="bookCount">—</strong>كتاب في مكتبتك</div></div>
+      <div class="toolbar"><input id="bookSearch" placeholder="ابحث في كتبك..."><a class="primary" href="public-library.html">تصفح المكتبة</a></div>
+      <div id="booksState" class="state"><strong>جارٍ تحميل مكتبتك...</strong></div>
+      <div id="booksGrid" class="grid"></div>
+    </section>
+    <section id="examsView" hidden>
+      <div class="hero"><div><h1>امتحاناتي</h1><p>الامتحانات المرتبطة بالكورسات المفعّلة على حسابك ونتائج محاولاتك</p></div><div class="hero-stat"><strong id="examCount">—</strong>امتحان متاح</div></div>
+      <div id="examsState" class="state"><strong>جارٍ تحميل امتحاناتك...</strong></div>
+      <div id="examsGrid" class="grid"></div>
+      <section class="panel"><div class="panel-head"><h2>سجل المحاولات والنتائج</h2><button class="secondary" id="refreshExams" type="button">↻ تحديث</button></div><div id="attemptsList" class="muted">لا توجد محاولات مسجلة بعد.</div></section>
+    </section>
+  </div></main>
 </div>
-<footer class="bg-[#0b192c] text-slate-300 px-5 sm:px-8 pt-10 pb-7 mt-auto"><div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-9 text-center md:text-right pb-8 border-b border-slate-700"><div><h3 class="text-white font-bold text-lg mb-3">منصة علي عليان الدولية</h3><p class="text-xs leading-7">المنصة الدولية | نصنع التفوق في اللغة العربية برؤية عالمية وأدوات عصرية. مناهج متخصصة، وتأسيس احترافي، وتجربة تعليمية ذكية تواكب طموحك.</p><div class="mt-3 flex justify-center md:justify-start gap-3"><a href="#youtube">YouTube</a><a href="#instagram">Instagram</a><a href="#facebook">Facebook</a></div></div><div><h3 class="text-white font-bold mb-4">اتصل بنا</h3><div class="space-y-2 text-sm" dir="ltr"><div><a href="tel:+201126529544">+201126529544</a></div><div><a href="tel:+966547803289">+966547803289</a></div><div><a href="mailto:alimohammed20204@gmail.com">alimohammed20204@gmail.com</a></div></div></div><div><h3 class="text-white font-bold mb-4">قانوني</h3><div class="space-y-2 text-sm"><div><a href="#terms">الشروط والأحكام</a></div><div><a href="#privacy">سياسة الخصوصية</a></div><div><a href="#contact">تواصل معنا</a></div></div></div></div><div class="text-center text-xs text-slate-400 pt-6">© 2026 منصة علي عليان الدولية جميع الحقوق محفوظة<br>صُنع بـ ♥ بواسطة TeachingPortals</div></footer>
-</main>
-<aside id="sidebar" class="w-64 shrink-0 bg-white border-l border-slate-200 py-5 px-3.5 flex flex-col justify-between order-1 lg:order-2"><div><div class="flex justify-between lg:hidden px-2 pb-3 border-b mb-2"><b>قائمة الطالب</b><button id="closeMenu">✕</button></div><nav class="grid gap-1 text-sm font-bold"><a class="side rounded-xl px-3 py-3" href="dashboard.html">▦　لوحة التحكم</a><a class="side rounded-xl px-3 py-3" href="courses.html">▤　كورساتي</a><a class="side rounded-xl px-3 py-3" href="orders.html">🛒　طلباتي</a><button data-view="library" class="active text-right rounded-xl px-3 py-3">▣　كتبي</button><button data-view="exams" class="side text-right rounded-xl px-3 py-3">✓　امتحاناتي</button><a href="account.html" class="side rounded-xl px-3 py-3">♙　حسابي</a><a class="side rounded-xl px-3 py-3 mt-3 border-t" href="login.html">↪　تسجيل الخروج</a></nav></div></aside>
-</div>
-<button id="chatBtn" class="fixed bottom-5 right-5 w-12 h-12 rounded-full bg-sky-600 text-white shadow-lg text-xl">▤</button>
-<div id="dialog" class="modal fixed inset-0 z-[80] bg-slate-900/50 items-center justify-center p-4"><div class="bg-white rounded-2xl w-full max-w-lg p-5 text-right"><div class="flex justify-between items-center border-b pb-3"><h3 id="dialogTitle" class="font-extrabold">تنبيه</h3><button id="dialogClose">✕</button></div><div id="dialogBody" class="py-5 text-sm leading-7 text-slate-600"></div><div class="text-left"><button id="dialogOk" class="bg-sky-600 text-white rounded-lg px-5 py-2 text-sm">حسناً</button></div></div></div>
+<div class="modal" id="examModal"><section class="modalbox"><header class="modalhead"><h2 id="examModalTitle">الامتحان</h2><button class="close" id="closeExam" type="button" aria-label="إغلاق">✕</button></header><div class="modalbody" id="examModalBody"></div></section></div>
 <script>
-const $=s=>document.querySelector(s);let view=new URLSearchParams(location.search).get('view')==='exams'?'exams':'library';const purchases=[];function dialog(title,body){$('#dialogTitle').textContent=title;$('#dialogBody').textContent=body;$('#dialog').classList.add('open')}function closeDialog(){$('#dialog').classList.remove('open')}$('#dialogClose').onclick=$('#dialogOk').onclick=closeDialog;$('#dialog').onclick=e=>{if(e.target===$('#dialog'))closeDialog()};
-function switchView(next){view=next;$('#libraryView').classList.toggle('hidden',next!=='library');$('#storeView').classList.toggle('hidden',next!=='store');$('#examsView').classList.toggle('hidden',next!=='exams');document.title=(next==='store'?'مكتبتنا':next==='exams'?'امتحاناتي':'مكتبتي')+' - منصة علي عليان الدولية';document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===next));window.scrollTo({top:0,behavior:'smooth'})}
-switchView(view);
-function render(){ $('#purchaseCount').textContent=purchases.length;$('#pendingCount').textContent='0';$('#emptyState').classList.toggle('hidden',purchases.length>0);$('#purchasedState').classList.toggle('hidden',purchases.length===0);$('#purchasedGrid').innerHTML=purchases.map((p,i)=>'<article class="surface p-4 flex flex-col gap-4"><div class="flex justify-between"><span class="text-xs bg-emerald-100 text-emerald-700 rounded-full px-3 py-1">مفعّل</span><b class="text-sky-600 text-sm">'+p.price+'</b></div><h3 class="font-extrabold" dir="ltr">'+p.title+'</h3><p class="text-xs text-slate-500">امتحان اللغة العربية • ملف رقمي للمراجعة</p><button data-file="'+i+'" class="cta text-white rounded-xl py-2 text-xs font-bold">فتح الملف الرقمي</button></article>').join('')}
-function buy(){purchases.push({title:'PastPaper',price:'EGP 600.00'});render();switchView('library');dialog('تمت الإضافة','تمت إضافة PastPaper إلى مكتبتك بنجاح. هذه عملية تجريبية ولا تنفذ دفعاً حقيقياً.')}
-$('#browseBtn').onclick=$('#browseMore').onclick=()=>switchView('store');$('#backBtn').onclick=()=>switchView('library');$('#buyBtn').onclick=buy;$('#readBtn').onclick=()=>dialog('معاينة: PastPaper','مجموعة أوراق اختبارات سابقة ونماذج تدريبية متخصصة في امتحان اللغة العربية. السعر EGP 600.00.');$('#purchasedGrid').onclick=e=>{const b=e.target.closest('[data-file]');if(b)dialog('فتح الملف الرقمي','تم تجهيز الملف للقراءة والمراجعة. رابط الملف الفعلي سيضاف عند ربط نظام الملفات الرقمية.')};
-document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>switchView(b.dataset.view));document.querySelectorAll('[data-info]').forEach(b=>b.onclick=()=>dialog(b.dataset.info,'قسم '+b.dataset.info+' غير مربوط حالياً ببيانات فعلية.'));document.querySelectorAll('a[data-info]').forEach(a=>a.onclick=e=>{e.preventDefault();dialog(a.dataset.info,'تم اختيار '+a.dataset.info+'.')});
-$('#menuBtn').onclick=()=>{$('#sidebar').classList.add('open');$('#overlay').classList.add('open')};function closeMenu(){$('#sidebar').classList.remove('open');$('#overlay').classList.remove('open')}$('#closeMenu').onclick=$('#overlay').onclick=closeMenu;$('#chatBtn').onclick=()=>dialog('المساعدة الفورية','مرحباً mohajmed! يمكنك التنقل بين مكتبتي ومكتبتنا وامتحاناتي من القائمة الجانبية.');$('#notifBtn').onclick=()=>dialog('الإشعارات','لا توجد إشعارات جديدة حالياً.');$('#profileBtn').onclick=()=>location.href='account.html';render();
+const $=id=>document.getElementById(id);
+const params=new URLSearchParams(location.search);
+let books=[],exams=[],currentExam=null,submitted=false;
+function esc(value){return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));}
+function date(value){if(!value)return "—";const d=new Date(value);return Number.isNaN(d.getTime())?"—":new Intl.DateTimeFormat("ar-EG",{dateStyle:"medium"}).format(d);}
+async function request(url,options={}){
+ const response=await fetch(url,{credentials:"same-origin",cache:"no-store",...options,headers:{"Content-Type":"application/json",...(options.headers||{})}});
+ const data=await response.json().catch(()=>({}));
+ if(response.status===401){location.replace("login.html?next="+encodeURIComponent(location.pathname.slice(1)+location.search));throw new Error("سجل الدخول أولاً.");}
+ if(!response.ok||!data.ok)throw new Error(data.message||"تعذر تحميل البيانات.");
+ return data;
+}
+function bookCard(book){
+ const card=document.createElement("article");card.className="book-card";
+ const cover=document.createElement("div");cover.className="book-cover";
+ if(book.image){const img=document.createElement("img");img.src=book.image;img.alt=book.title;img.loading="lazy";img.onerror=()=>{cover.textContent=book.title;};cover.appendChild(img);}else cover.textContent=book.title;
+ const body=document.createElement("div");body.className="book-body";
+ const title=document.createElement("h2");title.textContent=book.title;
+ const desc=document.createElement("p");desc.textContent=book.description||"تم تفعيل هذا الكتاب على حسابك.";
+ const tags=document.createElement("div");tags.className="tags";const type=document.createElement("span");type.textContent=book.type==="physical"?"كتاب مطبوع":"كتاب رقمي";const activated=document.createElement("span");activated.textContent="تاريخ التفعيل: "+date(book.activatedAt);tags.append(type,activated);
+ const actions=document.createElement("div");actions.className="book-actions";
+ const details=document.createElement("a");details.className="secondary";details.href="library-details.html?productId="+encodeURIComponent(book.id);details.textContent="تفاصيل الكتاب";actions.appendChild(details);
+ if(book.fileUrl){const read=document.createElement("a");read.className="primary";read.href=book.fileUrl;read.target="_blank";read.rel="noopener noreferrer";read.textContent="قراءة / تحميل";actions.appendChild(read);}
+ else{const missing=document.createElement("span");missing.className="muted";missing.textContent="لم يرفق ملف قراءة لهذا الكتاب بعد.";actions.appendChild(missing);}
+ body.append(title,desc,tags,actions);card.append(cover,body);return card;
+}
+function renderBooks(){
+ const host=$("booksGrid");host.replaceChildren();$("bookCount").textContent=String(books.length);
+ const query=$("bookSearch").value.trim().toLocaleLowerCase("ar");
+ const list=books.filter(book=>!query||book.title.toLocaleLowerCase("ar").includes(query)||book.description.toLocaleLowerCase("ar").includes(query));
+ if(!list.length){$("booksState").hidden=false;$("booksState").innerHTML=books.length?'<strong>لا توجد نتائج مطابقة</strong>جرّب كلمة بحث أخرى.':'<strong>لا توجد كتب مفعّلة على حسابك بعد</strong>عند إدخال كود كتاب صحيح في صفحة طلباتي سيظهر هنا تلقائياً.<p><a class="small-link" href="orders.html">تفعيل كتاب بكود السنتر</a></p>';return;}
+ $("booksState").hidden=true;list.forEach(book=>host.appendChild(bookCard(book)));
+}
+async function loadBooks(){
+ try{const data=await request("/api/student/books");books=data.books||[];renderBooks();}
+ catch(error){$("booksState").hidden=false;$("booksState").innerHTML="<strong>تعذر تحميل كتبك</strong>"+esc(error.message);}
+}
+function examCard(exam){
+ const card=document.createElement("article");card.className="exam-card";
+ const title=document.createElement("h3");title.textContent=exam.title;
+ const meta=document.createElement("p");meta.textContent=(exam.courseTitle||"الكورس")+" • "+exam.questionCount+" سؤال";
+ const history=document.createElement("div");const attempts=exam.attempts||[];
+ if(attempts.length){const best=Math.max(...attempts.map(a=>Number(a.percentage)||0));history.innerHTML='<span class="attempt">عدد المحاولات: '+attempts.length+' • أفضل نتيجة: '+best+'%</span>';}
+ else history.innerHTML='<span class="tags"><span>لم تبدأ بعد</span></span>';
+ const start=document.createElement("button");start.className="primary";start.type="button";start.textContent="ابدأ الامتحان";start.onclick=()=>startExam(exam);
+ card.append(title,meta,history,start);return card;
+}
+function renderAttempts(){
+ const all=exams.flatMap(exam=>(exam.attempts||[]).map(attempt=>({...attempt,examTitle:exam.title,courseTitle:exam.courseTitle})));
+ if(!all.length){$("attemptsList").textContent="لا توجد محاولات مسجلة بعد.";return;}
+ $("attemptsList").innerHTML=all.map(item=>'<div style="display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #eef2f6;flex-wrap:wrap"><span><b>'+esc(item.examTitle)+'</b><small style="display:block;color:#8794a3">'+esc(item.courseTitle||"")+' • '+date(item.submittedAt)+'</small></span><span class="attempt">'+Number(item.score||0)+' / '+Number(item.total||0)+' ('+Number(item.percentage||0)+'%)</span></div>').join("");
+}
+function renderExams(){
+ $("examCount").textContent=String(exams.length);$("examsGrid").replaceChildren();
+ if(!exams.length){$("examsState").hidden=false;$("examsState").innerHTML='<strong>لا توجد امتحانات متاحة حالياً</strong>ستظهر الامتحانات المنشورة للكورسات المفعّلة على حسابك هنا.';}
+ else{$("examsState").hidden=true;exams.forEach(exam=>$("examsGrid").appendChild(examCard(exam)));}
+ renderAttempts();
+}
+async function loadExams(){
+ $("examsState").hidden=false;$("examsState").innerHTML="<strong>جارٍ تحميل امتحاناتك...</strong>";
+ try{const data=await request("/api/student/exams");exams=data.exams||[];renderExams();}
+ catch(error){$("examsState").innerHTML="<strong>تعذر تحميل امتحاناتك</strong>"+esc(error.message);}
+}
+function startExam(exam){
+ currentExam=exam;submitted=false;$("examModalTitle").textContent=exam.title;
+ const body=$("examModalBody");body.replaceChildren();
+ const intro=document.createElement("p");intro.className="muted";intro.textContent=(exam.courseTitle||"")+" • "+exam.questionCount+" سؤال. اختر إجابة لكل سؤال ثم سلّم الامتحان.";
+ const form=document.createElement("form");form.id="examForm";
+ (exam.questions||[]).forEach((question,index)=>{
+  const box=document.createElement("section");box.className="question";
+  const heading=document.createElement("h3");heading.textContent=(index+1)+". "+question.text;
+  box.appendChild(heading);
+  (question.options||[]).forEach((option,optionIndex)=>{
+   const label=document.createElement("label");label.className="option";
+   const input=document.createElement("input");input.type="radio";input.name="q-"+question.id;input.value=String(optionIndex);input.required=question.required!==false;
+   const text=document.createElement("span");text.textContent=option;label.append(input,text);box.appendChild(label);
+  });
+  form.appendChild(box);
+ });
+ const notice=document.createElement("div");notice.id="examFeedback";notice.className="notice";
+ const submit=document.createElement("button");submit.className="primary";submit.type="submit";submit.textContent="تسليم الامتحان وحساب النتيجة";
+ form.append(notice,submit);
+ form.addEventListener("submit",submitExam);
+ body.append(intro,form);$("examModal").classList.add("open");
+}
+async function submitExam(event){
+ event.preventDefault();if(!currentExam||submitted)return;
+ const form=event.currentTarget;const answers=[];
+ (currentExam.questions||[]).forEach(question=>{
+  const selected=form.querySelector('input[name="q-'+CSS.escape(question.id)+'"]:checked');
+  if(selected)answers.push({questionId:question.id,optionIndex:Number(selected.value)});
+ });
+ const button=form.querySelector('button[type="submit"]');button.disabled=true;button.textContent="جارٍ التصحيح والحفظ...";
+ try{
+  const data=await request("/api/student/exams",{method:"POST",body:JSON.stringify({examId:currentExam.id,answers})});
+  submitted=true;
+  const feedback=form.querySelector("#examFeedback");feedback.className="result";feedback.textContent="نتيجتك: "+data.attempt.score+" من "+data.attempt.total+" ("+data.attempt.percentage+"%). "+data.message;
+  form.querySelectorAll("input").forEach(input=>input.disabled=true);
+  const list=document.createElement("div");list.style.marginTop="14px";
+  (data.results||[]).forEach((answer,index)=>{
+   const box=document.createElement("div");box.className="question "+(answer.isCorrect?"correct":"wrong");
+   const chosen=answer.selectedIndex>=0?(answer.options[answer.selectedIndex]||""):"لم تجب";
+   const correct=answer.options[answer.correctIndex]||"";
+   box.textContent=(index+1)+". "+answer.text+" — إجابتك: "+chosen+" — الصحيحة: "+correct;list.appendChild(box);
+  });
+  form.appendChild(list);await loadExams();
+ }catch(error){const feedback=form.querySelector("#examFeedback");feedback.className="notice show error";feedback.textContent=error.message;}
+ finally{button.disabled=submitted;button.textContent=submitted?"تم تسليم الامتحان":"تسليم الامتحان وحساب النتيجة";}
+}
+function setView(){
+ const exams=params.get("view")==="exams";
+ $("libraryView").hidden=exams;$("examsView").hidden=!exams;
+ document.title=(exams?"امتحاناتي":"كتبي")+" | منصة علي عليان الدولية";
+ if(exams)loadExams();else loadBooks();
+}
+$("bookSearch").addEventListener("input",renderBooks);
+$("refreshExams").onclick=loadExams;
+$("closeExam").onclick=()=>$("examModal").classList.remove("open");
+$("examModal").addEventListener("click",event=>{if(event.target===$("examModal"))$("examModal").classList.remove("open");});
+document.addEventListener("keydown",event=>{if(event.key==="Escape")$("examModal").classList.remove("open");});
+function menu(open){$("layout").classList.toggle("menu-open",open);}
+$("menuToggle").onclick=()=>menu(true);$("closeMenu").onclick=$("backdrop").onclick=()=>menu(false);
+setView();
 </script>
-  <script src="/site-branding.js" defer></script>
+<script src="/site-branding.js" defer></script>
 <script src="/student-navbar.js" defer></script>
 </body></html>
