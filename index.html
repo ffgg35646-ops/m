@@ -81,12 +81,18 @@ a{text-decoration:none;color:inherit}
 .about .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:36px;align-items:center}
 .about h2{font-size:34px;margin:0 0 22px}
 .about p{font-size:16px;line-height:2;margin:0 0 24px}
-.about .about-visual{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);border-radius:20px;min-height:340px;display:grid;place-items:center;font-size:100px}
+.about .about-visual{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);border-radius:20px;min-height:340px;display:grid;place-items:center;font-size:100px;overflow:hidden;transform:scale(1);transform-origin:center;transition:transform .24s ease,box-shadow .24s ease;will-change:transform}
+.about .about-visual:hover{transform:scale(.97);box-shadow:0 10px 26px rgba(15,92,130,.16)}
+.about .about-visual img{display:block;width:100%;max-height:420px;object-fit:cover;border-radius:inherit}
 .about .about-link{background:#fff;color:#1e3a8a;padding:13px 22px;border-radius:8px;display:inline-block;font-size:17px}
 footer{background:#0f172a;color:#9ca3af;padding:50px 20px 28px}
 .footer-grid{max-width:1290px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px}
 footer h3{color:#fff;margin:0 0 20px;font-size:18px}
 .footer-line{margin-bottom:15px;line-height:1.8}
+.footer-contact{display:flex;flex-direction:column;align-items:stretch;direction:rtl;text-align:right}
+.footer-contact h3{display:block;width:100%;text-align:right}
+.footer-contact .footer-line{display:block;width:100%;margin-bottom:12px;text-align:right;direction:rtl}
+.footer-contact .footer-line[dir="ltr"]{direction:ltr;text-align:right;unicode-bidi:plaintext}
 .footer-social{display:flex;gap:10px;margin:22px 0}
 .footer-social a{width:40px;height:40px;border:1px solid #243049;border-radius:8px;display:grid;place-items:center;color:#cbd5e1}
 .platforms{display:flex;gap:10px;flex-wrap:wrap}
@@ -188,7 +194,7 @@ footer h3{color:#fff;margin:0 0 20px;font-size:18px}
 <footer>
   <div class="footer-grid">
     <section><h3>منصة علي عليان الدولية</h3><p class="footer-line">المنصة الدولية | نصنع التفوق في اللغة العربية برؤية عالمية وأدوات عصرية، مناهج متخصصة، وتأسيس احترافي، وتجربة تعليمية ذكية تواكب طموحك.</p><div class="footer-social"><a href="#" aria-label="يوتيوب">▶</a><a href="#" aria-label="إنستجرام">◎</a><a href="#" aria-label="فيسبوك">f</a></div><div class="platforms"><a href="#">Google Play</a><a href="#">App Store</a><a href="#">macOS</a><a href="#">Windows</a></div></section>
-    <section><h3>اتصل بنا</h3><div class="footer-line" dir="ltr">+201126529544</div><div class="footer-line" dir="ltr">+966547803289</div><div class="footer-line">alimohammed20204@gmail.com</div></section>
+    <section class="footer-contact"><h3>اتصل بنا</h3><div class="footer-line" dir="ltr">+201126529544</div><div class="footer-line" dir="ltr">+966547803289</div><div class="footer-line">alimohammed20204@gmail.com</div></section>
     <section><h3>قانوني</h3><div class="footer-line"><a href="#">الشروط والأحكام</a></div><div class="footer-line"><a href="#">سياسة الخصوصية</a></div><div class="footer-line"><a href="support.html">الدعم والتواصل</a></div></section>
   </div>
   <div class="copyright">© 2026 منصة علي عليان الدولية جميع الحقوق محفوظة</div>
