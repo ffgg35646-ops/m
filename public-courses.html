@@ -52,7 +52,7 @@ button{cursor:pointer}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:25px;margin:0 0 35px}
 .course-card{background:linear-gradient(180deg,#f9b233,#f5a21a);border-radius:18px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.13);display:flex;flex-direction:column;min-width:0;transition:transform .2s ease,box-shadow .2s ease}
 .course-card:hover{transform:translateY(-4px);box-shadow:0 12px 26px rgba(15,23,42,.16)}
-.thumb{height:220px;background:linear-gradient(145deg,#fff,#eaf8ff);display:flex;align-items:center;justify-content:center;overflow:hidden;color:#0b7fa8;font-size:27px;font-weight:800;text-align:center;padding:18px}
+.thumb{height:220px;background:linear-gradient(145deg,#fff,#eaf8ff);display:flex;align-items:center;justify-content:center;overflow:hidden;color:#0b7fa8;font-size:27px;font-weight:800;text-align:center;padding:18px;cursor:pointer}
 .thumb img{width:100%;height:100%;object-fit:cover}
 .thumb-fallback{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;width:100%;height:100%;background:radial-gradient(circle at 50% 30%,#fff 0,#f2fbff 65%,#dff4fc 100%);color:#117fa7}
 .thumb-fallback span{font-size:13px;font-weight:700;letter-spacing:1px;color:#64748b}
@@ -271,13 +271,8 @@ footer .footer-grid section:last-child .footer-line a:hover{color:#20b9ad;transf
   }
 
   function openDetails(course) {
-    $("modalTitle").textContent = course.title;
-    $("modalDescription").textContent = course.description || "لا يوجد وصف إضافي لهذه الدورة حالياً.";
-    $("modalTags").replaceChildren();
-    [course.category, course.grade, course.subject, course.track].filter(Boolean).forEach(value => $("modalTags").appendChild(node("span","",value)));
-    $("modalRegister").href = "register.html?courseId=" + encodeURIComponent(course.id);
-    $("courseModal").classList.add("open");
-    $("closeCourseModal").focus();
+    if (!course || !course.id) return;
+    location.href = "course-details.html?courseId=" + encodeURIComponent(course.id);
   }
 
   function closeDetails() {
@@ -287,6 +282,13 @@ footer .footer-grid section:last-child .footer-line a:hover{color:#20b9ad;transf
   function renderCard(course) {
     const card = node("article","course-card");
     const thumb = node("div","thumb");
+    thumb.tabIndex = 0;
+    thumb.setAttribute("role", "button");
+    thumb.setAttribute("aria-label", "عرض تفاصيل " + course.title);
+    thumb.addEventListener("click", () => openDetails(course));
+    thumb.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") { event.preventDefault(); openDetails(course); }
+    });
     if (course.image) {
       const image = node("img");
       image.loading = "lazy";
