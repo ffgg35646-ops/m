@@ -183,7 +183,7 @@ footer a{transition:color .18s ease,transform .18s ease}footer .footer-grid sect
     $("modalType").textContent=typeName(product);$("modalPrice").textContent=money(product);
     const image=$("modalImage");
     if(product.image){image.src=product.image;image.alt=product.title;image.hidden=false;}else{image.removeAttribute("src");image.hidden=true;}
-    $("modalBuy").href=whatsappUrl(product);$("productModal").classList.add("open");$("closeProductModal").focus();
+    $("modalBuy").href="login.html?next="+encodeURIComponent("orders.html?targetType=library&targetId="+product.id);$("modalBuy").dataset.studentPurchase="library";$("modalBuy").dataset.targetId=product.id;$("productModal").classList.add("open");$("closeProductModal").focus();
   }
   function closeDetails(){$("productModal").classList.remove("open");}
   function renderCard(product){
@@ -194,7 +194,7 @@ footer a{transition:color .18s ease,transform .18s ease}footer .footer-grid sect
     }else{thumb.appendChild(node("span","image-fallback",product.title));}
     const body=node("div","pbody");body.append(node("h3","",product.title),node("span","product-type",typeName(product)),node("div","price",money(product)));
     const actions=node("div","pbtns"),buy=node("a","buy","شراء الآن"),more=node("a","more","عرض المزيد");
-    buy.href="login.html";
+    buy.href="login.html?next="+encodeURIComponent("orders.html?targetType=library&targetId="+product.id);buy.dataset.studentPurchase="library";buy.dataset.targetId=product.id;
     more.href="library-details.html?productId="+encodeURIComponent(product.id);
     actions.append(buy,more);body.appendChild(actions);card.append(thumb,body);return card;
   }
@@ -237,5 +237,6 @@ footer a{transition:color .18s ease,transform .18s ease}footer .footer-grid sect
 })();
 </script>
 <script src="/site-branding.js" defer></script>
+<script src="/student-navbar.js" defer></script>
 </body>
 </html>
