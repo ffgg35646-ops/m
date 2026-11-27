@@ -284,7 +284,7 @@ function cleanProduct(data, previous = {}) {
     (Array.isArray(previous.images) ? previous.images : []);
   if (Array.isArray(data.images) && data.images.length > 8) fail("الحد الأقصى 8 صور للمنتج.");
   const fileUrl = safeUrl(data.fileUrl === undefined ? (previous.fileUrl || previous.downloadUrl || previous.pdfUrl) : data.fileUrl, "رابط ملف الكتاب");
-  if (type !== "physical" && !isFree && !fileUrl) fail("أضف رابط ملف القراءة أو التحميل للمنتج الرقمي قبل حفظه.");
+  if (type !== "physical" && !fileUrl) fail("أضف رابط ملف القراءة أو التحميل للمنتج الرقمي قبل حفظه.");
   return {
     title, name: title, description: str(data.description, 4000),
     type, typeLabel: type, price, isFree,
