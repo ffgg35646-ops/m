@@ -39,11 +39,13 @@ module.exports = async function handler(req, res) {
 
     const token = crypto.randomBytes(32).toString("hex");
     const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+    const sessionExpiresAt = new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000);
+    const sessionMaxAge = Math.floor((sessionExpiresAt.getTime() - Date.now()) / 1000);
     await database.collection("auth_sessions").insertOne({
       userId:user._id, authCollection:matchedCollection, tokenHash, role,
-      createdAt:new Date(), expiresAt:new Date(Date.now()+7*86400000)
+      createdAt:new Date(), expiresAt:sessionExpiresAt
     });
-    res.setHeader("Set-Cookie",`ali_admin_session=${token}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=604800`);
+    res.setHeader("Set-Cookie",`ali_admin_session=${token}; HttpOnly; Secure; SameSite=Lax; Path=/; Expires=${sessionExpiresAt.toUTCString()}; Max-Age=${sessionMaxAge}`);
     const adminRoles = new Set(["admin","super_admin","owner","administrator","مدير النظام","مدير","مسؤول"]);
     let redirect = adminRoles.has(String(role).trim().toLowerCase()) ? "admin.html" : "dashboard.html";
     if (redirect === "dashboard.html" && matchedCollection === adminCollection) {
