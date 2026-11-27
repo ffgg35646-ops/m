@@ -99,7 +99,7 @@
   };
 
   document.addEventListener('click', event => {
-    const logout = event.target instanceof Element ? event.target.closest('[data-student-logout], a.logout, button.menu-logout') : null;
+    const logout = event.target instanceof Element ? event.target.closest('[data-student-logout], .logout, button.menu-logout') : null;
     if (!logout) return;
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
