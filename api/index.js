@@ -10,6 +10,8 @@ const routes = Object.freeze({
   "public/course-image": require("./_handlers/public/course-image"),
   "public/library": require("./_handlers/public/library"),
   "public/library-image": require("./_handlers/public/library-image"),
+  "public/blog": require("./_handlers/public/blog"),
+  "public/blog-image": require("./_handlers/public/blog-image"),
   "admin/academic-structure": require("./_handlers/admin/academic-structure"),
   "admin/blog-library": require("./_handlers/admin/blog-library"),
   "admin/center-codes": require("./_handlers/admin/center-codes"),
